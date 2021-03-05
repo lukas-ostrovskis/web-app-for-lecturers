@@ -15,6 +15,9 @@ Add your own name (do not add the names for others!) to the section below.
 | 📸 | Name | Email |
 |---|---|---|
 | ![](https://eu.ui-avatars.com/api/?name=LK&length=2&size=50&color=DDD&background=777&font-size=0.325) | Luka Knezevic | l.knezevicorbovic-1@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=PP&length=2&size=50&color=DDD&background=777&font-size=0.325) | Petr Persianov | p.persianov@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=AC&length=2&size=50&color=DDD&background=777&font-size=0.325) | Athanasios Christopoulos | a.christopoulos@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=LO&length=2&size=50&color=DDD&background=777&font-size=0.325) | Lukas Ostrovskis | l.ostrovskis@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=DK&length=2&size=50&color=DDD&background=777&font-size=0.325) | David Kochergin | d.v.kochergin@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
