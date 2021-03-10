@@ -17,7 +17,8 @@
 1. As a moderator, I want to be able to ban certain IPs/users.
 1. As a lecturer, I want to be able to create polls so that I can ask students multiple choice questions
 1. As a lecturer, I want to be able to publish the answer distribution of my polls so that both me and the students can see how the majority understood the question.
-1. Could Have:
+
+### Could Have:
 1. As a student, I want to be able to reply to other students' questions.
 1. As a lecturer, I want to be able to archive a room.
 1. As a lecturer, I want to be able to choose how many top questions to see.
