@@ -1,4 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+## Ignore some files I dont want anyone to see_))))
+docker/*
+
 ### Gradle template
 .gradle
 build/
