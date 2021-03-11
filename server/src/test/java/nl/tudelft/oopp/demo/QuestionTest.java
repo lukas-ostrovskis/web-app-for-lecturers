@@ -13,55 +13,55 @@ public class QuestionTest {
 
 
     @Test
-    public void constructor_Test() {
+    public void constructorTest() {
         assertNotNull(question_a);
     }
 
     @Test
-    public void id_Test() {
+    public void idTest() {
         assertEquals(question_a.getId(), question_b.getId());
     }
 
     @Test
-    public void owner_id_Test() {
-        assertEquals(question_a.getOwner_id(), question_b.getOwner_id());
+    public void ownerIdTest() {
+        assertEquals(question_a.getOwnerId(), question_b.getOwnerId());
     }
 
     @Test
-    public void room_id_Test() {
-        assertEquals(question_a.getRoom_id(), question_b.getRoom_id());
+    public void roomIdTest() {
+        assertEquals(question_a.getRoomId(), question_b.getRoomId());
     }
 
     @Test
-    public void content_Test(){
+    public void contentTest(){
         assertEquals(question_a.getContent(), question_b.getContent());
     }
 
     @Test
-    public void number_of_upvotes_Test()
+    public void numberOfUpvotesTest()
     {
-        assertEquals(question_a.getNumber_of_upvotes(), question_b.getNumber_of_upvotes());
+        assertEquals(question_a.getNumberOfUpvotes(), question_b.getNumberOfUpvotes());
     }
 
     @Test
-    public void number_of_downvotes_Test(){
-        assertEquals(question_a.getNumber_of_downvotes(), question_b.getNumber_of_downvotes());
+    public void numberOfDownvotesTest(){
+        assertEquals(question_a.getNumberOfDownvotes(), question_b.getNumberOfDownvotes());
     }
 
     @Test
-    public void status_Test()
+    public void statusTest()
     {
         assertEquals(question_a.isStatus(), question_b.isStatus());
     }
 
     @Test
-    public void answer_Test()
+    public void answerTest()
     {
         assertEquals(question_a.getAnswer(), question_b.getAnswer());
     }
 
     @Test
-    public void equals_Test()
+    public void equalsTest()
     {
         assertEquals(question_a, question_b);
         assertNotEquals(question_a, question_c);
