@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class Room {
     @Id
-    @Column(name = "Id")
+    @Column(name = "id")
     private String Id;
 
     @Column(name = "ownerId")
@@ -25,28 +25,32 @@ public class Room {
     @Column(name = "time")
     private  int time;
 
-    @Column(name= "roomUsers")
+    @ManyToMany
     private List<User> roomUsers;
 
     /**
      * Create a new Room instance.
-     * @param Id Unique identifier of the room.
+     * @param id Unique identifier of the room.
      * @param ownerId The unique identifier of the owner of that room.
      * @param status Whether the room is online or not
      * @param time is how much time the room has been open
      * @param roomUsers is the list of users in the room
 
      */
-    public Room(String Id, String ownerId, boolean status, int time, List<User> roomUsers) {
-        this.Id = Id;
+    public Room(String id, String ownerId, boolean status, int time, List<User> roomUsers) {
+        this.id = id;
         this.ownerId = ownerId;
         this.status = status;
         this.time = time;
         this.roomUsers = new ArrayList<User>();
     }
 
+    Public Room() {
+
+    }
+
     public String getId() {
-        return Id;
+        return id;
     }
 
     public String getOwnerId() {
@@ -70,6 +74,6 @@ public class Room {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return status == room.status && time == room.time && Objects.equals(Id, room.Id) && Objects.equals(ownerId, room.ownerId) && Objects.equals(roomUsers, room.roomUsers);
+        return status == room.status && time == room.time && Objects.equals(id, room.id) && Objects.equals(ownerId, room.ownerId) && Objects.equals(roomUsers, room.roomUsers);
     }
 }

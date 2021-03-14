@@ -13,7 +13,7 @@ class RoomTest {
 
     private Room room;
     private Room room2;
-    private String Id = "ABC123";
+    private String id = "ABC123";
     private String ownerId = "XYZ789";
     private boolean status = true;
     private int time = 360;
@@ -21,7 +21,7 @@ class RoomTest {
 
     @BeforeEach
     void SetUp() {
-        room = new Room(Id,ownerId,status,time,roomUsers);
+        room = new Room(id,ownerId,status,time,roomUsers);
     }
 
     @Test
@@ -36,8 +36,8 @@ class RoomTest {
 
     @Test
     void equalsNotTest() {
-        String Id2 = "BCD234";
-        room2 = new Room(Id2,ownerId,status,time,roomUsers);
+        String id2 = "BCD234";
+        room2 = new Room(id2,ownerId,status,time,roomUsers);
 
         assertFalse(room.equals(room2));
     }
