@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Room {
     @Id
     @Column(name = "id")
-    private String Id;
+    private String id;
 
     @Column(name = "ownerId")
     private String ownerId;
