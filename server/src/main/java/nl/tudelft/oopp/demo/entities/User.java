@@ -25,6 +25,9 @@ public class User {
     @Column(name = "ip")
     private String ip;
 
+    public User(){
+
+    }
     /**
      * Create a new User instance.
      *
