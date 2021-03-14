@@ -13,11 +13,11 @@ import java.util.Objects;
 
 public class Room {
     @Id
-    @Column(name = "ID")
-    private String ID;
+    @Column(name = "Id")
+    private String Id;
 
-    @Column(name = "ownerID")
-    private String ownerID;
+    @Column(name = "ownerId")
+    private String ownerId;
 
     @Column(name = "status")
     private boolean status;
@@ -30,27 +30,27 @@ public class Room {
 
     /**
      * Create a new Room instance.
-     * @param ID Unique identifier of the room.
-     * @param ownerID The unique identifier of the owner of that room.
+     * @param Id Unique identifier of the room.
+     * @param ownerId The unique identifier of the owner of that room.
      * @param status Whether the room is online or not
      * @param time is how much time the room has been open
      * @param roomUsers is the list of users in the room
 
      */
-    public Room(String ID, String ownerID, boolean status, int time, List<User> roomUsers) {
-        this.ID = ID;
-        this.ownerID = ownerID;
+    public Room(String Id, String ownerId, boolean status, int time, List<User> roomUsers) {
+        this.Id = Id;
+        this.ownerId = ownerId;
         this.status = status;
         this.time = time;
         this.roomUsers = new ArrayList<User>();
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return Id;
     }
 
-    public String getOwnerID() {
-        return ownerID;
+    public String getOwnerId() {
+        return ownerId;
     }
 
     public boolean isStatus() {
@@ -70,6 +70,6 @@ public class Room {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return status == room.status && time == room.time && Objects.equals(ID, room.ID) && Objects.equals(ownerID, room.ownerID) && Objects.equals(roomUsers, room.roomUsers);
+        return status == room.status && time == room.time && Objects.equals(Id, room.Id) && Objects.equals(ownerId, room.ownerId) && Objects.equals(roomUsers, room.roomUsers);
     }
 }
