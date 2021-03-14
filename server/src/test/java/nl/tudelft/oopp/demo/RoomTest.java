@@ -13,15 +13,15 @@ class RoomTest {
 
     private Room room;
     private Room room2;
-    private String ID = "ABC123";
-    private String ownerID = "XYZ789";
+    private String Id = "ABC123";
+    private String ownerId = "XYZ789";
     private boolean status = true;
     private int time = 360;
     private List<User> roomUsers = new ArrayList<User>();
 
     @BeforeEach
     void SetUp() {
-        room = new Room(ID,ownerID,status,time,roomUsers);
+        room = new Room(Id,ownerId,status,time,roomUsers);
     }
 
     @Test
@@ -36,8 +36,8 @@ class RoomTest {
 
     @Test
     void equalsNotTest() {
-        String ID2 = "BCD234";
-        room2 = new Room(ID2,ownerID,status,time,roomUsers);
+        String Id2 = "BCD234";
+        room2 = new Room(Id2,ownerId,status,time,roomUsers);
 
         assertFalse(room.equals(room2));
     }
