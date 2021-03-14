@@ -1,12 +1,10 @@
 package nl.tudelft.oopp.demo.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "rooms")
@@ -45,7 +43,7 @@ public class Room {
         this.roomUsers = new ArrayList<User>();
     }
 
-    Public Room() {
+    public Room() {
 
     }
 
