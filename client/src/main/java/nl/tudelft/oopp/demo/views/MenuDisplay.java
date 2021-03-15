@@ -8,11 +8,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.controllers.MainSceneController;
 
-public class QuoteDisplay extends Application {
+public class MenuDisplay extends Application {
+
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        this.primaryStage = primaryStage;
+
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/mainScene.fxml");
         loader.setLocation(xmlUrl);
@@ -24,5 +29,9 @@ public class QuoteDisplay extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 }
