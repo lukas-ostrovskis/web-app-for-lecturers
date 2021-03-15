@@ -32,10 +32,9 @@ public class Room {
      * @param ownerId The unique identifier of the owner of that room.
      * @param status Whether the room is online or not
      * @param time is how much time the room has been open
-     * @param roomUsers is the list of users in the room
 
      */
-    public Room(String id, String ownerId, boolean status, int time, List<User> roomUsers) {
+    public Room(String id, String ownerId, boolean status, int time) {
         this.id = id;
         this.ownerId = ownerId;
         this.status = status;
