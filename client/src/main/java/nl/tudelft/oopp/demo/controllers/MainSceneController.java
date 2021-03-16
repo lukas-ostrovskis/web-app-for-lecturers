@@ -7,9 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import nl.tudelft.oopp.demo.views.MenuDisplay;
-
 import java.io.IOException;
+import nl.tudelft.oopp.demo.views.MenuDisplay;
 
 public class MainSceneController {
 
@@ -23,7 +22,7 @@ public class MainSceneController {
     }
 
     /**
-     * Clicking the 'create room' button sends a request to the server to create a new room
+     * Clicking the 'create room' button sends a request to the server to create a new room.
      */
     public void buttonClicked() {
         String result = ServerCommunication.getRoomId();

@@ -10,8 +10,8 @@ public class ServerCommunication {
     private static HttpClient client = HttpClient.newBuilder().build();
 
     /**
-     * Creates a new room on the server
-     * @return An id of the created room
+     * Creates a new room on the server.
+     * @return An id of the created room.
      * @throws Exception if communication with the server fails.
      */
     public static String getRoomId() {
