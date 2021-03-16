@@ -66,6 +66,10 @@ public class Room {
         return roomUsers;
     }
 
+    public void addUser(User user) {
+        roomUsers.add(user);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
