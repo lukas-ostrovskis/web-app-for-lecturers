@@ -51,7 +51,6 @@ public class RoomController {
     @GetMapping(path = "{roomId}")
     public String joinRoom(@PathVariable("roomId") String roomId) {
         roomService.joinRoom(roomId);
-
         return "Joined successfully!";
     }
 

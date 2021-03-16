@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class RoomService {
@@ -37,10 +38,14 @@ public class RoomService {
     public void joinRoom(String roomId) {
         Optional<Room> roomById = roomRepository.findById(roomId);
 
-        User user = new User("1", "TestName", "test@testmail.com", "student", "24.241.241.21.24");
-
         if(roomById.isPresent()) {
+            //TODO: pass real user info to the database
+            Random id = new Random(System.currentTimeMillis());
+            User user = new User(Integer.toString(id.nextInt(), 16), "TestName", "test@testmail.com", "student", "24.241.241.21.24");
+            userRepository.save(user);
+
             roomById.get().addUser(user);
+            roomRepository.save(roomById.get());
         }
         else throw new IllegalStateException("Room doesn't exist");
     }
