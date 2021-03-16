@@ -37,6 +37,18 @@ public class MainSceneController {
         }
     }
 
+    public void joinClicked() {
+        roomId = roomID.getText();
+        if(ServerCommunication.joinRoom(roomId).equals("Joined successfully!")) {
+            try{
+                roomScene();
+            } catch(Exception e) {
+                System.out.println("Can't load scene");
+            }
+        }
+
+    }
+
 
     private void roomScene() throws IOException {
         Stage primaryStage = MenuDisplay.getPrimaryStage();
