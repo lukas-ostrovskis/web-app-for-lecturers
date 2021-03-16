@@ -23,28 +23,12 @@ public class MainSceneController {
     }
 
     /**
-     * Handles clicking the button.
+     * Clicking the 'create room' button sends a request to the server to create a new room
      */
     public void buttonClicked() {
         String result = ServerCommunication.getRoomId();
         roomId = result;
         roomID.setText(result);
-        if(ServerCommunication.joinRoom(result).equals("Joined successfully!")) {
-            try{
-                roomScene();
-            } catch(Exception e) {
-                System.out.println("Can't load scene");
-            }
-        }
     }
 
-
-    private void roomScene() throws IOException {
-        Stage primaryStage = MenuDisplay.getPrimaryStage();
-
-        Parent root = FXMLLoader.load(getClass().getResource("/roomScene.fxml"));
-        primaryStage.getScene().setRoot(root);
-
-        System.out.println("Scene loaded");
-    }
 }
