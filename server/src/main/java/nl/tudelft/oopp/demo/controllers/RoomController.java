@@ -5,6 +5,7 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +19,8 @@ public class RoomController {
     private RoomService roomService;
 
     /**
-     * Constructor for the RoomController
-     * @param roomService service layer class for room actions
+     * Constructor for the RoomController.
+     * @param roomService service layer class for room actions.
      */
     @Autowired
     public RoomController(RoomService roomService) {
@@ -27,8 +28,8 @@ public class RoomController {
     }
 
     /**
-     * Create a new room on the server and save it in a database
-     * @return roomId - the id of the created room
+     * Create a new room on the server and save it in a database.
+     * @return roomId - the id of the created room.
      */
     @GetMapping
     public String createRoom() {
@@ -39,6 +40,19 @@ public class RoomController {
         roomService.addRoom(room);
 
         return roomId;
+    }
+
+
+    /**
+     * Allows a client to join an existing room with a specific id.
+     * @param roomId - the id of the room.
+     * @return
+     */
+    @GetMapping(path = "{roomId}")
+    public String joinRoom(@PathVariable("roomId") String roomId) {
+        roomService.joinRoom(roomId);
+
+        return "Joined successfully!";
     }
 
 }
