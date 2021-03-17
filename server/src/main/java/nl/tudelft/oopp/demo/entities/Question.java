@@ -1,6 +1,10 @@
 package nl.tudelft.oopp.demo.entities;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "questions")
@@ -31,9 +35,23 @@ public class Question {
     @Column(name = "answer")
     private String answer;
 
+    @CreationTimestamp
+    private Instant creationTimestamp;
+
 
     public Question(String ownerId, String roomId, String content,
                     int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
+        this.ownerId = ownerId;
+        this.roomId = roomId;
+        this.content = content;
+        this.numberOfUpvotes = numberOfUpvotes;
+        this.numberOfDownvotes = numberOfDownvotes;
+        this.status = status;
+        this.answer = answer;
+    }
+    public Question(String id, String ownerId, String roomId, String content,
+                    int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
+        this.id = id;
         this.ownerId = ownerId;
         this.roomId = roomId;
         this.content = content;
