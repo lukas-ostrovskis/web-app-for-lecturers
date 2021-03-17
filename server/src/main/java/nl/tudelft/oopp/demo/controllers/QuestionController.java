@@ -27,6 +27,25 @@ public class QuestionController {
         return questionService.getAllQuestionByOwnerId(ownerId);
     }
 
+    @GetMapping(value="/upvote/{questionId}")
+    public String upvoteQuestionById(@PathVariable String questionId){
+        try{
+            questionService.upvoteQuestionById(questionId);
+        }catch (Exception e){
+            return "Something went wrong";
+        }
+        return "Question " + questionId + " Upvoted Successfully";
+    }
+    @GetMapping(value="/downvote/{questionId}")
+    public String downvoteQuestionById(@PathVariable String questionId){
+        try{
+            questionService.downvoteQuestionById(questionId);
+        }catch (Exception e){
+            return "Something went wrong";
+        }
+        return "Question " + questionId + " Downvoted Successfully";
+    }
+
     @PostMapping (
             value="/addQuestion",
             consumes=MediaType.APPLICATION_JSON_VALUE
@@ -39,5 +58,8 @@ public class QuestionController {
         }
         return "Question Added Successfully";
     }
+
+
+
 
 }

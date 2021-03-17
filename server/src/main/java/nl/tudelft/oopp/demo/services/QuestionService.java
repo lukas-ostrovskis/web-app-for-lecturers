@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class QuestionService {
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
 
     @Autowired
     public QuestionService(QuestionRepository questionRepository) {
@@ -26,5 +26,16 @@ public class QuestionService {
 
     public List<Question> getAllQuestionByOwnerId(String ownerId) {
         return questionRepository.findAllByOwnerId(ownerId);
+    }
+
+    public void upvoteQuestionById(String questionId){
+        Question question = questionRepository.getOne(questionId);
+        question.upvote();
+        questionRepository.save(question);
+    }
+    public void downvoteQuestionById(String questionId){
+        Question question = questionRepository.getOne(questionId);
+        question.downvote();
+        questionRepository.save(question);
     }
 }

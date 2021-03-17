@@ -79,6 +79,13 @@ public class Question {
         return answer;
     }
 
+    public void upvote(){
+        this.numberOfUpvotes++;
+    }
+    public void downvote(){
+        this.numberOfDownvotes++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
