@@ -18,7 +18,12 @@ public class QuestionController {
 
     @GetMapping(value="/getAllByRoomId/{roomId}", produces = "application/json")
     public List<Question> getAllQuestionsByRoomId(@PathVariable String roomId) {
-        System.out.println("hello endpoint:" + roomId);
         return questionService.getAllQuestionByRoomId(roomId);
+    }
+
+    @GetMapping(value="/getAllByOwnerId/{ownerId}", produces = "application" +
+            "/json")
+    public List<Question> getAllQuestionsByOwnerId(@PathVariable String ownerId) {
+        return questionService.getAllQuestionByOwnerId(ownerId);
     }
 }

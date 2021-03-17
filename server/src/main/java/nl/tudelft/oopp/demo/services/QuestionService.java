@@ -23,4 +23,8 @@ public class QuestionService {
     public List<Question> getAllQuestionByRoomId(String roomId){
         return questionRepository.findAllByRoomId(roomId);
     }
+
+    public List<Question> getAllQuestionByOwnerId(String ownerId) {
+        return questionRepository.findAllByOwnerId(ownerId);
+    }
 }

@@ -10,4 +10,7 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT q FROM Question q WHERE q.roomId = ?1")
     List<Question> findAllByRoomId(String roomId);
+
+    @Query("SELECT q FROM Question q WHERE q.ownerId = ?1")
+    List<Question> findAllByOwnerId(String ownerId);
 }
