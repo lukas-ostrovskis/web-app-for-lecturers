@@ -32,7 +32,8 @@ public class Question {
     private String answer;
 
 
-    public Question(String ownerId, String roomId, String content, int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
+    public Question(String ownerId, String roomId, String content,
+                    int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
         this.ownerId = ownerId;
         this.roomId = roomId;
         this.content = content;
@@ -86,7 +87,7 @@ public class Question {
         return  numberOfUpvotes == question.numberOfUpvotes &&
                 numberOfDownvotes == question.numberOfDownvotes &&
                 status == question.status &&
-                id.equals(question.id) &&
+//                id.equals(question.id) &&
                 ownerId.equals(question.ownerId) &&
                 roomId.equals(question.roomId) &&
                 content.equals(question.content) &&

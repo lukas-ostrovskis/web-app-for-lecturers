@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuestionTest {
 
 
-    Question question_a = new Question("1232asd", "41224as", "1212ads", "What is the time", 10, 3, false, "");
-    Question question_b = new Question("1232asd", "41224as", "1212ads", "What is the time", 10, 3, false, "");
-    Question question_c = new Question("123u0j", "n123n", "zma2m", "Is this going to be on the exam?", 15, 0, false, "");
+    Question question_a = new Question("41224as", "1212ads", "What is the time", 10, 3, false, "");
+    Question question_b = new Question("41224as", "1212ads", "What is the time", 10, 3, false, "");
+    Question question_c = new Question("n123n", "zma2m", "Is this going to be on the exam?", 15, 0, false, "");
 
 
     @Test
@@ -17,10 +17,10 @@ public class QuestionTest {
         assertNotNull(question_a);
     }
 
-    @Test
-    public void idTest() {
-        assertEquals(question_a.getId(), question_b.getId());
-    }
+//    @Test
+//    public void idTest() {
+//        assertEquals(question_a.getId(), question_b.getId());
+//    }
 
     @Test
     public void ownerIdTest() {
