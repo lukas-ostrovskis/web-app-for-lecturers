@@ -17,11 +17,14 @@ public class UserSceneController {
     @FXML
     private ListView<User> userList;
 
+    @FXML
+    private TextField password;
+
     /**
      * Handles clicking the button.
      */
     public void buttonClicked() {
-        List<User> result = ServerCommunication.findUsers(searchOrAdd.getText());
+        List<User> result = ServerCommunication.findUsers(searchOrAdd.getText(), password.getText());
         System.out.println(result);
         userList.getItems().clear();
         userList.getItems().addAll(result);

@@ -35,8 +35,8 @@ public class ServerCommunication {
         return response.body();
     }
 
-    public static List<User> findUsers(String query) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/user/searchOrAdd?q=" + query)).build();
+    public static List<User> findUsers(String email, String password) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/user/searchOrAdd?email=" + email + "&password=" + password)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

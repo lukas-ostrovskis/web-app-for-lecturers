@@ -36,6 +36,7 @@ public class User {
      * @param role Role of the user (lecturer, student, moderator).
      * @param ip IP address of the user.
      */
+
     public User(String id, String name, String email, String role, String ip) {
         this.id = id;
         this.name = name;
@@ -44,6 +45,16 @@ public class User {
         this.ip = ip;
     }
 
+    public User(String name, String email, String role, String ip) {
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.ip = ip;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getId() {
         return id;
