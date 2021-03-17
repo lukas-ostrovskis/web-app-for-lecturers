@@ -1,15 +1,12 @@
 package nl.tudelft.oopp.demo.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "replies")
+@Table(name = "questions")
 public class Question {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 
@@ -35,8 +32,7 @@ public class Question {
     private String answer;
 
 
-    public Question(String id, String ownerId, String roomId, String content, int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
-        this.id = id;
+    public Question(String ownerId, String roomId, String content, int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
         this.ownerId = ownerId;
         this.roomId = roomId;
         this.content = content;
@@ -44,6 +40,10 @@ public class Question {
         this.numberOfDownvotes = numberOfDownvotes;
         this.status = status;
         this.answer = answer;
+    }
+
+    public Question() {
+
     }
 
     public String getId() {
