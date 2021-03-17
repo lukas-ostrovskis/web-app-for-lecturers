@@ -1,16 +1,15 @@
 package nl.tudelft.oopp.demo.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+
     private String id;
 
     @Column(name = "name")
@@ -44,6 +43,7 @@ public class User {
         this.role = role;
         this.ip = ip;
     }
+
 
     public String getId() {
         return id;
