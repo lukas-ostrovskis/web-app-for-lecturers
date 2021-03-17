@@ -38,4 +38,14 @@ public class QuestionService {
         question.downvote();
         questionRepository.save(question);
     }
+
+    public void toggleQuestionStatus(String questionId) {
+        Question question = questionRepository.getOne(questionId);
+        if(question.isStatus()){
+            question.setStatusFalse();
+        }else{
+            question.setStatusTrue();
+        }
+        questionRepository.save(question);
+    }
 }

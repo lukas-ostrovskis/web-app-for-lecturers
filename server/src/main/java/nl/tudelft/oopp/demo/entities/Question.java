@@ -85,6 +85,12 @@ public class Question {
     public void downvote(){
         this.numberOfDownvotes++;
     }
+    public void setStatusFalse(){
+        this.status = false;
+    }
+    public void setStatusTrue(){
+        this.status = true;
+    }
 
     @Override
     public boolean equals(Object o) {

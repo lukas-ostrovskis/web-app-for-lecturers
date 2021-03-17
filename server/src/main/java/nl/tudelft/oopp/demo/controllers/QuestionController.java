@@ -16,6 +16,8 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+
+
     @GetMapping(value="/getAllByRoomId/{roomId}", produces = "application/json")
     public List<Question> getAllQuestionsByRoomId(@PathVariable String roomId) {
         return questionService.getAllQuestionByRoomId(roomId);
@@ -27,6 +29,17 @@ public class QuestionController {
         return questionService.getAllQuestionByOwnerId(ownerId);
     }
 
+    @GetMapping(value="/toggleStatus/{questionId}")
+    public String toggleQuestionStatus(@PathVariable String questionId){
+        try{
+            questionService.toggleQuestionStatus(questionId);
+        }catch (Exception e){
+            return "Something went wrong";
+        }
+        return "Question's status with id:" + questionId +  "was " +
+                "toggled successfully";
+    }
+
     @GetMapping(value="/upvote/{questionId}")
     public String upvoteQuestionById(@PathVariable String questionId){
         try{
@@ -34,7 +47,7 @@ public class QuestionController {
         }catch (Exception e){
             return "Something went wrong";
         }
-        return "Question " + questionId + " Upvoted Successfully";
+        return "Question with id:" + questionId + " Upvoted Successfully";
     }
     @GetMapping(value="/downvote/{questionId}")
     public String downvoteQuestionById(@PathVariable String questionId){
@@ -43,7 +56,7 @@ public class QuestionController {
         }catch (Exception e){
             return "Something went wrong";
         }
-        return "Question " + questionId + " Downvoted Successfully";
+        return "Question with id:" + questionId + " Downvoted Successfully";
     }
 
     @PostMapping (
