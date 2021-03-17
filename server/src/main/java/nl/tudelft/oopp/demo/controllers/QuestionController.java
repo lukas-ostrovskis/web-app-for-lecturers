@@ -26,4 +26,18 @@ public class QuestionController {
     public List<Question> getAllQuestionsByOwnerId(@PathVariable String ownerId) {
         return questionService.getAllQuestionByOwnerId(ownerId);
     }
+
+    @PostMapping (
+            value="/addQuestion",
+            consumes=MediaType.APPLICATION_JSON_VALUE
+    )
+    public String addQuestion(@RequestBody Question question) {
+        try{
+            questionService.addQuestion(question);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Question Added Successfully";
+    }
+
 }
