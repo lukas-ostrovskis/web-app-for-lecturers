@@ -11,20 +11,20 @@ import java.util.List;
  */
 public interface QuestionRepository extends JpaRepository<Question, String> {
     /**
-     * Find all by room id list.
+     * Find all questions by room ID
      *
      * @param roomId the room id
      * @return the list
      */
     @Query("SELECT q FROM Question q WHERE q.roomId = ?1")
-    List<Question> findAllByRoomId(String roomId);
+    List<Question> findAllQuestionsByRoomId(String roomId);
 
     /**
-     * Find all by owner id list.
+     * Find all questions by owner ID.
      *
      * @param ownerId the owner id
      * @return the list
      */
     @Query("SELECT q FROM Question q WHERE q.ownerId = ?1")
-    List<Question> findAllByOwnerId(String ownerId);
+    List<Question> findAllQuestionsByOwnerId(String ownerId);
 }

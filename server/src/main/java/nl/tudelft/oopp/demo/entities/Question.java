@@ -95,7 +95,7 @@ public class Question {
     }
 
     /**
-     * Gets id.
+     * Gets a question id.
      *
      * @return the id
      */
@@ -104,7 +104,7 @@ public class Question {
     }
 
     /**
-     * Gets owner id.
+     * Gets question's owner id.
      *
      * @return the owner id
      */
@@ -113,7 +113,7 @@ public class Question {
     }
 
     /**
-     * Gets room id.
+     * Gets question's room id.
      *
      * @return the room id
      */
@@ -122,7 +122,7 @@ public class Question {
     }
 
     /**
-     * Gets content.
+     * Gets question's content.
      *
      * @return the content
      */
@@ -131,7 +131,7 @@ public class Question {
     }
 
     /**
-     * Gets number of upvotes.
+     * Gets question's number of upvotes.
      *
      * @return the number of upvotes
      */
@@ -140,7 +140,7 @@ public class Question {
     }
 
     /**
-     * Gets number of downvotes.
+     * Gets question's number of downvotes.
      *
      * @return the number of downvotes
      */
@@ -158,7 +158,7 @@ public class Question {
     }
 
     /**
-     * Gets answer.
+     * Gets question's answer.
      *
      * @return the answer
      */
@@ -167,31 +167,45 @@ public class Question {
     }
 
     /**
-     * Upvote.
+     * Upvote question.
      */
     public void upvote() {
         this.numberOfUpvotes++;
     }
 
     /**
-     * Downvote.
+     * Downvote question.
      */
     public void downvote() {
         this.numberOfDownvotes++;
     }
 
     /**
-     * Sets status false.
+     * Sets question status false.
      */
     public void setStatusFalse() {
         this.status = false;
     }
 
     /**
-     * Sets status true.
+     * Sets question status true.
      */
     public void setStatusTrue() {
         this.status = true;
+    }
+
+    /**
+     * @return the creation timestamp
+     */
+    public Instant getCreationTimestamp() {
+        return creationTimestamp;
+    }
+
+    /**
+     * @param creationTimestamp
+     */
+    public void setCreationTimestamp(Instant creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
 
     @Override
@@ -208,5 +222,4 @@ public class Question {
                 content.equals(question.content) &&
                 answer.equals(question.answer);
     }
-
 }

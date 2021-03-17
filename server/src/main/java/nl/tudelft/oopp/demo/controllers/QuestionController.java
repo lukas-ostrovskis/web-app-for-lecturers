@@ -25,7 +25,7 @@ public class QuestionController {
     }
 
     /**
-     * Gets all questions by room id.
+     * GET Endpoint to retrieve all questions by room id.
      *
      * @param roomId the room id
      * @return the all questions by room id
@@ -37,7 +37,7 @@ public class QuestionController {
     }
 
     /**
-     * Gets all questions by owner id.
+     * GET Endpoint to retrieve questions by owner id.
      *
      * @param ownerId the owner id
      * @return the all questions by owner id
@@ -49,12 +49,13 @@ public class QuestionController {
     }
 
     /**
-     * Toggle question status string.
-     *
+     * POST Endpoint to toggle question status.
+     * True - Answered
+     * False - Unanswered
      * @param questionId the question id
      * @return the string
      */
-    @GetMapping(value = "/toggleStatus/{questionId}")
+    @PostMapping(value = "/toggleStatus/{questionId}")
     public String toggleQuestionStatus(@PathVariable String questionId) {
         try {
             questionService.toggleQuestionStatus(questionId);
@@ -66,12 +67,12 @@ public class QuestionController {
     }
 
     /**
-     * Upvote question by id string.
+     * POST Endpoint to upvote question by id string.
      *
      * @param questionId the question id
      * @return the string
      */
-    @GetMapping(value = "/upvote/{questionId}")
+    @PostMapping(value = "/upvote/{questionId}")
     public String upvoteQuestionById(@PathVariable String questionId) {
         try {
             questionService.upvoteQuestionById(questionId);
@@ -82,12 +83,12 @@ public class QuestionController {
     }
 
     /**
-     * Downvote question by id string.
+     * POST Endpoint to downvote question by id string.
      *
      * @param questionId the question id
      * @return the string
      */
-    @GetMapping(value = "/downvote/{questionId}")
+    @PostMapping(value = "/downvote/{questionId}")
     public String downvoteQuestionById(@PathVariable String questionId) {
         try {
             questionService.downvoteQuestionById(questionId);
@@ -98,12 +99,12 @@ public class QuestionController {
     }
 
     /**
-     * Delete question by id string.
+     * POST Endpoint to delete question from the database by id string.
      *
      * @param questionId the question id
      * @return the string
      */
-    @GetMapping(value = "/delete/{questionId}")
+    @PostMapping(value = "/delete/{questionId}")
     public String deleteQuestionById(@PathVariable String questionId) {
         try {
             questionService.deleteQuestion(questionId);
@@ -114,7 +115,7 @@ public class QuestionController {
     }
 
     /**
-     * Add question string.
+     * POST Endpoint Add question to the database.
      *
      * @param question the question
      * @return the string
@@ -131,6 +132,4 @@ public class QuestionController {
         }
         return "Question Added Successfully";
     }
-
-
 }

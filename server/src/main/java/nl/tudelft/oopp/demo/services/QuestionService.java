@@ -40,7 +40,7 @@ public class QuestionService {
      * @return the all question by room id
      */
     public List<Question> getAllQuestionByRoomId(String roomId) {
-        return questionRepository.findAllByRoomId(roomId);
+        return questionRepository.findAllQuestionsByRoomId(roomId);
     }
 
     /**
@@ -50,7 +50,7 @@ public class QuestionService {
      * @return the all question by owner id
      */
     public List<Question> getAllQuestionByOwnerId(String ownerId) {
-        return questionRepository.findAllByOwnerId(ownerId);
+        return questionRepository.findAllQuestionsByOwnerId(ownerId);
     }
 
     /**
