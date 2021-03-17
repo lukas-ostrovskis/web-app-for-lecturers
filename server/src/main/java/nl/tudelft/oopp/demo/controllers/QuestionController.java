@@ -7,81 +7,130 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * The type Question controller.
+ */
 @RequestMapping("/question")
 @RestController
 public class QuestionController {
     private QuestionService questionService;
 
+    /**
+     * Instantiates a new Question controller.
+     *
+     * @param questionService the question service
+     */
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
 
-    @GetMapping(value="/getAllByRoomId/{roomId}", produces = "application" +
+    /**
+     * Gets all questions by room id.
+     *
+     * @param roomId the room id
+     * @return the all questions by room id
+     */
+    @GetMapping(value = "/getAllByRoomId/{roomId}", produces = "application" +
             "/json")
     public List<Question> getAllQuestionsByRoomId(@PathVariable String roomId) {
         return questionService.getAllQuestionByRoomId(roomId);
     }
 
-    @GetMapping(value="/getAllByOwnerId/{ownerId}", produces = "application" +
+    /**
+     * Gets all questions by owner id.
+     *
+     * @param ownerId the owner id
+     * @return the all questions by owner id
+     */
+    @GetMapping(value = "/getAllByOwnerId/{ownerId}", produces = "application" +
             "/json")
     public List<Question> getAllQuestionsByOwnerId(@PathVariable String ownerId) {
         return questionService.getAllQuestionByOwnerId(ownerId);
     }
 
-    @GetMapping(value="/toggleStatus/{questionId}")
-    public String toggleQuestionStatus(@PathVariable String questionId){
-        try{
+    /**
+     * Toggle question status string.
+     *
+     * @param questionId the question id
+     * @return the string
+     */
+    @GetMapping(value = "/toggleStatus/{questionId}")
+    public String toggleQuestionStatus(@PathVariable String questionId) {
+        try {
             questionService.toggleQuestionStatus(questionId);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Something went wrong";
         }
-        return "Question's status with id:" + questionId +  "was " +
+        return "Question's status with id:" + questionId + "was " +
                 "toggled successfully";
     }
 
-    @GetMapping(value="/upvote/{questionId}")
-    public String upvoteQuestionById(@PathVariable String questionId){
-        try{
+    /**
+     * Upvote question by id string.
+     *
+     * @param questionId the question id
+     * @return the string
+     */
+    @GetMapping(value = "/upvote/{questionId}")
+    public String upvoteQuestionById(@PathVariable String questionId) {
+        try {
             questionService.upvoteQuestionById(questionId);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Something went wrong";
         }
         return "Question with id:" + questionId + " Upvoted Successfully";
     }
-    @GetMapping(value="/downvote/{questionId}")
-    public String downvoteQuestionById(@PathVariable String questionId){
-        try{
+
+    /**
+     * Downvote question by id string.
+     *
+     * @param questionId the question id
+     * @return the string
+     */
+    @GetMapping(value = "/downvote/{questionId}")
+    public String downvoteQuestionById(@PathVariable String questionId) {
+        try {
             questionService.downvoteQuestionById(questionId);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Something went wrong";
         }
         return "Question with id:" + questionId + " Downvoted Successfully";
     }
 
-    @GetMapping(value="/delete/{questionId}")
-    public String deleteQuestionById(@PathVariable String questionId){
-        try{
+    /**
+     * Delete question by id string.
+     *
+     * @param questionId the question id
+     * @return the string
+     */
+    @GetMapping(value = "/delete/{questionId}")
+    public String deleteQuestionById(@PathVariable String questionId) {
+        try {
             questionService.deleteQuestion(questionId);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Something went wrong";
         }
         return "Question with id:" + questionId + " deleted Successfully";
     }
 
-    @PostMapping (
-            value="/addQuestion",
-            consumes=MediaType.APPLICATION_JSON_VALUE
+    /**
+     * Add question string.
+     *
+     * @param question the question
+     * @return the string
+     */
+    @PostMapping(
+            value = "/addQuestion",
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public String addQuestion(@RequestBody Question question) {
-        try{
+        try {
             questionService.addQuestion(question);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "Question Added Successfully";
     }
-
-
 
 
 }
