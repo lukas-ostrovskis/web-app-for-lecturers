@@ -48,4 +48,8 @@ public class QuestionService {
         }
         questionRepository.save(question);
     }
+
+    public void deleteQuestion(String questionId){
+        questionRepository.deleteById(questionId);
+    }
 }

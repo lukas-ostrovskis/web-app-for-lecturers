@@ -16,9 +16,8 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-
-
-    @GetMapping(value="/getAllByRoomId/{roomId}", produces = "application/json")
+    @GetMapping(value="/getAllByRoomId/{roomId}", produces = "application" +
+            "/json")
     public List<Question> getAllQuestionsByRoomId(@PathVariable String roomId) {
         return questionService.getAllQuestionByRoomId(roomId);
     }
@@ -57,6 +56,16 @@ public class QuestionController {
             return "Something went wrong";
         }
         return "Question with id:" + questionId + " Downvoted Successfully";
+    }
+
+    @GetMapping(value="/delete/{questionId}")
+    public String deleteQuestionById(@PathVariable String questionId){
+        try{
+            questionService.deleteQuestion(questionId);
+        }catch (Exception e){
+            return "Something went wrong";
+        }
+        return "Question with id:" + questionId + " deleted Successfully";
     }
 
     @PostMapping (
