@@ -121,7 +121,7 @@ public class QuestionController {
      * @return the string
      */
     @PostMapping(
-            value = "/addQuestion",
+            value = "/add",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public String addQuestion(@RequestBody Question question) {
