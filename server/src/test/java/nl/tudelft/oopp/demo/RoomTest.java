@@ -24,7 +24,7 @@ class RoomTest {
     @BeforeAll
     static void setUp() {
         String id = "ABC123";
-        room = new Room(id, ownerId, status, time, roomUsers);
+        room = new Room(id, ownerId, status, time);
     }
 
     @Test
@@ -40,7 +40,7 @@ class RoomTest {
     @Test
     void equalsNotTest() {
         String id2 = "BCD234";
-        Room room2 = new Room(id2, ownerId, status, time, roomUsers);
+        Room room2 = new Room(id2, ownerId, status, time);
 
         assertNotEquals(room2, room);
     }

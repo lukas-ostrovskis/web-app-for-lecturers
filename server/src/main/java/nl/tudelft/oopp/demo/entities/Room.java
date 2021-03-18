@@ -4,10 +4,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
-/**
- * The type Room.
- */
 @Entity
 @Table(name = "rooms")
 
@@ -23,21 +21,19 @@ public class Room {
     private boolean status;
 
     @Column(name = "time")
-    private int time;
+    private  int time;
 
     @ManyToMany
     private List<User> roomUsers;
 
     /**
      * Create a new Room instance.
-     *
-     * @param id        Unique identifier of the room.
-     * @param ownerId   The unique identifier of the owner of that room.
-     * @param status    Whether the room is online or not
-     * @param time      is how much time the room has been open
-     * @param roomUsers is the list of users in the room
+     * @param id Unique identifier of the room.
+     * @param ownerId The unique identifier of the owner of that room.
+     * @param status Whether the room is online or not
+     * @param time is how much time the room has been open
      */
-    public Room(String id, String ownerId, boolean status, int time, List<User> roomUsers) {
+    public Room(String id, String ownerId, boolean status, int time) {
         this.id = id;
         this.ownerId = ownerId;
         this.status = status;
@@ -45,56 +41,32 @@ public class Room {
         this.roomUsers = new ArrayList<User>();
     }
 
-    /**
-     * Instantiates a new Room.
-     */
     public Room() {
 
     }
 
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
     public String getId() {
         return id;
     }
 
-    /**
-     * Gets owner id.
-     *
-     * @return the owner id
-     */
     public String getOwnerId() {
         return ownerId;
     }
 
-    /**
-     * Is status boolean.
-     *
-     * @return the boolean
-     */
     public boolean isStatus() {
         return status;
     }
 
-    /**
-     * Gets time.
-     *
-     * @return the time
-     */
     public int getTime() {
         return time;
     }
 
-    /**
-     * Gets room users.
-     *
-     * @return the room users
-     */
     public List<User> getRoomUsers() {
         return roomUsers;
+    }
+
+    public void addUser(User user) {
+        roomUsers.add(user);
     }
 
     @Override
