@@ -49,4 +49,32 @@ public class RoomService {
         }
         else throw new IllegalStateException("Room doesn't exist");
     }
+
+    /**
+     * Deletes a room from the database.
+     * @param roomId - the id of the room to delete.
+     */
+    public void deleteRoom(String roomId) {
+        Optional<Room> roomById = roomRepository.findById(roomId);
+
+        if(roomById.isPresent()) {
+            roomRepository.delete(roomById.get());
+        }
+        else throw new IllegalStateException("Room doesn't exist");
+    }
+
+
+    /**
+     * Archives a room by changing its status to offline and updating the status on the database.
+     * @param roomId - the id of the room to archive.
+     */
+    public void archiveRoom(String roomId) {
+        Optional<Room> roomById = roomRepository.findById(roomId);
+
+        if(roomById.isPresent()) {
+            roomById.get().setStatus(false);
+            roomRepository.save(roomById.get());
+        }
+        else throw new IllegalStateException("Room doesn't exist");
+    }
 }
