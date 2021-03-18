@@ -31,7 +31,7 @@ public class RoomController {
      * Create a new room on the server and save it in a database.
      * @return roomId - the id of the created room.
      */
-    @GetMapping
+    @GetMapping("create")
     public String createRoom() {
         String roomId = Long.toString(id.nextLong(), 36);
 
