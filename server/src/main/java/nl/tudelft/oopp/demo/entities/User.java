@@ -4,8 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
 
+/**
+ * The type User.
+ */
 @Entity
 @Table(name = "users")
 public class User {
@@ -25,17 +27,21 @@ public class User {
     @Column(name = "ip")
     private String ip;
 
-    public User(){
+    /**
+     * Instantiates a new User.
+     */
+    public User() {
 
     }
+
     /**
      * Create a new User instance.
      *
-     * @param id Unique identifier as to be used in the database.
-     * @param name Actual name of the user.
+     * @param id    Unique identifier as to be used in the database.
+     * @param name  Actual name of the user.
      * @param email Email of the user.
-     * @param role Role of the user (lecturer, student, moderator).
-     * @param ip IP address of the user.
+     * @param role  Role of the user (lecturer, student, moderator).
+     * @param ip    IP address of the user.
      */
     public User(String id, String name, String email, String role, String ip) {
         this.id = id;
@@ -45,22 +51,47 @@ public class User {
         this.ip = ip;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Gets role.
+     *
+     * @return the role
+     */
     public String getRole() {
         return role;
     }
 
+    /**
+     * Gets ip.
+     *
+     * @return the ip
+     */
     public String getIp() {
         return ip;
     }

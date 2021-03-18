@@ -1,58 +1,63 @@
 package nl.tudelft.oopp.demo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import nl.tudelft.oopp.demo.entities.User;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 
 public class UserTest {
 
     private static User user;
     private static User user1;
-    private static String id;
-    private static String name;
-    private static String email;
-    private static String role;
-    private static String ip;
 
     @BeforeAll
-    static void init() {
-        id = "1234AB";
-        name = "John Doe";
-        email = "abc@gmail.com";
-        role = "lecturer";
-        ip = "123.456.678";
+    static void setUp() {
+        String id = "1234AB";
+        String name = "John Doe";
+        String email = "abc@gmail.com";
+        String role = "lecturer";
+        String ip = "123.456.678";
         user = new User(id, name, email, role, ip);
         user1 = new User(id, name, email, role, ip);
     }
 
 
     @Test
-    public void constructorTest(){
+    public void constructorTest() {
         assertNotNull(user);
     }
+
     @Test
-    public void getIDTest(){
+    public void getIdTest() {
         assertEquals("1234AB", user.getId());
     }
+
     @Test
-    public void getNameTest(){
+    public void getNameTest() {
         assertEquals("John Doe", user.getName());
     }
+
     @Test
-    public void getEmailTest(){
+    public void getEmailTest() {
         assertEquals("abc@gmail.com", user.getEmail());
     }
+
     @Test
-    public void getRoleTest(){
+    public void getRoleTest() {
         assertEquals("lecturer", user.getRole());
     }
+
     @Test
-    public void getIPTest(){
+    public void getIpTest() {
         assertEquals("123.456.678", user.getIp());
     }
 
     @Test
-    public void equalsTest(){
+    public void equalsTest() {
         assertTrue(user.equals(user1));
     }
 
