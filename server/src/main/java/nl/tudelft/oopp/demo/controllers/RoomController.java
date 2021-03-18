@@ -4,10 +4,7 @@ package nl.tudelft.oopp.demo.controllers;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
 
@@ -52,6 +49,25 @@ public class RoomController {
     public String joinRoom(@PathVariable("roomId") String roomId) {
         roomService.joinRoom(roomId);
         return "Joined successfully!";
+    }
+
+    /**
+     * Delete the room from the database.
+     * @param id - the id of the room.
+     */
+    @DeleteMapping("close")
+    public void deleteRoom(@RequestParam String id) {
+        roomService.deleteRoom(id);
+    }
+
+
+    /**
+     * Archive the room by changing its status to offline while keeping it on the database.
+     * @param id - the id of the room.
+     */
+    @PutMapping("archive")
+    public void archiveRoom(@RequestParam String id) {
+        roomService.archiveRoom(id);
     }
 
 }

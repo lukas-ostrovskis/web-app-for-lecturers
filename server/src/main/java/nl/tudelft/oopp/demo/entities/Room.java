@@ -69,6 +69,8 @@ public class Room {
         roomUsers.add(user);
     }
 
+    public void setStatus(boolean status) { this.status = status; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,4 +78,5 @@ public class Room {
         Room room = (Room) o;
         return status == room.status && time == room.time && Objects.equals(id, room.id) && Objects.equals(ownerId, room.ownerId) && Objects.equals(roomUsers, room.roomUsers);
     }
+
 }
