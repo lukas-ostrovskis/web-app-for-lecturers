@@ -1,70 +1,96 @@
 package nl.tudelft.oopp.demo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import nl.tudelft.oopp.demo.entities.Question;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 
 public class QuestionTest {
+    private static Question questionA;
+    private static Question questionB;
+    private static Question questionC;
 
-
-    Question question_a = new Question("1232asd", "41224as", "1212ads", "What is the time", 10, 3, false, "");
-    Question question_b = new Question("1232asd", "41224as", "1212ads", "What is the time", 10, 3, false, "");
-    Question question_c = new Question("123u0j", "n123n", "zma2m", "Is this going to be on the exam?", 15, 0, false, "");
-
+    @BeforeAll
+    static void setUp() {
+        questionA = new Question("1232asd",
+                "41224as",
+                "1212ads",
+                "What is the time",
+                10,
+                3,
+                false,
+                "");
+        questionB = new Question("1232asd",
+                "41224as",
+                "1212ads",
+                "What is the time",
+                10,
+                3,
+                false,
+                "");
+        questionC = new Question("123u0j",
+                "n123n",
+                "zma2m",
+                "Is this going to be on the exam?",
+                15,
+                0,
+                false,
+                "");
+    }
 
     @Test
     public void constructorTest() {
-        assertNotNull(question_a);
+        assertNotNull(questionA);
     }
 
     @Test
     public void idTest() {
-        assertEquals(question_a.getId(), question_b.getId());
+        assertEquals(questionA.getId(), questionB.getId());
     }
 
     @Test
     public void ownerIdTest() {
-        assertEquals(question_a.getOwnerId(), question_b.getOwnerId());
+        assertEquals(questionA.getOwnerId(), questionB.getOwnerId());
     }
 
     @Test
     public void roomIdTest() {
-        assertEquals(question_a.getRoomId(), question_b.getRoomId());
+        assertEquals(questionA.getRoomId(), questionB.getRoomId());
     }
 
     @Test
-    public void contentTest(){
-        assertEquals(question_a.getContent(), question_b.getContent());
+    public void contentTest() {
+        assertEquals(questionA.getContent(), questionB.getContent());
     }
 
     @Test
-    public void numberOfUpvotesTest()
-    {
-        assertEquals(question_a.getNumberOfUpvotes(), question_b.getNumberOfUpvotes());
+    public void numberOfUpvotesTest() {
+        assertEquals(questionA.getNumberOfUpvotes(), questionB.getNumberOfUpvotes());
     }
 
     @Test
-    public void numberOfDownvotesTest(){
-        assertEquals(question_a.getNumberOfDownvotes(), question_b.getNumberOfDownvotes());
+    public void numberOfDownvotesTest() {
+        assertEquals(questionA.getNumberOfDownvotes(), questionB.getNumberOfDownvotes());
     }
 
     @Test
-    public void statusTest()
-    {
-        assertEquals(question_a.isStatus(), question_b.isStatus());
+    public void statusTest() {
+        assertEquals(questionA.isStatus(), questionB.isStatus());
     }
 
     @Test
-    public void answerTest()
-    {
-        assertEquals(question_a.getAnswer(), question_b.getAnswer());
+    public void answerTest() {
+        assertEquals(questionA.getAnswer(), questionB.getAnswer());
     }
 
     @Test
-    public void equalsTest()
-    {
-        assertEquals(question_a, question_b);
-        assertNotEquals(question_a, question_c);
+    public void equalsTest() {
+        assertEquals(questionA, questionB);
+        assertNotEquals(questionA, questionC);
     }
 
 

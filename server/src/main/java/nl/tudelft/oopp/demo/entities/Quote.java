@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * The type Quote.
+ */
 @Entity
 @Table(name = "quotes")
 public class Quote {
@@ -18,14 +21,17 @@ public class Quote {
     @Column(name = "author")
     private String author;
 
+    /**
+     * Instantiates a new Quote.
+     */
     public Quote() {
     }
 
     /**
      * Create a new Quote instance.
      *
-     * @param id Unique identifier as to be used in the database.
-     * @param quote Actual text of the quote.
+     * @param id     Unique identifier as to be used in the database.
+     * @param quote  Actual text of the quote.
      * @param author Name of the author of the quote.
      */
     public Quote(long id, String quote, String author) {
@@ -34,10 +40,20 @@ public class Quote {
         this.author = author;
     }
 
+    /**
+     * Gets quote.
+     *
+     * @return the quote
+     */
     public String getQuote() {
         return quote;
     }
 
+    /**
+     * Gets author.
+     *
+     * @return the author
+     */
     public String getAuthor() {
         return author;
     }

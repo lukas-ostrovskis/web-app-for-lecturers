@@ -1,42 +1,25 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.data;
 
-import javax.persistence.*;
-import java.util.Objects;
-
-@Entity
-@Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private String id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "role")
     private String role;
-
-    @Column(name = "ip")
     private String ip;
 
-    /**
-     * Instantiates a new User.
-     */
-    public User() {
+    public User(){
 
     }
+
     /**
      * Create a new User instance.
      *
-     * @param id    Unique identifier as to be used in the database.
-     * @param name  Actual name of the user.
+     * @param id Unique identifier as to be used in the database.
+     * @param name Actual name of the user.
      * @param email Email of the user.
-     * @param role  Role of the user (lecturer, student, moderator).
-     * @param ip    IP address of the user.
+     * @param role Role of the user (lecturer, student, moderator).
+     * @param ip IP address of the user.
      */
     public User(String id, String name, String email, String role, String ip) {
         this.id = id;
@@ -46,16 +29,6 @@ public class User {
         this.ip = ip;
     }
 
-    public User(String name, String email, String role, String ip) {
-        this.name = name;
-        this.email = email;
-        this.role = role;
-        this.ip = ip;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getId() {
         return id;
