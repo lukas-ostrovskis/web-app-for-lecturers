@@ -24,17 +24,20 @@ public class User {
     @Column(name = "ip")
     private String ip;
 
-    public User(){
+    /**
+     * Instantiates a new User.
+     */
+    public User() {
 
     }
     /**
      * Create a new User instance.
      *
-     * @param id Unique identifier as to be used in the database.
-     * @param name Actual name of the user.
+     * @param id    Unique identifier as to be used in the database.
+     * @param name  Actual name of the user.
      * @param email Email of the user.
-     * @param role Role of the user (lecturer, student, moderator).
-     * @param ip IP address of the user.
+     * @param role  Role of the user (lecturer, student, moderator).
+     * @param ip    IP address of the user.
      */
 
     public User(String id, String name, String email, String role, String ip) {

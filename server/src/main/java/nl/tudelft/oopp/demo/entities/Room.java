@@ -32,10 +32,8 @@ public class Room {
      * @param ownerId The unique identifier of the owner of that room.
      * @param status Whether the room is online or not
      * @param time is how much time the room has been open
-     * @param roomUsers is the list of users in the room
-
      */
-    public Room(String id, String ownerId, boolean status, int time, List<User> roomUsers) {
+    public Room(String id, String ownerId, boolean status, int time) {
         this.id = id;
         this.ownerId = ownerId;
         this.status = status;
@@ -67,6 +65,12 @@ public class Room {
         return roomUsers;
     }
 
+    public void addUser(User user) {
+        roomUsers.add(user);
+    }
+
+    public void setStatus(boolean status) { this.status = status; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,4 +78,5 @@ public class Room {
         Room room = (Room) o;
         return status == room.status && time == room.time && Objects.equals(id, room.id) && Objects.equals(ownerId, room.ownerId) && Objects.equals(roomUsers, room.roomUsers);
     }
+
 }
