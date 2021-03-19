@@ -90,6 +90,11 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
+    public Question getOneQuestionById(String questionId){
+        return questionRepository.findById(questionId).get();
+
+    }
+
     /**
      * Delete question.
      *
@@ -97,5 +102,9 @@ public class QuestionService {
      */
     public void deleteQuestion(String questionId) {
         questionRepository.deleteById(questionId);
+    }
+
+    public void deleteAllQuestionByRoomId(String roomId){
+        questionRepository.removeByRoomId(roomId);
     }
 }

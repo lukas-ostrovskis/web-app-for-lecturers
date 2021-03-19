@@ -24,6 +24,19 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+
+    /**
+     * GET Endpoint to retrieve one questions by it's id.
+     *
+     * @param questionId the question ID
+     * @return question by with specified ID
+     */
+    @GetMapping(value = "/getQuestionById/{questionId}", produces = "application" +
+        "/json")
+    public Question getOneQuestionById(@PathVariable String questionId) {
+        return questionService.getOneQuestionById(questionId);
+    }
+
     /**
      * GET Endpoint to retrieve all questions by room id.
      *
@@ -112,6 +125,22 @@ public class QuestionController {
             return "Something went wrong";
         }
         return "Question with id:" + questionId + " deleted Successfully";
+    }
+
+    /**
+     * POST Endpoint to delete all question from the room by it's ID
+     * @param roomId ID of the room
+     * @return
+     */
+    @PostMapping(value = "/deleteAllByRoomId/{roomId}")
+    public String deleteAllQuestionByRoomId(@PathVariable String roomId) {
+        try {
+            questionService.deleteAllQuestionByRoomId(roomId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Something went wrong";
+        }
+        return "All Question from room with id: " + roomId + " were deleted Successfully";
     }
 
     /**
