@@ -25,7 +25,8 @@ public class DatabaseLoader {
     public DatabaseLoader(QuestionService questionService, UserRepository userRepository) {
         this.questionService = questionService;
         this.userRepository = userRepository;
-        loadQuestions();
+//        loadQuestions();
+//        loadUsers();
     }
 
     /**
@@ -33,40 +34,40 @@ public class DatabaseLoader {
      */
     public void loadQuestions() {
         Question q1 = new Question("1",
-            "1",
-            "First q",
-            3,
-            3,
-            true,
-            "yes");
+                "1",
+                "First q",
+                3,
+                3,
+                true,
+                "yes");
         Question q2 = new Question("1",
-            "1",
-            "Second q",
-            5,
-            5,
-            false,
-            "yes smth");
+                "1",
+                "Second q",
+                5,
+                5,
+                false,
+                "yes smth");
         Question q3 = new Question("2",
-            "2",
-            "Third q",
-            6,
-            3,
-            false,
-            "my man");
+                "2",
+                "Third q",
+                6,
+                3,
+                false,
+                "my man");
         Question q4 = new Question("3",
-            "3",
-            "Forth q",
-            7,
-            7,
-            true,
-            "ma boi");
+                "3",
+                "Forth q",
+                7,
+                7,
+                true,
+                "ma boi");
         Question q5 = new Question("4",
-            "4",
-            "Fifth q",
-            8,
-            1,
-            true,
-            "sup girl??/");
+                "4",
+                "Fifth q",
+                8,
+                1,
+                true,
+                "sup girl??/");
         questionService.addQuestion(q1);
         questionService.addQuestion(q2);
         questionService.addQuestion(q3);
