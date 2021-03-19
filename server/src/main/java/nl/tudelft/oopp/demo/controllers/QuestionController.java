@@ -75,7 +75,7 @@ public class QuestionController {
         } catch (Exception e) {
             return "Something went wrong";
         }
-        return "Question's status with id:" + questionId + "was " +
+        return "Question's status with id: " + questionId + " was " +
                 "toggled successfully";
     }
 
@@ -85,14 +85,14 @@ public class QuestionController {
      * @param questionId the question id
      * @return the string
      */
-    @PostMapping(value = "/upvote/{questionId}")
-    public String upvoteQuestionById(@PathVariable String questionId) {
+    @GetMapping (value = "/upvote/{questionId}")
+    public Question upvoteQuestionById(@PathVariable String questionId) {
         try {
-            questionService.upvoteQuestionById(questionId);
+            return questionService.upvoteQuestionById(questionId);
         } catch (Exception e) {
-            return "Something went wrong";
+            e.printStackTrace();
         }
-        return "Question with id:" + questionId + " Upvoted Successfully";
+        return null;
     }
 
     /**
@@ -101,14 +101,14 @@ public class QuestionController {
      * @param questionId the question id
      * @return the string
      */
-    @PostMapping(value = "/downvote/{questionId}")
-    public String downvoteQuestionById(@PathVariable String questionId) {
+    @GetMapping(value = "/downvote/{questionId}")
+    public Question downvoteQuestionById(@PathVariable String questionId) {
         try {
-            questionService.downvoteQuestionById(questionId);
+            return questionService.downvoteQuestionById(questionId);
         } catch (Exception e) {
-            return "Something went wrong";
+            e.printStackTrace();
         }
-        return "Question with id:" + questionId + " Downvoted Successfully";
+        return null;
     }
 
     /**
@@ -124,7 +124,7 @@ public class QuestionController {
         } catch (Exception e) {
             return "Something went wrong";
         }
-        return "Question with id:" + questionId + " deleted Successfully";
+        return "Question with id: " + questionId + " deleted Successfully";
     }
 
     /**
