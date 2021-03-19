@@ -20,7 +20,7 @@ public class DatabaseLoader {
     @Autowired
     public DatabaseLoader(QuestionService questionService) {
         this.questionService = questionService;
-        loadQuestions();
+//        loadQuestions();
     }
 
     /**
