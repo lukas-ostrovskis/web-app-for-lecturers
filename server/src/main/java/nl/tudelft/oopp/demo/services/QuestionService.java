@@ -83,14 +83,15 @@ public class QuestionService {
      *
      * @param questionId the question id
      */
-    public void toggleQuestionStatus(String questionId) {
-        Question question = questionRepository.getOne(questionId);
+    public Question toggleQuestionStatus(String questionId) {
+        Question question = questionRepository.findById(questionId).get();
         if (question.isStatus()) {
             question.setStatusFalse();
         } else {
             question.setStatusTrue();
         }
         questionRepository.save(question);
+        return question;
     }
 
     public Question getOneQuestionById(String questionId){

@@ -62,28 +62,27 @@ public class QuestionController {
     }
 
     /**
-     * POST Endpoint to toggle question status.
+     * GET Endpoint to toggle question status.
      * True - Answered
      * False - Unanswered
      * @param questionId the question id
-     * @return the string
+     * @return the instance of the Question entity with toggled status in json format
      */
-    @PostMapping(value = "/toggleStatus/{questionId}")
-    public String toggleQuestionStatus(@PathVariable String questionId) {
+    @GetMapping(value = "/toggleStatus/{questionId}")
+    public Question toggleQuestionStatus(@PathVariable String questionId) {
         try {
-            questionService.toggleQuestionStatus(questionId);
+            return questionService.toggleQuestionStatus(questionId);
         } catch (Exception e) {
-            return "Something went wrong";
+            e.printStackTrace();
         }
-        return "Question's status with id: " + questionId + " was " +
-                "toggled successfully";
+        return null;
     }
 
     /**
-     * POST Endpoint to upvote question by id string.
+     * GET Endpoint to upvote question by id string.
      *
      * @param questionId the question id
-     * @return the string
+     * @return instance of the upvoted Question entity in json format
      */
     @GetMapping (value = "/upvote/{questionId}")
     public Question upvoteQuestionById(@PathVariable String questionId) {
@@ -96,10 +95,10 @@ public class QuestionController {
     }
 
     /**
-     * POST Endpoint to downvote question by id string.
+     * GET Endpoint to downvote question by id string.
      *
      * @param questionId the question id
-     * @return the string
+     * @return instance of the downvoted Question entity in json format
      */
     @GetMapping(value = "/downvote/{questionId}")
     public Question downvoteQuestionById(@PathVariable String questionId) {
