@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import nl.tudelft.oopp.app.views.MainView;
+//import nl.tudelft.oopp.app.views.MainView;
 
 public class RoomViewController {
 
@@ -23,6 +23,6 @@ public class RoomViewController {
         /**
          * Load the menuScene into the primaryStage of MainView.
          */
-        MainView.getPrimaryStage().setScene(menuScene);
+        //MainView.getPrimaryStage().setScene(menuScene);
     }
 }
