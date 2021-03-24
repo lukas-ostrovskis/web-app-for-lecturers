@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.services;
 
+import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,11 @@ public class QuestionService {
      *
      * @param questionId the question id
      */
-    public void upvoteQuestionById(String questionId) {
-        Question question = questionRepository.getOne(questionId);
+    public Question upvoteQuestionById(String questionId) {
+        Question question = questionRepository.findById(questionId).get();
         question.upvote();
         questionRepository.save(question);
+        return question;
     }
 
     /**
@@ -69,10 +71,11 @@ public class QuestionService {
      *
      * @param questionId the question id
      */
-    public void downvoteQuestionById(String questionId) {
-        Question question = questionRepository.getOne(questionId);
+    public Question downvoteQuestionById(String questionId) {
+        Question question = questionRepository.findById(questionId).get();
         question.downvote();
         questionRepository.save(question);
+        return question;
     }
 
     /**
@@ -80,14 +83,20 @@ public class QuestionService {
      *
      * @param questionId the question id
      */
-    public void toggleQuestionStatus(String questionId) {
-        Question question = questionRepository.getOne(questionId);
+    public Question toggleQuestionStatus(String questionId) {
+        Question question = questionRepository.findById(questionId).get();
         if (question.isStatus()) {
             question.setStatusFalse();
         } else {
             question.setStatusTrue();
         }
         questionRepository.save(question);
+        return question;
+    }
+
+    public Question getOneQuestionById(String questionId){
+        return questionRepository.findById(questionId).get();
+
     }
 
     /**
@@ -97,5 +106,9 @@ public class QuestionService {
      */
     public void deleteQuestion(String questionId) {
         questionRepository.deleteById(questionId);
+    }
+
+    public void deleteAllQuestionByRoomId(String roomId){
+        questionRepository.removeByRoomId(roomId);
     }
 }

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.data;
+package nl.tudelft.oopp.app.data;
 
 public class User {
 

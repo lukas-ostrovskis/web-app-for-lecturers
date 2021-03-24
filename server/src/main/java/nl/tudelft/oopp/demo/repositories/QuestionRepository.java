@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.repositories;
 
+import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * The interface Question repository.
  */
+@Transactional
 public interface QuestionRepository extends JpaRepository<Question, String> {
     /**
      * Find all questions by room ID
@@ -27,4 +29,8 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
      */
     @Query("SELECT q FROM Question q WHERE q.ownerId = ?1")
     List<Question> findAllQuestionsByOwnerId(String ownerId);
+
+//    @Query("DELETE FROM Question q WHERE q.roomId = ?1")
+//    List<Question> deleteAllQuestionByRoomId(String roomId);
+    List<Question> removeByRoomId(String roomId);
 }

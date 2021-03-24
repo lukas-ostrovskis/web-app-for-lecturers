@@ -1,8 +1,8 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import nl.tudelft.oopp.demo.data.User;
+import nl.tudelft.oopp.app.data.User;
 
 import java.net.URI;
 import java.net.http.HttpClient;

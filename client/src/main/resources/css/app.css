@@ -1,0 +1,36 @@
+@font-face {
+    src: url('../font/RobotoSlab-VariableFont_wght.ttf');
+}
+
+.root {
+    -fx-font-family: 'Roboto Slab';
+    -fx-font-size: 14;
+}
+
+.button {
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button:hover {
+    -fx-opacity: 0.8;
+}
+
+.label {
+    -fx-text-fill: #FFFFFF;
+}
+
+#opaqueBackgroundVBox {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+#animatedGradientVBox {
+    -gradient-variable: #045AAF;
+    -tudelft-blue: #00A6D6;
+    -fx-background-color: linear-gradient(to bottom right, -tudelft-blue, -gradient-variable);
+    -fx-background-image: url('../img/TUDelftFlameOpaque.png');
+    -fx-background-repeat: no-repeat;
+}

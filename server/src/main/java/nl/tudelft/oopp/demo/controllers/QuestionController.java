@@ -24,6 +24,19 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+
+    /**
+     * GET Endpoint to retrieve one questions by it's id.
+     *
+     * @param questionId the question ID
+     * @return question by with specified ID
+     */
+    @GetMapping(value = "/getQuestionById/{questionId}", produces = "application" +
+        "/json")
+    public Question getOneQuestionById(@PathVariable String questionId) {
+        return questionService.getOneQuestionById(questionId);
+    }
+
     /**
      * GET Endpoint to retrieve all questions by room id.
      *
@@ -49,53 +62,52 @@ public class QuestionController {
     }
 
     /**
-     * POST Endpoint to toggle question status.
+     * GET Endpoint to toggle question status.
      * True - Answered
      * False - Unanswered
      * @param questionId the question id
-     * @return the string
+     * @return the instance of the Question entity with toggled status in json format
      */
-    @PostMapping(value = "/toggleStatus/{questionId}")
-    public String toggleQuestionStatus(@PathVariable String questionId) {
+    @GetMapping(value = "/toggleStatus/{questionId}")
+    public Question toggleQuestionStatus(@PathVariable String questionId) {
         try {
-            questionService.toggleQuestionStatus(questionId);
+            return questionService.toggleQuestionStatus(questionId);
         } catch (Exception e) {
-            return "Something went wrong";
+            e.printStackTrace();
         }
-        return "Question's status with id:" + questionId + "was " +
-                "toggled successfully";
+        return null;
     }
 
     /**
-     * POST Endpoint to upvote question by id string.
+     * GET Endpoint to upvote question by id string.
      *
      * @param questionId the question id
-     * @return the string
+     * @return instance of the upvoted Question entity in json format
      */
-    @PostMapping(value = "/upvote/{questionId}")
-    public String upvoteQuestionById(@PathVariable String questionId) {
+    @GetMapping (value = "/upvote/{questionId}")
+    public Question upvoteQuestionById(@PathVariable String questionId) {
         try {
-            questionService.upvoteQuestionById(questionId);
+            return questionService.upvoteQuestionById(questionId);
         } catch (Exception e) {
-            return "Something went wrong";
+            e.printStackTrace();
         }
-        return "Question with id:" + questionId + " Upvoted Successfully";
+        return null;
     }
 
     /**
-     * POST Endpoint to downvote question by id string.
+     * GET Endpoint to downvote question by id string.
      *
      * @param questionId the question id
-     * @return the string
+     * @return instance of the downvoted Question entity in json format
      */
-    @PostMapping(value = "/downvote/{questionId}")
-    public String downvoteQuestionById(@PathVariable String questionId) {
+    @GetMapping(value = "/downvote/{questionId}")
+    public Question downvoteQuestionById(@PathVariable String questionId) {
         try {
-            questionService.downvoteQuestionById(questionId);
+            return questionService.downvoteQuestionById(questionId);
         } catch (Exception e) {
-            return "Something went wrong";
+            e.printStackTrace();
         }
-        return "Question with id:" + questionId + " Downvoted Successfully";
+        return null;
     }
 
     /**
@@ -111,7 +123,23 @@ public class QuestionController {
         } catch (Exception e) {
             return "Something went wrong";
         }
-        return "Question with id:" + questionId + " deleted Successfully";
+        return "Question with id: " + questionId + " deleted Successfully";
+    }
+
+    /**
+     * POST Endpoint to delete all question from the room by it's ID
+     * @param roomId ID of the room
+     * @return
+     */
+    @PostMapping(value = "/deleteAllByRoomId/{roomId}")
+    public String deleteAllQuestionByRoomId(@PathVariable String roomId) {
+        try {
+            questionService.deleteAllQuestionByRoomId(roomId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Something went wrong";
+        }
+        return "All Question from room with id: " + roomId + " were deleted Successfully";
     }
 
     /**
@@ -121,7 +149,7 @@ public class QuestionController {
      * @return the string
      */
     @PostMapping(
-            value = "/addQuestion",
+            value = "/add",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public String addQuestion(@RequestBody Question question) {
