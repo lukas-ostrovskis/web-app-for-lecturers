@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
 
     public List<String> passwords = new ArrayList<String>(Arrays.asList("12345", "0000"));
+    public List<String> banlist = new ArrayList<String>();
+
     @Autowired
     private UserRepository repository;
 

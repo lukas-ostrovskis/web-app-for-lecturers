@@ -21,7 +21,7 @@ public class UserSceneController {
     private TextField password;
 
     /**
-     * Handles clicking the button.
+     * Handles clicking the log inbutton.
      */
     public void buttonClicked() {
         List<User> result = ServerCommunication.findUsers(searchOrAdd.getText(), password.getText());
@@ -30,4 +30,5 @@ public class UserSceneController {
         userList.getItems().addAll(result);
 
     }
+    
 }
