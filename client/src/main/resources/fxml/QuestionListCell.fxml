@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="90.0" prefWidth="479.0" type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <graphic>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="600.0">
+         <children>
+            <VBox maxWidth="1.7976931348623157E308" prefHeight="250.0" prefWidth="500.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="questionText" layoutX="14.0" layoutY="67.0" maxWidth="1.7976931348623157E308" style="-fx-wrap-text: true;" text="Question text you know the question itself. Smth like &quot;is it going to be on the midterm?" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="150.0" prefWidth="100.0">
+               <children>
+                  <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="153.0">
+                     <children>
+                        <Button fx:id="upvoteBtn" layoutX="35.0" layoutY="29.0" mnemonicParsing="false" text="^" />
+                        <Label fx:id="questionRating" layoutX="33.0" layoutY="67.0" text="Label" />
+                        <Button fx:id="downvoteBtn" layoutX="35.0" layoutY="98.0" mnemonicParsing="false" style="-fx-rotate: 180;" text="^" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </graphic>
+</fx:root>

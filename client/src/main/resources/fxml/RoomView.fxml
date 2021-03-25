@@ -76,8 +76,8 @@
     </HBox>
 
     <ListView   fx:id="questionsListView"
-                maxWidth="750"
-                maxHeight="200"/>
+                maxWidth="Infinity"
+                maxHeight="Infinity"/>
 
     <Rectangle  width="750"
                 height="200"

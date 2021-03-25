@@ -1,48 +1,19 @@
-package nl.tudelft.oopp.app.entities;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import org.hibernate.annotations.CreationTimestamp;
+package nl.tudelft.oopp.app.data;
 
 import java.time.Instant;
 
 /**
  * The type Question.
  */
-@Entity
-@Table(name = "questions")
 public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private String id;
-
-    @Column(name = "ownerId")
     private String ownerId;
-
-    @Column(name = "roomId")
     private String roomId;
-
-    @Column(name = "content")
     private String content;
-
-    @Column(name = "numberOfUpvotes")
     private int numberOfUpvotes;
-
-    @Column(name = "numberOfDownvotes")
     private int numberOfDownvotes;
-
-    @Column(name = "status")
     private boolean status;
-
-    @Column(name = "answer")
     private String answer;
-
-    @CreationTimestamp
     private Instant creationTimestamp;
 
 
@@ -219,12 +190,12 @@ public class Question {
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
         return numberOfUpvotes == question.numberOfUpvotes &&
-                numberOfDownvotes == question.numberOfDownvotes &&
-                status == question.status &&
+            numberOfDownvotes == question.numberOfDownvotes &&
+            status == question.status &&
 //                id.equals(question.id) &&
-                ownerId.equals(question.ownerId) &&
-                roomId.equals(question.roomId) &&
-                content.equals(question.content) &&
-                answer.equals(question.answer);
+            ownerId.equals(question.ownerId) &&
+            roomId.equals(question.roomId) &&
+            content.equals(question.content) &&
+            answer.equals(question.answer);
     }
 }
