@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.demo.data.Quiz;
 import nl.tudelft.oopp.demo.data.User;
 
 import java.net.URI;
@@ -64,5 +65,21 @@ public class ServerCommunication {
         }
 
         return gson.fromJson(response.body(), new TypeToken<List<User>>(){}.getType());
+    }
+
+    public static Quiz checkQuizOpen(String roomId) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quiz/getOpen/" + roomId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<Quiz>(){}.getType());
     }
 }
