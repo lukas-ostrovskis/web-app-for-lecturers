@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ListView?>
 
 <?import javafx.scene.shape.Rectangle?>
 <VBox   xmlns="http://javafx.com/javafx"
@@ -32,7 +33,7 @@
             </HBox>
 
             <Button text="End Lecture (for lecturers)"
-                    disable="true"/>
+                    onAction="#endLectureButtonPressed"/>
 
             <Label  text="You're a (student / moderator / lecturer)"/>
 
@@ -47,7 +48,7 @@
                     spacing="25">
 
                 <Button     text="Remove"
-                            disable="true"/>
+                            onAction="#removeQuestionButtonPressed"/>
 
                 <Button     text="Upvote"
                             disable="true"/>
@@ -66,7 +67,7 @@
                 <TextField  prefWidth="400"/>
 
                 <Button text="Ask Question"
-                        disable="true"/>
+                        onAction="#askQuestionButtonPressed"/>
 
             </HBox>
 
@@ -74,11 +75,9 @@
 
     </HBox>
 
-    <Rectangle  width="750"
-                height="200"
-                fill="snow"
-                arcWidth="10"
-                arcHeight="10"/>
+    <ListView   fx:id="questionsListView"
+                maxWidth="750"
+                maxHeight="200"/>
 
     <Rectangle  width="750"
                 height="200"

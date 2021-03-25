@@ -11,10 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -187,6 +184,7 @@ public class MainViewController {
          * Create a new scene and load the layout from RoomView.fxml into the scene graph.
          */
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/RoomView.fxml"));
+
         Scene roomScene = new Scene(root);
 
         /**
