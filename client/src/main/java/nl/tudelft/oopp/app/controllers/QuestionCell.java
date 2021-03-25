@@ -9,7 +9,7 @@ import nl.tudelft.oopp.app.data.Question;
 import java.awt.*;
 import java.io.IOException;
 
-public class QuestionController extends ListCell<Question> {
+public class QuestionCell extends ListCell<Question> {
 
     @FXML
     private Label titleLabel;
@@ -20,7 +20,7 @@ public class QuestionController extends ListCell<Question> {
     @FXML
     private Label descriptionLabel;
 
-    public QuestionController() {
+    public QuestionCell() {
         loadFXML();
     }
 

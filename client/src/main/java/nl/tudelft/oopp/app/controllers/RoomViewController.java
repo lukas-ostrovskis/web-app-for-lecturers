@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.views.MainView;
 
 public class RoomViewController {
@@ -12,6 +13,13 @@ public class RoomViewController {
     @FXML
     private ListView<String> questionsListView;
 
+    @FXML
+    private ListView<Question> questions;
+
+    @FXML
+    private void initialize() {
+        questions.setCellFactory(new QuestionCellFactory());
+    }
     /**
      * Handles pressing the leaveRoomButton
      * Loads the menu layout into the scene, passes that scene into the stage.
