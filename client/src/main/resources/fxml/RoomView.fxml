@@ -11,6 +11,8 @@
 <VBox   xmlns="http://javafx.com/javafx"
         xmlns:fx="http://javafx.com/fxml"
         fx:controller="nl.tudelft.oopp.app.controllers.RoomViewController"
+        stylesheets="@../css/app.css"
+        id="staticGradientVBox"
         alignment="CENTER"
         spacing="25">
         <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
@@ -73,11 +75,15 @@
     </HBox>
 
     <Rectangle  width="750"
-                height="300"
-                fill="coral"/>
+                height="200"
+                fill="snow"
+                arcWidth="10"
+                arcHeight="10"/>
 
     <Rectangle  width="750"
                 height="200"
-                fill="crimson"/>
+                fill="snow"
+                arcWidth="10"
+                arcHeight="10"/>
 
 </VBox>

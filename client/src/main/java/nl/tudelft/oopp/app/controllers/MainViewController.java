@@ -193,5 +193,10 @@ public class MainViewController {
          * Load the roomScene into the primaryStage of MainView.
          */
         MainView.getPrimaryStage().setScene(roomScene);
+
+        /**
+         * Recenters the stage on screen.
+         */
+        MainView.getPrimaryStage().centerOnScreen();
     }
 }

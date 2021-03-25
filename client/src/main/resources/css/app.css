@@ -34,3 +34,9 @@
     -fx-background-image: url('../img/TUDelftFlameOpaque.png');
     -fx-background-repeat: no-repeat;
 }
+
+#staticGradientVBox {
+    -tudelft-blue: #00A6D6;
+    -fx-background-color: linear-gradient(to bottom right, -tudelft-blue, #045AAF);
+    -fx-background-repeat: no-repeat;
+}

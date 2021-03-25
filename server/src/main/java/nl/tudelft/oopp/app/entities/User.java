@@ -56,10 +56,6 @@ public class User {
         this.role = role;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
     public String getId() {
         return id;
     }
