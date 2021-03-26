@@ -94,7 +94,7 @@ public class QuizController {
     }
 
     /**
-     * Closes a Quiz by its id.
+     * Toggles the open status of the Quiz.
      *
      * @param quizId the quiz id.
      */
