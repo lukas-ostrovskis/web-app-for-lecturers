@@ -8,6 +8,8 @@ import nl.tudelft.oopp.app.entities.Reply;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+
 
 public class ReplyTest {
 
@@ -17,6 +19,9 @@ public class ReplyTest {
     private static String ownerId;
     private static String questionId;
     private static String content;
+    private static int numberOfUpvotes;
+    private static int numberOfDownvotes;
+    private static Instant creationTimestamp = Instant.now();
 
     @BeforeAll
     static void setUp() {
@@ -24,8 +29,10 @@ public class ReplyTest {
         ownerId = "zwXK5JPGeaGeerSu";
         questionId = "BMjuKd75rp37unqu";
         content = "Lorem ipsum dolor sit amet";
-        reply1 = new Reply(id, ownerId, questionId, content);
-        reply2 = new Reply(id, ownerId, questionId, content);
+        numberOfUpvotes = 69;
+        numberOfDownvotes = 42;
+        reply1 = new Reply(id, ownerId, questionId, content, numberOfUpvotes, numberOfDownvotes, creationTimestamp);
+        reply2 = new Reply(id, ownerId, questionId, content, numberOfUpvotes, numberOfDownvotes, creationTimestamp);
     }
 
     @Test
@@ -51,6 +58,21 @@ public class ReplyTest {
     @Test
     public void getContentTest() {
         assertEquals("Lorem ipsum dolor sit amet", reply1.getContent());
+    }
+
+    @Test
+    public void getCreationTimestampTest() {
+        assertEquals(creationTimestamp, reply1.getCreationTimestamp());
+    }
+
+    @Test
+    public void getNumberOfUpvotesTest() {
+        assertEquals(69, reply1.getNumberOfUpvotes());
+    }
+
+    @Test
+    public void getNumberOfDownvotesTest() {
+        assertEquals(42, reply1.getNumberOfDownvotes());
     }
 
     @Test
