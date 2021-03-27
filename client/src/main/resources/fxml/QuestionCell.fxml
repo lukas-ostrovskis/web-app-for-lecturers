@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<fx:root prefHeight="90.0" prefWidth="479.0" type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <graphic>
-        <VBox>
+        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="600.0">
             <children>
-                <Label fx:id="titleLabel" />
-                <VBox>
+                <VBox maxWidth="1.7976931348623157E308" prefHeight="250.0" prefWidth="500.0">
                     <children>
-                        <Label fx:id="commentLabel" />
-                        <Label fx:id="descriptionLabel"/>
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="495.0">
+                     <children>
+                        <Label fx:id="user" text="User" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </AnchorPane>
+                        <AnchorPane prefHeight="84.0">
+                            <children>
+                                <Label fx:id="content" layoutX="14.0" layoutY="67.0" maxWidth="1.7976931348623157E308" style="-fx-wrap-text: true;" text="text" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="-20.0" />
+                            </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+                <VBox prefHeight="150.0" prefWidth="100.0">
+                    <children>
+                        <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="153.0">
+                            <children>
+                                <Button fx:id="upvote" layoutX="35.0" layoutY="29.0" mnemonicParsing="false" text="^" />
+                                <Label fx:id="rating" layoutX="33.0" layoutY="67.0" text="rating" />
+                                <Button fx:id="downvote" layoutX="35.0" layoutY="98.0" mnemonicParsing="false" style="-fx-rotate: 180;" text="^" />
+                            </children>
+                        </AnchorPane>
                     </children>
                 </VBox>
             </children>
-        </VBox>
+        </HBox>
     </graphic>
 </fx:root>

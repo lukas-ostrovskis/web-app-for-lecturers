@@ -1,29 +1,73 @@
 package nl.tudelft.oopp.app.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.views.MainView;
+import nl.tudelft.oopp.app.views.QuestionCell;
 
-public class RoomViewController {
+import java.net.URL;
+import java.sql.SQLOutput;
+import java.util.ResourceBundle;
+
+public class RoomViewController implements Initializable {
 
     @FXML
-    private ListView<String> questionsListView;
+    private ListView<Question> questionsListView;
 
-    @FXML
-    private ListView<Question> questions;
+    private ObservableList<Question> questions;
 
-    @FXML
-    private void initialize() {
-        questions.setCellFactory(new QuestionCellFactory());
+    public RoomViewController()  {
+
+        questions = FXCollections.observableArrayList();
+
+        questions.addAll(
+                new Question("1232asd",
+                        "41224as",
+                        "1212ads",
+                        "What is the time",
+                        10,
+                        3,
+                        false,
+                        ""),
+                new Question("1232asd",
+                        "41224as",
+                        "1212ads",
+                        "What is the time",
+                        10,
+                        3,
+                        false,
+                        ""),
+                new Question("123u0j",
+                        "n123n",
+                        "zma2m",
+                        "Is this going to be on the exam?",
+                        15,
+                        0,
+                        false,
+                        "")
+
+        );
+
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        questionsListView.setItems(questions);
+        questionsListView.setCellFactory(questionList -> new QuestionCell());
     }
     /**
      * Handles pressing the leaveRoomButton
      * Loads the menu layout into the scene, passes that scene into the stage.
      */
+
     @FXML
     public void leaveRoomButtonPressed() throws Exception {
         /**
@@ -64,11 +108,18 @@ public class RoomViewController {
 
     @FXML
     public void askQuestionButtonPressed() {
-        questionsListView.getItems().add("Test " + (int) (Math.random() * 100));
+//        questionsListView.getItems().add("Test " + (int) (Math.random() * 100));
     }
     @FXML
     public void removeQuestionButtonPressed() {
         int selectedIndex = questionsListView.getSelectionModel().getSelectedIndex();
         questionsListView.getItems().remove(selectedIndex);
     }
+
+    @FXML
+    public void loadQuestion() throws Exception {
+        questionsListView.setItems(questions);
+        questionsListView.setCellFactory(questionList -> new QuestionCell());
+    }
+
 }

@@ -1,24 +1,27 @@
-package nl.tudelft.oopp.app.controllers;
+package nl.tudelft.oopp.app.views;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.*;
 import nl.tudelft.oopp.app.data.Question;
-
-import java.awt.*;
 import java.io.IOException;
 
 public class QuestionCell extends ListCell<Question> {
 
     @FXML
-    private Label titleLabel;
+    private Label user;
 
     @FXML
-    private Label commentLabel;
+    private Label content;
 
     @FXML
-    private Label descriptionLabel;
+    private Label rating;
+
+    @FXML
+    private Button upvote;
+
+    @FXML
+    private Button downvote;
 
     public QuestionCell() {
         loadFXML();
@@ -26,7 +29,7 @@ public class QuestionCell extends ListCell<Question> {
 
     private void loadFXML() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("task_cell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/QuestionCell.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
@@ -45,10 +48,9 @@ public class QuestionCell extends ListCell<Question> {
             setContentDisplay(ContentDisplay.TEXT_ONLY);
         }
         else {
-            titleLabel.setText(q.getOwnerId());
-            commentLabel.setText(q.getAnswer());
-            descriptionLabel.setText(q.getContent());
-
+            content.setText(q.getContent());
+            user.setText(q.getOwnerId());
+            rating.setText(String.valueOf(q.getNumberOfUpvotes()-q.getNumberOfDownvotes()));
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
     }
