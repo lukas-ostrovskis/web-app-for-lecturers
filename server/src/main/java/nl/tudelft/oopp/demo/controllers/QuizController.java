@@ -88,9 +88,10 @@ public class QuizController {
      * @param roomId the room id (room to which the quiz belongs).
      * @param answer the answer chosen by the client.
      */
-    @PutMapping("answer")
-    public void quizUserAnswer(@RequestBody String roomId, @RequestBody char answer) {
-        quizService.quizUserAnswer(roomId, answer);
+    @PutMapping("answer/{roomId}")
+    public String quizUserAnswer(@PathVariable String roomId, @RequestBody String answer) {
+        quizService.quizUserAnswer(roomId, answer.charAt(0));
+        return "Answer recorded!";
     }
 
     /**
@@ -99,8 +100,31 @@ public class QuizController {
      * @param quizId the quiz id.
      */
     @PutMapping("toggleOpenStatus")
-    public void toggleQuizOpenStatus(@RequestBody String quizId) {
-        quizService.toggleQuizOpenStatus(quizId);
+    public Quiz toggleQuizOpenStatus(@RequestBody String quizId) {
+        return quizService.toggleQuizOpenStatus(quizId);
+    }
+
+    /**
+     * Toggles the answerDistributionReady status of the Quiz.
+     *
+     * @param quizId the quiz id.
+     */
+    @PutMapping("toggleAnswerDistributionReadyStatus")
+    public Quiz toggleAnswerDistributionReadyStatus(@RequestBody String quizId) {
+        return quizService.toggleAnswerDistributionReadyStatus(quizId);
+    }
+
+    /**
+     * Deletes a Quiz from server memory by its roomId.
+     *
+     * SHOULD BE CALLED WHEN THE ROOM IS GETTING CLOSED.
+     *
+     * @param roomId the room id.
+     * @return the Quiz that will be deleted.
+     */
+    @DeleteMapping("deleteFromServerMemory/{roomId}")
+    public Quiz deleteQuizFromServerMemory(@PathVariable String roomId) {
+        return quizService.deleteQuizFromServerMemory(roomId);
     }
 
     /**
@@ -109,8 +133,8 @@ public class QuizController {
      * @param roomId the id of the room to which the Quiz belongs.
      * @return answerDistribution if there's one ready, null otherwise.
      */
-    @GetMapping("answerDistribution")
-    public DeferredResult<Map<Character, Integer>> getQuizAnswerDistribution(@RequestBody String roomId) {
+    @GetMapping("answerDistribution/{roomId}")
+    public DeferredResult<Map<Character, Integer>> getQuizAnswerDistribution(@PathVariable String roomId) {
         Long timeOutInMilliSec = 50000L;
         String timeOutResp = "Time Out.";
         DeferredResult<Map<Character, Integer>> deferredResult = new DeferredResult<>(timeOutInMilliSec,timeOutResp);

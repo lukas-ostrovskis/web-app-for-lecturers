@@ -5,6 +5,7 @@ import nl.tudelft.oopp.demo.repositories.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +14,8 @@ import java.util.Optional;
 public class QuizService {
 
     private QuizRepository quizRepository;
+
+    private Map<String, Quiz> quizzes;
 
 
     /**
@@ -23,6 +26,7 @@ public class QuizService {
     @Autowired
     public QuizService(QuizRepository quizRepository) {
         this.quizRepository = quizRepository;
+        quizzes = new HashMap<String, Quiz>();
     }
 
     /**
@@ -59,12 +63,16 @@ public class QuizService {
      * @param answer the answer submitted by the user.
      */
     public void quizUserAnswer(String roomId, char answer) {
-        Quiz quiz = getOpenQuizByRoomId(roomId);
-        if(!quiz.answerDistribution.containsKey(answer)) {
-            quiz.answerDistribution.put(answer, 1);
-        }
-        else {
-            quiz.answerDistribution.put(answer, quiz.answerDistribution.get(answer)+1);
+        Quiz quiz;
+        if(quizzes.containsKey(roomId)) {
+            quiz = quizzes.get(roomId);
+            System.out.println(quiz.answerDistribution);
+            if(!quiz.answerDistribution.containsKey(answer)) {
+                quiz.answerDistribution.put(answer, 1);
+            }
+            else {
+                quiz.answerDistribution.put(answer, quiz.answerDistribution.get(answer)+1);
+            }
         }
     }
 
@@ -76,7 +84,10 @@ public class QuizService {
      */
     public Map<Character, Integer> getQuizAnswerDistribution(String roomId) {
         Quiz quiz = quizRepository.findQuizByRoomIdWhereAnswerDistributionIsReady(roomId);
-        return quiz.answerDistribution;
+        if(quiz != null) {
+            return quizzes.get(quiz.getRoomId()).answerDistribution;
+        }
+        return null;
     }
 
     /**
@@ -84,12 +95,47 @@ public class QuizService {
      *
      * @param quizId the id of the Quiz.
      */
-    public void toggleQuizOpenStatus(String quizId) {
+    public Quiz toggleQuizOpenStatus(String quizId) {
         Quiz quizById = quizRepository.findById(quizId).get();
         Quiz openQuizByRoomId = quizRepository.findOpenQuizByRoomId(quizById.getRoomId());
-        if(quizById != null && (openQuizByRoomId != null || openQuizByRoomId.equals(quizById))) {
+        if(quizById != null && (openQuizByRoomId == null || openQuizByRoomId.equals(quizById))) {
                 quizById.setOpen(!quizById.isOpen());
+                if(quizById.isOpen()) {
+                    quizById.setAnswerDistributionReady(false);
+                    quizById.answerDistribution = new HashMap<Character, Integer>();
+                    quizzes.put(quizById.getRoomId(), quizById);
+                }
                 quizRepository.save(quizById);
         }
+        return quizById;
+    }
+
+    /**
+     * Toggle the answerDistributionReady status of a Quiz.
+     *
+     * @param quizId the id of the Quiz.
+     */
+    public Quiz toggleAnswerDistributionReadyStatus(String quizId) {
+        Quiz quizById = quizRepository.findById(quizId).get();
+        if(quizById != null) {
+            quizById.setAnswerDistributionReady(!quizById.isAnswerDistributionReady());
+            quizRepository.save(quizById);
+        }
+        return quizById;
+    }
+
+    /**
+     * Deletes a Quiz from server memory by its roomId.
+     *
+     * @param roomId the room id.
+     * @return the Quiz that will be deleted.
+     */
+    public Quiz deleteQuizFromServerMemory(String roomId) {
+        Quiz quiz = null;
+        if(quizzes.containsKey(roomId)) {
+            quiz = quizzes.get(roomId);
+            quizzes.remove(roomId);
+        }
+        return quiz;
     }
 }
