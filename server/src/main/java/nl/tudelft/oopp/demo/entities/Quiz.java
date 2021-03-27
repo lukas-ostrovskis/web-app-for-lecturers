@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -114,6 +115,7 @@ public class Quiz {
         this.open = false;
         this.used = false;
         this.answerDistributionReady = false;
+        this.answerDistribution = new HashMap<Character, Integer>();
     }
 
     public Quiz(String id, String roomId, String question,
@@ -136,6 +138,7 @@ public class Quiz {
         this.used = used;
         this.open = open;
         this.answerDistributionReady = answerDistributionReady;
+        this.answerDistribution = new HashMap<Character, Integer>();
     }
 
     /**
@@ -366,4 +369,30 @@ public class Quiz {
                 Objects.equals(answerJ, quiz.answerJ) &&
                 Objects.equals(answerDistribution, quiz.answerDistribution);
     }
+
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "id='" + id + '\'' +
+                ", roomId='" + roomId + '\'' +
+                ", question='" + question + '\'' +
+                ", answerA='" + answerA + '\'' +
+                ", answerB='" + answerB + '\'' +
+                ", answerC='" + answerC + '\'' +
+                ", answerD='" + answerD + '\'' +
+                ", answerE='" + answerE + '\'' +
+                ", answerF='" + answerF + '\'' +
+                ", answerG='" + answerG + '\'' +
+                ", answerH='" + answerH + '\'' +
+                ", answerI='" + answerI + '\'' +
+                ", answerJ='" + answerJ + '\'' +
+                ", correctAnswer=" + correctAnswer +
+                ", used=" + used +
+                ", open=" + open +
+                ", answerDistributionReady=" + answerDistributionReady +
+                ", answerDistribution=" + answerDistribution +
+                '}';
+    }
+
+
 }
