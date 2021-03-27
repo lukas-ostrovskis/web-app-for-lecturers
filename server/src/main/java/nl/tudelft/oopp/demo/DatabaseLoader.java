@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.demo;
 
 import nl.tudelft.oopp.demo.entities.Question;
+import nl.tudelft.oopp.demo.entities.Quiz;
 import nl.tudelft.oopp.demo.services.QuestionService;
+import nl.tudelft.oopp.demo.services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import nl.tudelft.oopp.demo.repositories.UserRepository;
 @Service
 public class DatabaseLoader {
     private final QuestionService questionService;
+    private final QuizService quizService;
     private final UserRepository userRepository;
 
     /**
@@ -22,10 +25,29 @@ public class DatabaseLoader {
      * @param questionService the question service
      */
     @Autowired
-    public DatabaseLoader(QuestionService questionService, UserRepository userRepository) {
+    public DatabaseLoader(QuestionService questionService, QuizService quizService, UserRepository userRepository) {
         this.questionService = questionService;
+        this.quizService = quizService;
         this.userRepository = userRepository;
         loadQuestions();
+        loadQuizzes();
+    }
+
+    /**
+     * Load the test quizzes to the database
+     */
+    private void loadQuizzes() {
+        Quiz qz1 = new Quiz("aaaaaaa", "Question1", "AnswerA1", "AnswerA2", "AnswerA3", "AnswerA4", "AnswerA5", "AnswerA6", "AnswerA7", "AnswerA8", "AnswerA9", "AnswerA10", 'a');
+        Quiz qz2 = new Quiz("bbbbbb", "Question2", "AnswerB1", "AnswerB2", "AnswerB3", "AnswerB4", "AnswerB5", "AnswerB6", "AnswerB7", "AnswerB8", "AnswerB9", "AnswerB10", 'b');
+        Quiz qz3 = new Quiz("cccccccc", "Question3", "AnswerC1", "AnswerC2", "AnswerC3", "AnswerC4", "AnswerC5", "AnswerC6", "AnswerC7", "AnswerC8", "AnswerC9", "AnswerC10", 'c');
+        Quiz qz4 = new Quiz("dddddd", "Question4", "AnswerD1", "AnswerD2", "AnswerD3", "AnswerD4", "AnswerD5", "AnswerD6", "AnswerD7", "AnswerD8", "AnswerD9", "AnswerD10", 'd');
+        Quiz qz5 = new Quiz("eeeeee", "Question5", "AnswerE1", "AnswerE2", "AnswerE3", "AnswerE4", "AnswerE5", "AnswerE6", "AnswerE7", "AnswerE8", "AnswerE9", "AnswerE10", 'e');
+        quizService.addQuiz(qz1);
+        quizService.addQuiz(qz2);
+        quizService.addQuiz(qz3);
+        quizService.addQuiz(qz4);
+        quizService.addQuiz(qz5);
+
     }
 
     /**
