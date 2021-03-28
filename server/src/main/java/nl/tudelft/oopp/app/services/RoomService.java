@@ -35,14 +35,12 @@ public class RoomService {
      * Allows the client to join a room with a specific id if it exists in the database.
      * @param roomId - id of the room that the client is trying to access.
      */
-    public void joinRoom(String roomId) {
+    public void joinRoom(String roomId, User user) {
         Optional<Room> roomById = roomRepository.findById(roomId);
 
         if(roomById.isPresent()) {
             //TODO: pass real user info to the database
             Random id = new Random(System.currentTimeMillis());
-            User user = new User(Integer.toString(id.nextInt(), 16), "TestName", "test@testmail.com", "student", "24.241.241.21.24");
-            userRepository.save(user);
 
             roomById.get().addUser(user);
             roomRepository.save(roomById.get());

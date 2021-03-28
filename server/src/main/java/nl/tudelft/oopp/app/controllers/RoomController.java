@@ -2,6 +2,7 @@ package nl.tudelft.oopp.app.controllers;
 
 
 import nl.tudelft.oopp.app.entities.Room;
+import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +30,11 @@ public class RoomController {
      * @return roomId - the id of the created room.
      */
     @GetMapping("create")
-    public String createRoom() {
+    public String createRoom(@RequestParam String userId) {
         String roomId = Long.toString(id.nextLong(), 36);
 
         //TODO: pass a real ownerId and figure out a way to track time somehow
-        Room room = new Room(roomId, "1", true, 0);
+        Room room = new Room(roomId, userId, true, 0);
         roomService.addRoom(room);
 
         return roomId;
@@ -46,8 +47,8 @@ public class RoomController {
      * @return
      */
     @GetMapping(path = "{roomId}")
-    public String joinRoom(@PathVariable("roomId") String roomId) {
-        roomService.joinRoom(roomId);
+    public String joinRoom(@PathVariable("roomId") String roomId, @RequestParam User user) {
+        roomService.joinRoom(roomId, user);
         return "Joined successfully!";
     }
 

@@ -8,7 +8,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
 public class ServerCommunication {
 
@@ -20,8 +19,8 @@ public class ServerCommunication {
      * @return An id of the created room.
      * @throws Exception if communication with the server fails.
      */
-    public static String getRoomId() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/create")).build();
+    public static String getRoomId(String userID) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/create?userId=" + userID)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -35,8 +34,8 @@ public class ServerCommunication {
         return response.body();
     }
 
-    public static String joinRoom(String id) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/" + id)).build();
+    public static String joinRoom(String id, User user) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/" + id + "&user=" + user)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -50,19 +49,19 @@ public class ServerCommunication {
         return response.body();
     }
 
-    public static List<User> findUsers(String email, String password) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/user/searchOrAdd?email=" + email + "&password=" + password)).build();
+    public static User findUsers(String email, String password, int role, String roomId) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/user/searchOrAdd?email=" + email + "&password=" + password + "&role=" + role + "&roomId=" + roomId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return List.of(); // empty list on error
+            return new User(null,null,null,null);
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-
-        return gson.fromJson(response.body(), new TypeToken<List<User>>(){}.getType());
+        System.out.println(response.body());
+        return gson.fromJson(response.body(), User.class);
     }
 }

@@ -28,6 +28,12 @@ public class User {
         this.role = role;
         this.ip = ip;
     }
+    public User(String name, String email, String role, String ip) {
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.ip = ip;
+    }
 
 
     public String getId() {
@@ -48,6 +54,10 @@ public class User {
 
     public String getIp() {
         return ip;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override

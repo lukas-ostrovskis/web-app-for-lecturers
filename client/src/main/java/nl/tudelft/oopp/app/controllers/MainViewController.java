@@ -15,7 +15,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
+import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
+
+import static nl.tudelft.oopp.app.communication.ServerCommunication.getRoomId;
 
 public class MainViewController {
 
@@ -30,6 +34,12 @@ public class MainViewController {
      * The default identity is set to student.
      */
     private int currentIdentity = IDENTITY_STUDENT;
+
+    @FXML
+    private Label emailLabel;
+
+    @FXML
+    private TextField emailTextField;
 
     @FXML
     private Button identityButton;
@@ -72,7 +82,7 @@ public class MainViewController {
             roomIdTextField.setVisible(true);
             roomIdTextField.setManaged(true);
 
-            dataFieldsGridPane.setVgap(0);
+            dataFieldsGridPane.setVgap(25);
 
             actionButton.setText("Join Room");
         }
@@ -112,7 +122,7 @@ public class MainViewController {
             roomIdTextField.setVisible(false);
             roomIdTextField.setManaged(false);
 
-            dataFieldsGridPane.setVgap(0);
+            dataFieldsGridPane.setVgap(12.5);
 
             actionButton.setText("Create Room");
         }
@@ -174,6 +184,8 @@ public class MainViewController {
         timeline.play();
     }
 
+
+
     /**
      * Handles pressing the actionButton
      * Loads the room layout into the scene, passes that scene into the stage.
@@ -195,6 +207,6 @@ public class MainViewController {
         /**
          * Recenters the stage on screen.
          */
-        MainView.getPrimaryStage().centerOnScreen();
-    }
+        MainView.getPrimaryStage().centerOnScreen();    }
+
 }

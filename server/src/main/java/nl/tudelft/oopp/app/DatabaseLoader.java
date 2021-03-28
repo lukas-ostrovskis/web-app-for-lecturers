@@ -76,8 +76,7 @@ public class DatabaseLoader {
     }
 
     public void loadUsers(){
-        User u1 = new User(
-            "10", "Martin", "martin@martin.martin", "god", "69.69.122.0"
+        User u1 = new User("John", "john", "lecturer", "69.69.122.0"
         );
         User u2 = new User(
             "10", "ayyythan", "athan@martin.martin", "pleb", "69.69.122.0"
