@@ -41,7 +41,7 @@ public class RoomViewController implements Initializable {
                         "1212ads",
                         "What is the time",
                         10,
-                        3,
+                        2,
                         false,
                         ""),
                 new Question("123u0j",
@@ -107,8 +107,20 @@ public class RoomViewController implements Initializable {
     }
 
     @FXML
+    public void refreshButtonPressed() {
+        java.util.Collections.sort(questionsListView.getItems(), new java.util.Comparator<Question>() {
+            @Override
+            public int compare(Question q1, Question q2) {
+                int rating1 = q1.getNumberOfUpvotes()-q1.getNumberOfDownvotes();
+                int rating2 = q2.getNumberOfUpvotes()-q2.getNumberOfDownvotes();
+                return (rating2-rating1);
+            }
+        });
+    }
+
+    @FXML
     public void askQuestionButtonPressed() {
-//        questionsListView.getItems().add("Test " + (int) (Math.random() * 100));
+
     }
     @FXML
     public void removeQuestionButtonPressed() {

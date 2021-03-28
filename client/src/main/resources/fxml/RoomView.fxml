@@ -51,11 +51,16 @@
 
             </HBox>
 
+            <Button onAction="#refreshButtonPressed" text="Refresh questions">
+            <VBox.margin>
+               <Insets top="30.0" />
+            </VBox.margin></Button>
+
         </VBox>
 
     </HBox>
 
-    <ListView fx:id="questionsListView" maxHeight="Infinity" maxWidth="Infinity" prefHeight="229.0" prefWidth="922.0" />
+    <ListView fx:id="questionsListView" editable="true" maxHeight="Infinity" maxWidth="Infinity" prefHeight="229.0" prefWidth="922.0" styleClass="listView" stylesheets="@../css/app.css" />
 
     <Rectangle arcHeight="10" arcWidth="10" fill="snow" height="163.0" width="753.0" />
 

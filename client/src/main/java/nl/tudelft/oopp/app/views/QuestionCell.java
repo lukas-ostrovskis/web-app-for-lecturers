@@ -3,7 +3,12 @@ package nl.tudelft.oopp.app.views;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import nl.tudelft.oopp.app.data.Question;
+
+
 import java.io.IOException;
 
 public class QuestionCell extends ListCell<Question> {

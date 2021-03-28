@@ -15,6 +15,18 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.listCell {
+    -fx-background-color: linear-gradient(to bottom right, -tudelft-blue, #045AAF);
+    -fx-selection-bar:#3697cf;
+}
+
+.list-view:focused .list-cell:filled:focused:selected {
+    -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-selection-bar;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background: -fx-accent;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
 .button:hover {
     -fx-opacity: 0.8;
 }
