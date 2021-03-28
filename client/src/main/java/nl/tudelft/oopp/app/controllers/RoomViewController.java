@@ -15,6 +15,8 @@ import nl.tudelft.oopp.app.views.QuestionCell;
 import java.net.URL;
 import java.sql.SQLOutput;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RoomViewController implements Initializable {
 
@@ -62,6 +64,22 @@ public class RoomViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         questionsListView.setItems(questions);
         questionsListView.setCellFactory(questionList -> new QuestionCell());
+        Timer timer = new Timer();
+
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                java.util.Collections.sort(questionsListView.getItems(), new java.util.Comparator<Question>() {
+                    @Override
+                    public int compare(Question q1, Question q2) {
+                        int rating1 = q1.getNumberOfUpvotes()-q1.getNumberOfDownvotes();
+                        int rating2 = q2.getNumberOfUpvotes()-q2.getNumberOfDownvotes();
+                        return (rating2-rating1);
+                    }
+                });
+            };
+        };
+        timer.schedule(tt, 0, 5000);
     }
     /**
      * Handles pressing the leaveRoomButton
