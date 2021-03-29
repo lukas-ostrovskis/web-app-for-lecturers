@@ -26,7 +26,7 @@ public class DatabaseLoader {
         this.questionService = questionService;
         this.userRepository = userRepository;
 //        loadQuestions();
-//        loadUsers();
+        loadUsers();
     }
 
     /**

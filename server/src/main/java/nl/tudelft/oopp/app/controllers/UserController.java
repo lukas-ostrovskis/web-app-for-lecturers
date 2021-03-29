@@ -28,7 +28,6 @@ public class UserController {
 
     @GetMapping("/searchOrAdd")
     public User searchUsers(@RequestParam String email, @RequestParam String password, @RequestParam int role, @RequestParam String roomId) {
-        dataLoader.loadUsers();
         User empty = new User(null, null, null, null);
         if (role == 1){
             if(repository.findAllByEmailContains(email).size() == 0) {
