@@ -21,7 +21,7 @@ import nl.tudelft.oopp.app.views.MainView;
 
 import java.io.IOException;
 
-import static nl.tudelft.oopp.app.communication.ServerCommunication.getRoomId;
+import static nl.tudelft.oopp.app.communication.ServerCommunication.createRoom;
 
 public class MainViewController {
 
@@ -66,6 +66,9 @@ public class MainViewController {
 
     @FXML
     private Button createRoomButton;
+
+    @FXML
+    private Label identityLabel;
 
     /**
      * Loads the layout for the specified identity.
@@ -148,7 +151,6 @@ public class MainViewController {
     /**
      * Changes the identity & updates the layout.
      */
-    @FXML
     public void identityButtonPressed(ActionEvent event) {
         /*
          * Change the current identity.
@@ -243,21 +245,42 @@ public class MainViewController {
 
     }
 
-
     /**
      * Handles pressing the createRoomButton
      * Communicates to the server to create a new room.
      * It requires the E-Mail and the password of a lecturer.
      */
-    @FXML
     public void createRoomButtonPressed() throws Exception {
+
+
+
+        // Add user server-side
         User user = ServerCommunication.findUsers(emailTextField.getText(), passwordField.getText(), currentIdentity, roomIdTextField.getText());
+
+        // User returned by server is invalid, meaning they weren't added.
+        if (user == null) {
+            System.out.printf("User was not added:%s\n", user);
+            return;
+        }
+        System.out.printf("User %s (%s) was added, %s\n", user.getId(), user.getName(), user.getRole());
+
+        // Add the user client-side
+        MainView.setUser(user);
+
         String id = user.getId();
         if(user.getEmail() != null){
+
+            // For lecturers we create the room
             if(currentIdentity == 3){
-                ServerCommunication.getRoomId(id);
+                ServerCommunication.createRoom(id);
             }
-            ServerCommunication.joinRoom(roomIdTextField.getText(), user);
+
+            // Make user join room server-side
+            String response = ServerCommunication.joinRoom(roomIdTextField.getText(), user);
+            if (response == null) {
+                System.out.printf("User could not be added to roomn %s", roomIdTextField.getText());
+                return;
+            }
 
             loadRoomView();
         }
@@ -265,8 +288,6 @@ public class MainViewController {
             /* error message here
                     */
         }
-
-
     }
 
     /**
@@ -274,7 +295,6 @@ public class MainViewController {
      * Communicates to the server to join to an existing room.
      * It requires the E-Mail and the roomId that the user wants to get in.
      */
-    @FXML
     public void joinRoomButtonPressed() throws Exception {
 
         // Add user server-side
