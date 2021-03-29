@@ -7,14 +7,15 @@ import nl.tudelft.oopp.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class RoomService {
 
     private RoomRepository roomRepository;
     private UserRepository userRepository;
+
+    public List<String> passwords = List.of("12345");
 
     @Autowired
     public RoomService(RoomRepository roomRepository, UserRepository userRepository) {
@@ -24,10 +25,27 @@ public class RoomService {
 
     /**
      * Saves a room in the database.
-     * @param room - the room to save.
+     * @param userId - the room to save
+     * @param password of the user
      */
-    public void addRoom(Room room) {
+    public String createRoom(String userId, String password) {
+        if (!passwords.contains(password)) {
+            return null;
+        }
+
+        // Generate random id and from that, a room
+        String randomId;
+        do {
+            randomId = Double.toString(Math.floor(Math.random() * 100000)).replace(".0", "");
+        } while (roomRepository.findById(userId).isPresent());
+
+        Room room = new Room(randomId, userId, true, 0);
+        room.addUser(userRepository.findById(userId).get());
+
+        // Add the room to DB and return its id to client
         roomRepository.save(room);
+        System.out.println("Saved room: " + room.getId());
+        return randomId;
     }
 
 

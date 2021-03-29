@@ -7,13 +7,15 @@ import nl.tudelft.oopp.app.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 @RestController
 @RequestMapping("room")
 public class RoomController {
 
-    private Random id = new Random(System.currentTimeMillis());
     private RoomService roomService;
 
     /**
@@ -30,14 +32,8 @@ public class RoomController {
      * @return roomId - the id of the created room.
      */
     @GetMapping("/create")
-    public String createRoom(@RequestParam String userId) {
-        String roomId = Long.toString(id.nextLong(), 36);
-
-        //TODO: pass a real ownerId and figure out a way to track time somehow
-        Room room = new Room(roomId, userId, true, 0);
-        roomService.addRoom(room);
-
-        return roomId;
+    public String createRoom(@RequestParam String userId, @RequestParam String password) {
+        return roomService.createRoom(userId, password);
     }
 
 
