@@ -44,10 +44,15 @@ public class RoomController {
     /**
      * Allows a client to join an existing room with a specific id.
      * @param roomId - the id of the room.
-     * @return
+     * @return to the client the response of the server of joining a room
      */
     @GetMapping(path = "{roomId}")
     public String joinRoom(@PathVariable("roomId") String roomId, @RequestParam User user) {
+
+        System.out.printf("User %s trying to join room %s", user.getId(), roomId);
+        // Check whether the room is expired
+        // if it is, return empty string.
+
         roomService.joinRoom(roomId, user);
         return "Joined successfully!";
     }

@@ -19,6 +19,8 @@ import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
 
+import java.io.IOException;
+
 import static nl.tudelft.oopp.app.communication.ServerCommunication.getRoomId;
 
 public class MainViewController {
@@ -60,13 +62,16 @@ public class MainViewController {
     private GridPane dataFieldsGridPane;
 
     @FXML
-    private Button actionButton;
+    private Button joinRoomButton;
+
+    @FXML
+    private Button createRoomButton;
 
     /**
      * Loads the layout for the specified identity.
      */
     public void setIdentity(int identityConstant) {
-        /**
+        /*
          * Load the layout for student.
          */
         if (identityConstant == IDENTITY_STUDENT) {
@@ -84,9 +89,13 @@ public class MainViewController {
 
             dataFieldsGridPane.setVgap(25);
 
-            actionButton.setText("Join Room");
+            joinRoomButton.setVisible(true);
+            joinRoomButton.setManaged(true);
+
+            createRoomButton.setVisible(false);
+            createRoomButton.setManaged(false);
         }
-        /**
+        /*
          * Load the layout for moderator.
          */
         else if (identityConstant == IDENTITY_MODERATOR) {
@@ -104,9 +113,13 @@ public class MainViewController {
 
             dataFieldsGridPane.setVgap(25);
 
-            actionButton.setText("Join Room");
+            joinRoomButton.setVisible(true);
+            joinRoomButton.setManaged(true);
+
+            createRoomButton.setVisible(false);
+            createRoomButton.setManaged(false);
         }
-        /**
+        /*
          * Load the layout for lecturer.
          */
         else {
@@ -124,7 +137,11 @@ public class MainViewController {
 
             dataFieldsGridPane.setVgap(12.5);
 
-            actionButton.setText("Create Room");
+            joinRoomButton.setVisible(false);
+            joinRoomButton.setManaged(false);
+
+            createRoomButton.setVisible(true);
+            createRoomButton.setManaged(true);
         }
     }
 
@@ -133,7 +150,7 @@ public class MainViewController {
      */
     @FXML
     public void identityButtonPressed(ActionEvent event) {
-        /**
+        /*
          * Change the current identity.
          */
         if (currentIdentity == IDENTITY_STUDENT) {
@@ -146,7 +163,7 @@ public class MainViewController {
             currentIdentity = IDENTITY_STUDENT;
         }
 
-        /**
+        /*
          * Update the layout.
          */
         setIdentity(currentIdentity);
@@ -160,7 +177,7 @@ public class MainViewController {
     public void initialize() {
         setIdentity(currentIdentity);
 
-        /**
+        /*
          * Animates the background gradient in the menu.
          * Source: https://stackoverflow.com/questions/24587342/how-to-animate-lineargradient-on-javafx
          */
@@ -184,29 +201,106 @@ public class MainViewController {
         timeline.play();
     }
 
+    /**
+     * It loads the MainView scene.
+     * @throws IOException if it cant load correctly
+     */
+    public void loadMainView() throws IOException {
 
+        /* Create a new scene and load the layout from MainView.fxml into the scene graph.
+         */
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
+        Scene mainViewScene = new Scene(root);
+
+        /* Load the roomScene into the primaryStage of MainView.
+         */
+        MainView.getPrimaryStage().setScene(mainViewScene);
+
+        /* Re-centers the stage on screen.
+         */
+        MainView.getPrimaryStage().centerOnScreen();
+
+    }
 
     /**
-     * Handles pressing the actionButton
-     * Loads the room layout into the scene, passes that scene into the stage.
+     * It loads the RoomView scene.
+     * @throws IOException if it cant load correctly
      */
-    @FXML
-    public void actionButtonPressed() throws Exception {
-        /**
-         * Create a new scene and load the layout from RoomView.fxml into the scene graph.
+    public void loadRoomView() throws IOException {
+
+        /* Create a new scene and load the layout from RoomView.fxml into the scene graph.
          */
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/RoomView.fxml"));
 
+        /* Load the roomScene into the primaryStage of RoomView.
+         */
         Scene roomScene = new Scene(root);
 
-        /**
-         * Load the roomScene into the primaryStage of MainView.
+        /* Re-centers the stage on screen.
          */
         MainView.getPrimaryStage().setScene(roomScene);
+        MainView.getPrimaryStage().centerOnScreen();
 
-        /**
-         * Recenters the stage on screen.
-         */
-        MainView.getPrimaryStage().centerOnScreen();    }
+    }
 
+
+    /**
+     * Handles pressing the createRoomButton
+     * Communicates to the server to create a new room.
+     * It requires the E-Mail and the password of a lecturer.
+     */
+    @FXML
+    public void createRoomButtonPressed() throws Exception {
+        User user = ServerCommunication.findUsers(emailTextField.getText(), passwordField.getText(), currentIdentity, roomIdTextField.getText());
+        String id = user.getId();
+        if(user.getEmail() != null){
+            if(currentIdentity == 3){
+                ServerCommunication.getRoomId(id);
+            }
+            ServerCommunication.joinRoom(roomIdTextField.getText(), user);
+
+            loadRoomView();
+        }
+        else{
+            /* error message here
+                    */
+        }
+
+
+    }
+
+    /**
+     * Handles pressing the joinRoomButton
+     * Communicates to the server to join to an existing room.
+     * It requires the E-Mail and the roomId that the user wants to get in.
+     */
+    @FXML
+    public void joinRoomButtonPressed() throws Exception {
+
+        // Add user server-side
+        User user = ServerCommunication.findUsers(emailTextField.getText(), null, 1, roomIdTextField.getText());
+
+        // User returned by server is invalid, meaning they weren't added.
+        if (user == null) {
+            System.out.printf("User was not added:%s", user);
+            return;
+        }
+
+        // Create the user client-side
+        MainView.setUser(user);
+
+        String id = user.getId();
+        if(user.getEmail() != null){
+
+            // Make user join room server-side
+            String response = ServerCommunication.joinRoom(roomIdTextField.getText(), user);
+            if (response == null) {
+                System.out.printf("User could not be added to roomn %s", roomIdTextField.getText());
+                return;
+            }
+
+            loadRoomView();
+        }
+
+    }
 }

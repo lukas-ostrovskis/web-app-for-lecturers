@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox id="animatedGradientVBox" alignment="CENTER" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.MainViewController">
+<VBox id="animatedGradientVBox" alignment="CENTER" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.MainViewController">
 
     <VBox id="opaqueBackgroundVBox" alignment="CENTER" prefHeight="296.0" prefWidth="247.0" spacing="25">
         <padding><Insets bottom="25" left="0" right="0" top="25" /></padding>
@@ -20,7 +20,7 @@
         <GridPane fx:id="dataFieldsGridPane" alignment="CENTER" hgap="10" prefHeight="145.0" prefWidth="247.0" vgap="25">
             <Label fx:id="emailLabel" text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
-            <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
             <Label fx:id="roomIdLabel" text="Room ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
@@ -42,8 +42,9 @@
         </GridPane>
 
         <HBox alignment="CENTER">
+         <Button fx:id="createRoomButton" mnemonicParsing="false" onAction="#createRoomButtonPressed" text="Create Room sabe" />
 
-            <Button fx:id="actionButton" onAction="#actionButtonPressed" text="Join Room" />
+            <Button fx:id="joinRoomButton" text="Join Room" onAction="#joinRoomButtonPressed"/>
 
         </HBox>
     </VBox>

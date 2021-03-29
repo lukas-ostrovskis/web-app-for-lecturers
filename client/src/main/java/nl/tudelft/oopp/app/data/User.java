@@ -28,6 +28,7 @@ public class User {
         this.role = role;
         this.ip = ip;
     }
+
     public User(String name, String email, String role, String ip) {
         this.name = name;
         this.email = email;
