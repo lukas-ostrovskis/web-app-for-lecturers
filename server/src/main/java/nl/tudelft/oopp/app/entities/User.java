@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,11 +26,11 @@ public class User {
     private String ip;
 
     /**
-     * Instantiates a new User.
+     * Basic constructor required by the JPA specification.
      */
-    public User() {
-
+    protected User() {
     }
+
     /**
      * Create a new User instance.
      *
@@ -38,6 +40,7 @@ public class User {
      * @param role  Role of the user (lecturer, student, moderator).
      * @param ip    IP address of the user.
      */
+    @JsonCreator
     public User(String id, String name, String email, String role, String ip) {
         this.id = id;
         this.name = name;
@@ -51,10 +54,6 @@ public class User {
         this.email = email;
         this.role = role;
         this.ip = ip;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getId() {
@@ -75,6 +74,10 @@ public class User {
 
     public String getIp() {
         return ip;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
