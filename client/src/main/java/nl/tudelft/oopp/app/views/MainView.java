@@ -24,6 +24,7 @@ public class MainView extends Application {
     private static Stage primaryStage;
 
     private static User user;
+    private static String roomId;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,6 +67,14 @@ public class MainView extends Application {
 
     public static void setUser(User user) {
         MainView.user = user;
+    }
+
+    public static String getRoomId() {
+        return roomId;
+    }
+
+    public static void setRoomId(String roomId) {
+        MainView.roomId = roomId;
     }
 
     /*

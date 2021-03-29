@@ -21,8 +21,6 @@ import nl.tudelft.oopp.app.views.MainView;
 
 import java.io.IOException;
 
-import static nl.tudelft.oopp.app.communication.ServerCommunication.createRoom;
-
 public class MainViewController {
 
     /**
@@ -252,41 +250,23 @@ public class MainViewController {
      */
     public void createRoomButtonPressed() throws Exception {
 
+        try {
 
+            // Try creating a user
+            createUser();
 
-        // Add user server-side
-        User user = ServerCommunication.findUsers(emailTextField.getText(), passwordField.getText(), currentIdentity, roomIdTextField.getText());
-
-        // User returned by server is invalid, meaning they weren't added.
-        if (user == null) {
-            System.out.printf("User was not added:%s\n", user);
-            return;
-        }
-        System.out.printf("User %s (%s) was added, %s\n", user.getId(), user.getName(), user.getRole());
-
-        // Add the user client-side
-        MainView.setUser(user);
-
-        String id = user.getId();
-        if(user.getEmail() != null){
-
-            // For lecturers we create the room
-            if(currentIdentity == 3){
-                ServerCommunication.createRoom(id);
-            }
-
-            // Make user join room server-side
-            String response = ServerCommunication.joinRoom(roomIdTextField.getText(), user);
-            if (response == null) {
-                System.out.printf("User could not be added to roomn %s", roomIdTextField.getText());
-                return;
-            }
+            // Try creating room
+            String roomId = ServerCommunication.createRoom(passwordField.getText());
+            System.out.printf(" > Created server-side room (id: %s)", roomId);
+            MainView.setRoomId(roomId);
 
             loadRoomView();
-        }
-        else{
-            /* error message here
-                    */
+
+        } catch (ServerCommunication.UserNotAddedException
+                | ServerCommunication.RoomNotAddedException e) {
+
+            // If user could not be created server-side
+            presentError("Error!", e.getMessage());
         }
     }
 
@@ -322,5 +302,42 @@ public class MainViewController {
             loadRoomView();
         }
 
+    }
+
+
+    private void createUser() throws ServerCommunication.UserNotAddedException {
+
+        // Parse identity
+        String identity;
+        switch (currentIdentity) {
+            case IDENTITY_LECTURER: identity = "lecturer"; break;
+            case IDENTITY_MODERATOR: identity = "moderator"; break;
+            case IDENTITY_STUDENT: identity = "student"; break;
+            default: throw new ServerCommunication.UserNotAddedException("invalid role.");
+        }
+
+        // Client-side user
+        User user = new User(emailTextField.getText(), identity);
+        System.out.printf(" > Created client-side user (%s)\n", currentIdentity);
+
+        // Create the server-side user
+        user = ServerCommunication.addUser(user, passwordField.getText());
+        System.out.printf(" > Created server-side user (id: %s)\n", user.getId());
+
+        // And update the client-side user with the new user (containing id)
+        MainView.setUser(user);
+    }
+
+    /**
+     * Helper method for displaying errors.
+     * @param err error type
+     * @param msg error message
+     */
+    private void presentError(String err, String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(err);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }
