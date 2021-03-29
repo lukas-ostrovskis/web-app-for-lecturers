@@ -2,7 +2,9 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import javafx.scene.control.Alert;
 import nl.tudelft.oopp.app.data.User;
+import nl.tudelft.oopp.app.views.MainView;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -17,9 +19,8 @@ public class ServerCommunication {
     /**
      * Creates a new room on the server.
      * @return An id of the created room.
-     * @throws Exception if communication with the server fails.
      */
-    public static String getRoomId(String userID) {
+    public static String createRoom(String userID) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/create?userId=" + userID)).build();
         HttpResponse<String> response = null;
         try {
@@ -29,10 +30,11 @@ public class ServerCommunication {
             return "Communication with server failed";
         }
         if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
+            System.out.println("Status: " + response.statusCode() + " from createRoom method.");
         }
         return response.body();
     }
+
 
     /**
      * Allows to join into a room
@@ -52,7 +54,7 @@ public class ServerCommunication {
             return "Communication with server failed";
         }
         if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
+            System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
         }
 
         return response.body().equals("") ? null : response.body();
@@ -76,7 +78,7 @@ public class ServerCommunication {
             return new User(null,null,null,null);
         }
         if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
+            System.out.println("Status: " + response.statusCode() + " from findUsers method.");
         }
         System.out.println(response.body());
         return gson.fromJson(response.body(), User.class);
@@ -108,5 +110,32 @@ public class ServerCommunication {
 
         System.out.println(response.body());
         return gson.fromJson(response.body(), User.class);
+    }
+
+    public static String sendRequest(HttpRequest request) {
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        System.out.println(response.body());
+        return response.body();
+    }
+
+    public static boolean deleteRoom() {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET().uri(URI.create(
+                        String.format("http://localhost:8080/room/delete?user=%s",
+                                MainView.getUser().getId())))
+                .build();
+
+        String response = sendRequest(request);
+
+        return response.equals("Deleted successfully!");
     }
 }

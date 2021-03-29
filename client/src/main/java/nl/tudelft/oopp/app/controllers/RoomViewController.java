@@ -4,7 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.views.MainView;
 
 public class RoomViewController {
@@ -12,46 +15,45 @@ public class RoomViewController {
     @FXML
     private ListView<String> questionsListView;
 
+    @FXML
+    private Label identityLabel;
+
     /**
      * Handles pressing the leaveRoomButton
      * Loads the menu layout into the scene, passes that scene into the stage.
      */
     @FXML
     public void leaveRoomButtonPressed() throws Exception {
-        /**
-         * Create a new scene and load the layout from MainView.fxml into the scene graph.
-         */
+
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
         Scene mainScene = new Scene(root, 400, 400);
 
-        /**
-         * Load the roomScene into the primaryStage of MainView.
-         */
         MainView.getPrimaryStage().setScene(mainScene);
 
-        /**
-         * Recenters the stage on screen.
-         */
         MainView.getPrimaryStage().centerOnScreen();
     }
 
     @FXML
-    public void endLectureButtonPressed() throws Exception {
-        /**
-         * Create a new scene and load the layout from MainView.fxml into the scene graph.
-         */
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
-        Scene mainScene = new Scene(root, 400, 400);
+    public void endLectureButtonPressed() {
 
-        /**
-         * Load the roomScene into the primaryStage of MainView.
-         */
-        MainView.getPrimaryStage().setScene(mainScene);
+        // Delete room from server
+        if (ServerCommunication.deleteRoom()) {
 
-        /**
-         * Recenters the stage on screen.
-         */
-        MainView.getPrimaryStage().centerOnScreen();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Room successfully deleted.");
+            alert.showAndWait();
+
+        } else {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Something went wrong when deleting room.");
+            alert.showAndWait();
+        }
+
     }
 
     @FXML

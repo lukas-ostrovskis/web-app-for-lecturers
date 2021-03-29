@@ -50,11 +50,10 @@ public class RoomService {
 
     /**
      * Deletes a room from the database.
-     * @param roomId - the id of the room to delete.
+     * @param userId - the id of the room to delete.
      */
-    public void deleteRoom(String roomId) {
-        Optional<Room> roomById = roomRepository.findById(roomId);
-
+    public void deleteRoomByOwnerId(String userId) {
+        Optional<Room> roomById = roomRepository.findByOwnerId(userId);
         if(roomById.isPresent()) {
             roomRepository.delete(roomById.get());
         }
