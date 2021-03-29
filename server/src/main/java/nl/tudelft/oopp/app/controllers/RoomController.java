@@ -29,7 +29,7 @@ public class RoomController {
      * Create a new room on the server and save it in a database.
      * @return roomId - the id of the created room.
      */
-    @GetMapping("create")
+    @GetMapping("/create")
     public String createRoom(@RequestParam String userId) {
         String roomId = Long.toString(id.nextLong(), 36);
 
@@ -59,11 +59,12 @@ public class RoomController {
 
     /**
      * Delete the room from the database.
-     * @param id - the id of the room.
+     * @param userId - the id of the room.
      */
-    @DeleteMapping("close")
-    public void deleteRoom(@RequestParam String id) {
-        roomService.deleteRoom(id);
+    @GetMapping("delete")
+    public String deleteRoom(@RequestParam String userId) {
+        roomService.deleteRoomByOwnerId(userId);
+        return "Deleted successfully!";
     }
 
 
