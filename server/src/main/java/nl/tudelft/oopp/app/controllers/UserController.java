@@ -7,57 +7,70 @@ import nl.tudelft.oopp.app.DatabaseLoader;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.UserRepository;
 import nl.tudelft.oopp.app.services.RoomService;
+import nl.tudelft.oopp.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    private final UserService userService;
     private final RoomService roomService;
+
     private final DatabaseLoader dataLoader;
+    public List<String> passwords = List.of("12345");
 
-    public List<String> passwords = new ArrayList<String>(Arrays.asList("12345"));
     @Autowired
-    private UserRepository repository;
-
-    public UserController(RoomService roomService, DatabaseLoader dataLoader, UserRepository repository) {
+    public UserController(UserService userService, RoomService roomService, DatabaseLoader dataLoader) {
+        this.userService = userService;
         this.roomService = roomService;
         this.dataLoader = dataLoader;
-        this.repository = repository;
     }
+
 
     @GetMapping("/searchOrAdd")
     public User searchUsers(@RequestParam String email, @RequestParam String password, @RequestParam int role, @RequestParam String roomId) {
+
+        dataLoader.loadUsers();
         User empty = new User(null, null, null, null);
+
         if (role == 1){
-            if(repository.findAllByEmailContains(email).size() == 0) {
+
+            if(userService.findAllByEmailContains(email).size() == 0) {
                 User user = new User(null, email, "student", null);
-                repository.save(user);
+                userService.save(user, null);
                 roomService.joinRoom(roomId, user);
                 return user;
             }
-            User user = repository.findByEmail(email);
+
+            User user = userService.findByEmail(email);
             return user;
         }
+
         if(role == 2) {
-            if(repository.findAllByEmailContains(email).size() != 0){
+
+            if(userService.findAllByEmailContains(email).size() != 0){
+
                 if(passwords.contains(password)){
-                    User user = repository.findByEmail(email);
+
+                    User user = userService.findByEmail(email);
                     return user;
                 }
+
                 return empty;
             }
             User user = new User(null, email, "moderator", null);
             if(passwords.contains(password)){
-                repository.save(user);
+                userService.save(user, null);
                 return user;
             }
             return empty;
         }
         if(role == 3) {
-            if(repository.findAllByEmailContains(email).size() != 0){
+            if(userService.findAllByEmailContains(email).size() != 0){
                 if(passwords.contains(password)){
-                    User user = repository.findByEmail(email);
+                    User user = userService.findByEmail(email);
                     return user;
                 }
                 return empty;
@@ -67,6 +80,9 @@ public class UserController {
         return empty;
     }
 
-
+    @PostMapping ("/add")
+    public User addUser(@RequestBody User user, @RequestParam String password) {
+        return userService.save(user, password);
+    }
 
 }
