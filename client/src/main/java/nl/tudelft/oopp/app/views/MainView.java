@@ -60,7 +60,7 @@ public class MainView extends Application {
         return primaryStage;
     }
 
-    public User getUser() {
+    public static User getUser() {
         return user;
     }
 
