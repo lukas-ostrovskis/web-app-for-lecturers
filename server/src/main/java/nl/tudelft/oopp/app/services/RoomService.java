@@ -29,16 +29,19 @@ public class RoomService {
      * @param password of the user
      */
     public String createRoom(String userId, String password) {
+
+        // Check if password is a valid password
         if (!passwords.contains(password)) {
             return null;
         }
 
-        // Generate random id and from that, a room
+        // Generate random id
         String randomId;
         do {
             randomId = Double.toString(Math.floor(Math.random() * 100000)).replace(".0", "");
         } while (roomRepository.findById(userId).isPresent());
 
+        // Create room from id
         Room room = new Room(randomId, userId, true, 0);
         room.addUser(userRepository.findById(userId).get());
 
@@ -46,6 +49,7 @@ public class RoomService {
         roomRepository.save(room);
         System.out.println("Saved room: " + room.getId());
         return randomId;
+
     }
 
 
@@ -70,12 +74,16 @@ public class RoomService {
      * Deletes a room from the database.
      * @param userId - the id of the room to delete.
      */
-    public void deleteRoomByOwnerId(String userId) {
+    public String deleteRoomByOwnerId(String userId) {
+
         Optional<Room> roomById = roomRepository.findByOwnerId(userId);
-        if(roomById.isPresent()) {
-            roomRepository.delete(roomById.get());
+
+        if(roomById.isEmpty()) {
+            return null;
         }
-        else throw new IllegalStateException("Room doesn't exist");
+
+        roomRepository.delete(roomById.get());
+        return "Deleted successfully!";
     }
 
 

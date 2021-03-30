@@ -257,7 +257,7 @@ public class MainViewController {
 
             // Try creating room
             String roomId = ServerCommunication.createRoom(passwordField.getText());
-            System.out.printf(" > Created server-side room (id: %s)", roomId);
+            System.out.printf(" > Created server-side room (id: %s)\n", roomId);
             MainView.setRoomId(roomId);
 
             loadRoomView();

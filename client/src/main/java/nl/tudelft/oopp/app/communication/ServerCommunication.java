@@ -105,17 +105,18 @@ public class ServerCommunication {
         return gson.fromJson(response, User.class);
     }
 
-    public static boolean deleteRoom() {
+    public static void deleteRoom() throws RoomNotDeletedException {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET().uri(URI.create(
-                        String.format("http://localhost:8080/room/delete?user=%s",
+                        String.format("http://localhost:8080/room/delete?userId=%s",
                                 MainView.getUser().getId())))
                 .build();
 
         String response = sendRequest(request);
-
-        return !(response == null);
+        if (response == null) {
+            throw new RoomNotDeletedException("Room not deleted.");
+        }
     }
 
     /**
@@ -154,4 +155,15 @@ public class ServerCommunication {
             super(message);
         }
     }
+
+    /**
+     * Exception indicating miscommunication when deleting room server-side.
+     */
+    public static class RoomNotDeletedException extends Exception {
+        public RoomNotDeletedException(String message) {
+            super(message);
+        }
+    }
+
+
 }

@@ -5,10 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.views.MainView;
+
+import java.io.IOException;
 
 public class RoomViewController {
 
@@ -23,21 +26,29 @@ public class RoomViewController {
      * Loads the menu layout into the scene, passes that scene into the stage.
      */
     @FXML
-    public void leaveRoomButtonPressed() throws Exception {
+    public void leaveRoomButtonPressed() {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
-        Scene mainScene = new Scene(root, 400, 400);
+        try {
 
-        MainView.getPrimaryStage().setScene(mainScene);
+            Parent root = null;
+            root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
+            Scene mainScene = new Scene(root, 400, 400);
+            MainView.getPrimaryStage().setScene(mainScene);
+            MainView.getPrimaryStage().centerOnScreen();
 
-        MainView.getPrimaryStage().centerOnScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
     public void endLectureButtonPressed() {
 
-        // Delete room from server
-        if (ServerCommunication.deleteRoom()) {
+        try {
+
+            // Delete room from server
+            ServerCommunication.deleteRoom();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Success");
@@ -45,15 +56,20 @@ public class RoomViewController {
             alert.setContentText("Room successfully deleted.");
             alert.showAndWait();
 
-        } else {
+            leaveRoomButtonPressed();
 
+        } catch (ServerCommunication.RoomNotDeletedException e) {
+
+            // Alert user room wasn't deleted
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
+            alert.setTitle("ERROR");
             alert.setHeaderText(null);
-            alert.setContentText("Something went wrong when deleting room.");
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
-        }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

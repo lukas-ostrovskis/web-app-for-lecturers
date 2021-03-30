@@ -57,10 +57,9 @@ public class RoomController {
      * Delete the room from the database.
      * @param userId - the id of the room.
      */
-    @GetMapping("delete")
+    @GetMapping("/delete")
     public String deleteRoom(@RequestParam String userId) {
-        roomService.deleteRoomByOwnerId(userId);
-        return "Deleted successfully!";
+        return roomService.deleteRoomByOwnerId(userId);
     }
 
 
