@@ -20,6 +20,10 @@
     -fx-selection-bar:#3697cf;
 }
 
+.listView {
+ -fx-background-color: linear-gradient(to bottom right, #45d5ff, #00a6d6);
+}
+
 .list-view:focused .list-cell:filled:focused:selected {
     -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-selection-bar;
     -fx-background-insets: 0, 1, 2;
