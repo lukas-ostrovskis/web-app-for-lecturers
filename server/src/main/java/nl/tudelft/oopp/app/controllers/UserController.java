@@ -28,7 +28,6 @@ public class UserController {
         this.dataLoader = dataLoader;
     }
 
-
     @GetMapping("/searchOrAdd")
     public User searchUsers(@RequestParam String email, @RequestParam String password, @RequestParam int role, @RequestParam String roomId) {
 
@@ -40,14 +39,13 @@ public class UserController {
             if(userService.findAllByEmailContains(email).size() == 0) {
                 User user = new User(null, email, "student", null);
                 userService.save(user, null);
-                roomService.joinRoom(roomId, user);
+                roomService.joinRoom(roomId, user.getId());
                 return user;
             }
 
             User user = userService.findByEmail(email);
             return user;
         }
-
         if(role == 2) {
 
             if(userService.findAllByEmailContains(email).size() != 0){
@@ -57,7 +55,6 @@ public class UserController {
                     User user = userService.findByEmail(email);
                     return user;
                 }
-
                 return empty;
             }
             User user = new User(null, email, "moderator", null);

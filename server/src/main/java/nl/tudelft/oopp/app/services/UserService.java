@@ -1,14 +1,10 @@
 package nl.tudelft.oopp.app.services;
 
 import nl.tudelft.oopp.app.entities.User;
-import nl.tudelft.oopp.app.repositories.RoomRepository;
 import nl.tudelft.oopp.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @Service

@@ -3,11 +3,11 @@ package nl.tudelft.oopp.app.entities;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import javax.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -56,6 +56,10 @@ public class User {
         this.ip = ip;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getId() {
         return id;
     }
@@ -74,10 +78,6 @@ public class User {
 
     public String getIp() {
         return ip;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     @Override

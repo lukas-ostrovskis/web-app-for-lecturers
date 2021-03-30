@@ -2,6 +2,8 @@ package nl.tudelft.oopp.app.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import javafx.scene.control.Alert;
 import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
 
@@ -164,6 +166,4 @@ public class ServerCommunication {
             super(message);
         }
     }
-
-
 }

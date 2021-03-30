@@ -57,15 +57,19 @@ public class RoomService {
      * Allows the client to join a room with a specific id if it exists in the database.
      * @param roomId - id of the room that the client is trying to access.
      */
-    public void joinRoom(String roomId, User user) {
+    public String joinRoom(String roomId, String userId) {
+
+        System.out.printf("User %s trying to join room %s", userId, roomId);
+        //Check if the room is expired
         Optional<Room> roomById = roomRepository.findById(roomId);
+        Optional<User> userById = userRepository.findById(roomId);
 
-        if(roomById.isPresent()) {
-            //TODO: pass real user info to the database
-            Random id = new Random(System.currentTimeMillis());
+        if(roomById.isPresent() && userById.isPresent()) {
 
-            roomById.get().addUser(user);
+            roomById.get().addUser(userById.get());
             roomRepository.save(roomById.get());
+            roomRepository.flush();
+            return roomById.get().getId();
         }
         else throw new IllegalStateException("Room doesn't exist");
     }

@@ -243,6 +243,7 @@ public class MainViewController {
 
     }
 
+
     /**
      * Handles pressing the createRoomButton
      * Communicates to the server to create a new room.
@@ -277,31 +278,16 @@ public class MainViewController {
      */
     public void joinRoomButtonPressed() throws Exception {
 
-        // Add user server-side
-        User user = ServerCommunication.findUsers(emailTextField.getText(), null, 1, roomIdTextField.getText());
-
-        // User returned by server is invalid, meaning they weren't added.
-        if (user == null) {
-            System.out.printf("User was not added:%s", user);
-            return;
-        }
-
-        // Create the user client-side
-        MainView.setUser(user);
-
-        String id = user.getId();
-        if(user.getEmail() != null){
-
-            // Make user join room server-side
-            String response = ServerCommunication.joinRoom(roomIdTextField.getText(), user);
-            if (response == null) {
-                System.out.printf("User could not be added to roomn %s", roomIdTextField.getText());
-                return;
-            }
+        try {
+            // Try creating the user
+            createUser();
 
             loadRoomView();
-        }
+        } catch (ServerCommunication.UserNotAddedException e) {
 
+            // if user could not be created server-side
+           presentError("Error!", e.getMessage());
+        }
     }
 
 

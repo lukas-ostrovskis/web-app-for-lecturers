@@ -16,6 +16,7 @@ import java.util.Random;
 @RequestMapping("room")
 public class RoomController {
 
+    private Random id = new Random(System.currentTimeMillis());
     private RoomService roomService;
 
     /**
@@ -49,7 +50,7 @@ public class RoomController {
         // Check whether the room is expired
         // if it is, return empty string.
 
-        roomService.joinRoom(roomId, user);
+        roomService.joinRoom(roomId, user.getId());
         return "Joined successfully!";
     }
 
