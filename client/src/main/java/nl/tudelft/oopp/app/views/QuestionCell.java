@@ -5,13 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.data.Question;
 
 
 import java.io.IOException;
 
 public class QuestionCell extends ListCell<Question> {
+
+
+    private String questionId;
 
     @FXML
     private Label user;
@@ -27,6 +30,14 @@ public class QuestionCell extends ListCell<Question> {
 
     @FXML
     private Button downvote;
+
+    @FXML
+    private Button deleteButton;
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
 
     public QuestionCell() {
         loadFXML();
@@ -53,10 +64,26 @@ public class QuestionCell extends ListCell<Question> {
             setContentDisplay(ContentDisplay.TEXT_ONLY);
         }
         else {
+            questionId = q.getId();
             content.setText(q.getContent());
             user.setText(q.getOwnerId());
             rating.setText(String.valueOf(q.getNumberOfUpvotes()-q.getNumberOfDownvotes()));
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
+    }
+
+    @FXML
+    public void upvoteButtonPressed(){
+        ServerCommunication.upvoteQuestionById(questionId);
+    }
+
+    @FXML
+    public void downvoteButtonPressed(){
+        ServerCommunication.downvoteQuestionById(questionId);
+    }
+
+    @FXML
+    public void deleteButtonPressed() {
+        ServerCommunication.deleteQuestion(questionId);
     }
 }
