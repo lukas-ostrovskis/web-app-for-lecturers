@@ -23,8 +23,8 @@ public class UserService {
         // If the user is a student, check if that email is already used
         if (user.getRole().equals("student")) {
             if(userRepo.existsByEmail(user.getEmail())) {
-                System.out.println("This E-Mail is already used");
-                return null;
+                System.out.println("Logging in " + user.getEmail());
+                return userRepo.findByEmail(user.getEmail());
             }
         }
 
