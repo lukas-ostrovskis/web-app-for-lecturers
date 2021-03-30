@@ -20,6 +20,14 @@ public class UserService {
 
     public User save(User user, String password) {
 
+        // If the user is a student, check if that email is already used
+        if (user.getRole().equals("student")) {
+            if(userRepo.existsByEmail(user.getEmail())) {
+                System.out.println("This E-Mail is already used");
+                return null;
+            }
+        }
+
         // If the user is a lecturer, check the password combination first
         if (user.getRole().equals("lecturer") && passwords.contains(password)) {
 
