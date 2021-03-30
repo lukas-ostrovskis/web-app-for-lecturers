@@ -44,9 +44,9 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                                <Button fx:id="upvote" mnemonicParsing="false" onAction="#upvoteButtonPressed" text="^" GridPane.halignment="CENTER" />
+                                <Button fx:id="upvote" disable="false" mnemonicParsing="false" onAction="#upvoteButtonPressed" text="^" GridPane.halignment="CENTER" />
                                 <Label fx:id="rating" prefHeight="20.0" text="rating" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                <Button fx:id="downvote" mnemonicParsing="false" onAction="#downvoteButtonPressed" style="-fx-rotate: 180;" text="^" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                <Button fx:id="downvote" disable="false" mnemonicParsing="false" onAction="#downvoteButtonPressed" style="-fx-rotate: 180;" text="^" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                     </children>

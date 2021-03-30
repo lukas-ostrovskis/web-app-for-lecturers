@@ -16,6 +16,8 @@ public class QuestionCell extends ListCell<Question> {
 
     private String questionId;
 
+    private int upvoted = 0;
+
     @FXML
     private Label user;
 
@@ -103,7 +105,16 @@ public class QuestionCell extends ListCell<Question> {
 
     @FXML
     public void upvoteButtonPressed() {
-        ServerCommunication.upvoteQuestionById(questionId);
+        if (upvoted <= 0) {
+            upvote.setDisable(false);
+            downvote.setDisable(false);
+            ServerCommunication.upvoteQuestionById(questionId);
+            upvoted ++;
+        }
+        if (upvoted > 0) {
+            upvote.setDisable(true);
+            downvote.setDisable(false);
+        }
     }
 
     /**
@@ -112,7 +123,16 @@ public class QuestionCell extends ListCell<Question> {
 
     @FXML
     public void downvoteButtonPressed() {
-        ServerCommunication.downvoteQuestionById(questionId);
+        if (upvoted >= 0) {
+            upvote.setDisable(false);
+            downvote.setDisable(false);
+            ServerCommunication.downvoteQuestionById(questionId);
+            upvoted --;
+        }
+        if (upvoted < 0) {
+            upvote.setDisable(false);
+            downvote.setDisable(true);
+        }
     }
 
     /**
