@@ -43,6 +43,13 @@ public class ServerCommunication {
         return response.body();
     }
 
+    /**
+     * Fetches all questions with the roomId provided
+     * @param roomId
+     * @return a list of questions with a certain roomId
+     * @throws IOException if communication with the server fails
+     */
+
     public static List<Question> fetchQuestionsByRoomId(String roomId) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -61,6 +68,11 @@ public class ServerCommunication {
         return mapper.readValue(response.body(), new TypeReference<List<Question>>(){});
     }
 
+    /**
+     * Upvotes the question with the questionId
+     * @param questionId
+     */
+
     public static void upvoteQuestionById(String questionId) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/upvote/" + questionId)).build();
         HttpResponse<String> response = null;
@@ -74,6 +86,10 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Downvotes the question with the questionId
+     * @param questionId
+     */
 
     public static void downvoteQuestionById(String questionId) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/downvote/" + questionId)).build();
@@ -87,6 +103,11 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
+
+    /**
+     * Sends a question to the server
+     * @param question
+     */
 
     public static void askQuestion(Question question){
         ObjectMapper objectMapper = new ObjectMapper();
@@ -113,6 +134,11 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Sends a request to the server to delete the question with the questionId provided
+     * @param questionId
+     */
+
     public static void deleteQuestion(String questionId){
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/question/delete/" + questionId))
@@ -129,8 +155,22 @@ public class ServerCommunication {
             }
     }
 
-    public static void markAsAnswered() {
+    /**
+     * Toggles the status of the question
+     * @param questionId
+     */
 
+    public static void toggleStatus(String questionId) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/toggleStatus/" + questionId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
     }
 
     public static String joinRoom(String id) {

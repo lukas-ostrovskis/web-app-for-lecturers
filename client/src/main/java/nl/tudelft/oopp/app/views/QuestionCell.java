@@ -2,12 +2,12 @@ package nl.tudelft.oopp.app.views;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.data.Question;
-
 
 import java.io.IOException;
 
@@ -26,6 +26,9 @@ public class QuestionCell extends ListCell<Question> {
     private Label rating;
 
     @FXML
+    private Button toggleStatus;
+
+    @FXML
     private Button upvote;
 
     @FXML
@@ -34,14 +37,24 @@ public class QuestionCell extends ListCell<Question> {
     @FXML
     private Button deleteButton;
 
-    public String getQuestionId() {
-        return questionId;
-    }
-
+    @FXML
+    private Label answered;
 
     public QuestionCell() {
         loadFXML();
     }
+
+    /**
+     * @returns the Id of the question une the current cell
+     */
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    /**
+     * Loads the fxml QuestionCell file
+     */
 
     private void loadFXML() {
         try {
@@ -49,41 +62,74 @@ public class QuestionCell extends ListCell<Question> {
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Updates the cell with the current properties of the question
+     * @param q The question contained in the cell
+     * @param empty
+     */
 
     @Override
     protected void updateItem(Question q, boolean empty) {
         super.updateItem(q, empty);
 
-        if(empty || q == null) {
+        if (empty || q == null) {
             setText(null);
             setContentDisplay(ContentDisplay.TEXT_ONLY);
-        }
-        else {
+        } else {
+            if (q.isStatus()){
+                toggleStatus.setText("Mark as not answered");
+                answered.setVisible(true);
+            }
+            else {
+                toggleStatus.setText("Mark as answered");
+                answered.setVisible(false);
+            }
             questionId = q.getId();
             content.setText(q.getContent());
             user.setText(q.getOwnerId());
-            rating.setText(String.valueOf(q.getNumberOfUpvotes()-q.getNumberOfDownvotes()));
+            rating.setText(String.valueOf(q.getNumberOfUpvotes() - q.getNumberOfDownvotes()));
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
     }
 
+    /**
+     * Handles clicking the upvote button
+     */
+
     @FXML
-    public void upvoteButtonPressed(){
+    public void upvoteButtonPressed() {
         ServerCommunication.upvoteQuestionById(questionId);
     }
 
+    /**
+     * Handles clicking the downvote button
+     */
+
     @FXML
-    public void downvoteButtonPressed(){
+    public void downvoteButtonPressed() {
         ServerCommunication.downvoteQuestionById(questionId);
     }
+
+    /**
+     * Handles clicking the delete button
+     */
 
     @FXML
     public void deleteButtonPressed() {
         ServerCommunication.deleteQuestion(questionId);
+    }
+
+    /**
+     * Handles clicking the "mark as answered" button
+     */
+
+    @FXML
+    public void toggleButtonPressed() {
+        ServerCommunication.toggleStatus(questionId);
     }
 }

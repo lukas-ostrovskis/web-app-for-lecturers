@@ -38,6 +38,13 @@ public class RoomViewController implements Initializable {
 
     }
 
+    /**
+     * Initializes the roomview  with the questions
+     * Sets a timeline to fetch questions and order them every 2 seconds
+     * @param location
+     * @param resources
+     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -110,11 +117,20 @@ public class RoomViewController implements Initializable {
         MainView.getPrimaryStage().centerOnScreen();
     }
 
+    /**
+     * Handles pressing the ask question button
+     */
+
     @FXML
     public void askQuestionButtonPressed() {
         //TODO add the question to the specific room you're in. And pass the real ownerId
         ServerCommunication.askQuestion(new Question("1234", "1", questionText.getText(), 0, 0, false, ""));
     }
+
+    /**
+     * Fetches all questions from the server and displays them
+     * @throws IOException
+     */
 
     @FXML
     public void fetchQuestions() throws IOException {
