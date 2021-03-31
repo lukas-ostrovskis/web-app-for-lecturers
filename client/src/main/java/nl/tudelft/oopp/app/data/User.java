@@ -21,10 +21,10 @@ public class User {
      * @param email of user
      * @param role of user
      */
-    public User(String email, String role) {
+    public User(String email, String role, String name) {
         this.email = email;
         this.role = role;
-
+        this.name = name;
         try (final DatagramSocket socket = new DatagramSocket()) {
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
             ip = socket.getLocalAddress().getHostAddress();

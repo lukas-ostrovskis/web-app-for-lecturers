@@ -30,6 +30,7 @@ public class MainViewController {
     public static final int IDENTITY_MODERATOR = 2;
     public static final int IDENTITY_LECTURER = 3;
 
+
     /**
      * The default identity is set to student.
      */
@@ -41,6 +42,8 @@ public class MainViewController {
     @FXML
     private TextField emailTextField;
 
+    @FXML
+    private TextField userNameTextField;
     @FXML
     private Button identityButton;
 
@@ -68,6 +71,8 @@ public class MainViewController {
     @FXML
     private Label identityLabel;
 
+    @FXML
+    private Label usernameLabel;
     /**
      * Loads the layout for the specified identity.
      */
@@ -95,6 +100,12 @@ public class MainViewController {
 
             createRoomButton.setVisible(false);
             createRoomButton.setManaged(false);
+
+            usernameLabel.setVisible(true);
+            usernameLabel.setManaged(true);
+
+            userNameTextField.setVisible(true);
+            userNameTextField.setManaged(true);
         }
         /*
          * Load the layout for moderator.
@@ -116,6 +127,12 @@ public class MainViewController {
 
             joinRoomButton.setVisible(true);
             joinRoomButton.setManaged(true);
+
+            usernameLabel.setVisible(false);
+            usernameLabel.setManaged(false);
+
+            userNameTextField.setVisible(false);
+            userNameTextField.setManaged(false);
 
             createRoomButton.setVisible(false);
             createRoomButton.setManaged(false);
@@ -281,7 +298,6 @@ public class MainViewController {
         try {
             // Try creating the user
             createUser();
-
             loadRoomView();
         } catch (ServerCommunication.UserNotAddedException e) {
 
@@ -303,7 +319,7 @@ public class MainViewController {
         }
 
         // Client-side user
-        User user = new User(emailTextField.getText(), identity);
+        User user = new User(emailTextField.getText(), identity, userNameTextField.getText());
         System.out.printf(" > Created client-side user (%s)\n", currentIdentity);
 
         // Create the server-side user

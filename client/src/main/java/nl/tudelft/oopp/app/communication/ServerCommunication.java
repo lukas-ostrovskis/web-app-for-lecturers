@@ -82,7 +82,7 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return new User(null, null);
+            return new User(null, null, null);
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode() + " from findUsers method.");
