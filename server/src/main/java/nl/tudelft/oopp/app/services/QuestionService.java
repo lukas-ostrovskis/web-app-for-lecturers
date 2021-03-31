@@ -64,18 +64,21 @@ public class QuestionService {
      * @param questionId the question id
      */
     public Question upvoteQuestionById(String questionId, String userId) {
-        User user = userRepository.getOne(userId);
         Question question = questionRepository.findById(questionId).get();
-        if (question.getDownvoters().contains(user)){
-            question.getDownvoters().remove(user);
+        if (contains(question.getDownvoters(),userId)){
+            question.getDownvoters().remove(userRepository.getOne(userId));
             question.setNumberOfDownvotes(question.getNumberOfDownvotes()-1);
         }
-        if (!question.getUpvoters().contains(user)){
+        if (!contains(question.getUpvoters(),userId)){
             question.upvote();
-            question.getUpvoters().add(user);
+            question.getUpvoters().add(userRepository.getOne(userId));
             questionRepository.save(question);
         } else {question.setNumberOfUpvotes(question.getNumberOfUpvotes()-1);}
         return question;
+    }
+
+    public boolean contains(final List<User> list, final String userId){
+        return list.stream().filter(o -> o.getId().equals(userId)).findFirst().isPresent();
     }
 
     /**
@@ -84,15 +87,14 @@ public class QuestionService {
      * @param questionId the question id
      */
     public Question downvoteQuestionById(String questionId, String userId) {
-        User user = userRepository.getOne(userId);
         Question question = questionRepository.findById(questionId).get();
-        if (question.getUpvoters().contains(user)){
-            question.getUpvoters().remove(user);
+        if (contains(question.getUpvoters(),userId)){
+            question.getUpvoters().remove(userRepository.getOne(userId));
             question.setNumberOfUpvotes(question.getNumberOfUpvotes()-1);
         }
-        if (!question.getDownvoters().contains(user)){
+        if (!contains(question.getDownvoters(),userId)){
             question.downvote();
-            question.getDownvoters().add(user);
+            question.getDownvoters().add(userRepository.getOne(userId));
             questionRepository.save(question);
         } else {question.setNumberOfDownvotes(question.getNumberOfDownvotes()-1);}
         return question;

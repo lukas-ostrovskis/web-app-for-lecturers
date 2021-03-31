@@ -20,6 +20,9 @@ public class Question {
     @Column(name = "ownerId")
     private String ownerId;
 
+    @Column(name = "ownerName")
+    private String ownerName;
+
     @Column(name = "roomId")
     private String roomId;
 
@@ -59,9 +62,10 @@ public class Question {
      * @param status            the status
      * @param answer            the answer
      */
-    public Question(String ownerId, String roomId, String content,
+    public Question(String ownerId, String ownerName, String roomId, String content,
                     int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
         this.ownerId = ownerId;
+        this.ownerName = ownerName;
         this.roomId = roomId;
         this.content = content;
         this.numberOfUpvotes = numberOfUpvotes;
@@ -82,10 +86,11 @@ public class Question {
      * @param status            the status
      * @param answer            the answer
      */
-    public Question(String id, String ownerId, String roomId, String content,
+    public Question(String id, String ownerId, String ownerName, String roomId, String content,
                     int numberOfUpvotes, int numberOfDownvotes, boolean status, String answer) {
         this.id = id;
         this.ownerId = ownerId;
+        this.ownerName = ownerName;
         this.roomId = roomId;
         this.content = content;
         this.numberOfUpvotes = numberOfUpvotes;
@@ -250,5 +255,9 @@ public class Question {
                 roomId.equals(question.roomId) &&
                 content.equals(question.content) &&
                 answer.equals(question.answer);
+    }
+
+    public String getOwnerName() {
+        return ownerName;
     }
 }

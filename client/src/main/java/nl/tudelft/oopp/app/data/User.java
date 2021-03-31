@@ -9,8 +9,8 @@ public class User {
     private String email;
     private String role;
     private String ip;
-    private List<User> upvotedQuestions;
-    private List<User> downvotedQuestions;
+    private List<Question> upvotedQuestions;
+    private List<Question> downvotedQuestions;
 
     public User(){
 
@@ -54,11 +54,11 @@ public class User {
         return ip;
     }
 
-    public List<User> getUpvotedQuestions() {
+    public List<Question> getUpvotedQuestions() {
         return upvotedQuestions;
     }
 
-    public List<User> getDownvotedQuestions() {
+    public List<Question> getDownvotedQuestions() {
         return downvotedQuestions;
     }
 

@@ -62,61 +62,61 @@ public class QuestionController {
     }
 
     /**
-     * GET Endpoint to toggle question status.
+     * PUT Endpoint to toggle question status.
      * True - Answered
      * False - Unanswered
      * @param questionId the question id
-     * @return the instance of the Question entity with toggled status in json format
+     * @return String
      */
-    @GetMapping(value = "/toggleStatus/{questionId}")
-    public Question toggleQuestionStatus(@PathVariable String questionId) {
+    @PutMapping(value = "/toggleStatus/{questionId}")
+    public String toggleQuestionStatus(@PathVariable String questionId) {
         try {
-            return questionService.toggleQuestionStatus(questionId);
+            questionService.toggleQuestionStatus(questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return "Question's id: " + questionId + " status was toggled successfully";
     }
 
     /**
-     * GET Endpoint to upvote question by id string.
+     * PUT Endpoint to upvote question by id string.
      *
      * @param questionId the question id
-     * @return instance of the upvoted Question entity in json format
+     * @return String
      */
-    @GetMapping (value = "/upvote")
-    public Question upvoteQuestionById(@RequestParam String questionId, @RequestParam String userId) {
+    @PutMapping (value = "/upvote")
+    public String upvoteQuestionById(@RequestParam String questionId, @RequestParam String userId) {
         try {
-            return questionService.upvoteQuestionById(questionId,userId);
+            questionService.upvoteQuestionById(questionId,userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return "Question id: " + questionId + " upvoted  successfully";
     }
 
     /**
-     * GET Endpoint to downvote question by id string.
+     * PUT Endpoint to downvote question by id string.
      *
      * @param questionId the question id
-     * @return instance of the downvoted Question entity in json format
+     * @return String
      */
-    @GetMapping(value = "/downvote")
-    public Question downvoteQuestionById(@RequestParam String questionId,@RequestParam String userId) {
+    @PutMapping(value = "/downvote")
+    public String downvoteQuestionById(@RequestParam String questionId, @RequestParam String userId) {
         try {
-            return questionService.downvoteQuestionById(questionId,userId);
+            questionService.downvoteQuestionById(questionId,userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return "Question id: " + questionId + " downvoted successfully";
     }
 
     /**
-     * POST Endpoint to delete question from the database by id string.
+     * DELETE Endpoint to delete question from the database by id string.
      *
      * @param questionId the question id
-     * @return the string
+     * @return String
      */
-    @PostMapping(value = "/delete/{questionId}")
+    @DeleteMapping(value = "/delete/{questionId}")
     public String deleteQuestionById(@PathVariable String questionId) {
         try {
             questionService.deleteQuestion(questionId);
@@ -127,11 +127,11 @@ public class QuestionController {
     }
 
     /**
-     * POST Endpoint to delete all question from the room by it's ID
+     * DELETE Endpoint to delete all question from the room by it's ID
      * @param roomId ID of the room
-     * @return
+     * @return String
      */
-    @PostMapping(value = "/deleteAllByRoomId/{roomId}")
+    @DeleteMapping(value = "/deleteAllByRoomId/{roomId}")
     public String deleteAllQuestionByRoomId(@PathVariable String roomId) {
         try {
             questionService.deleteAllQuestionByRoomId(roomId);
@@ -143,12 +143,12 @@ public class QuestionController {
     }
 
     /**
-     * POST Endpoint Add question to the database.
+     * PUT Endpoint Add question to the database.
      *
      * @param question the question
-     * @return the string
+     * @return String
      */
-    @PostMapping(
+    @PutMapping(
             value = "/add",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )

@@ -9,8 +9,10 @@ import javafx.scene.control.ListCell;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.controllers.RoomViewController;
 import nl.tudelft.oopp.app.data.Question;
+import nl.tudelft.oopp.app.data.User;
 
 import java.io.IOException;
+import java.util.List;
 
 public class QuestionCell extends ListCell<Question> {
 
@@ -30,10 +32,10 @@ public class QuestionCell extends ListCell<Question> {
     private Button toggleStatus;
 
     @FXML
-    private Button upvote;
+    private Button upvoteButton;
 
     @FXML
-    private Button downvote;
+    private Button downvoteButton;
 
     @FXML
     private Button deleteButton;
@@ -90,12 +92,26 @@ public class QuestionCell extends ListCell<Question> {
                 toggleStatus.setText("Mark as answered");
                 answered.setVisible(false);
             }
+            if(contains(q.getUpvoters(),RoomViewController.getCurrentUser().getId())){
+                this.upvoteButton.setDisable(true);
+                this.downvoteButton.setDisable(false);
+            } else if(contains(q.getDownvoters(),RoomViewController.getCurrentUser().getId())){
+                this.downvoteButton.setDisable(true);
+                this.upvoteButton.setDisable(false);
+            } else {
+                this.downvoteButton.setDisable(false);
+                this.upvoteButton.setDisable(false);
+            }
             questionId = q.getId();
             content.setText(q.getContent());
-            user.setText(q.getOwnerId());
+            user.setText(q.getOwnerName());
             rating.setText(String.valueOf(q.getNumberOfUpvotes() - q.getNumberOfDownvotes()));
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
+    }
+
+    public boolean contains(final List<User> list, final String userId){
+        return list.stream().filter(o -> o.getId().equals(userId)).findFirst().isPresent();
     }
 
     /**
@@ -104,7 +120,7 @@ public class QuestionCell extends ListCell<Question> {
 
     @FXML
     public void upvoteButtonPressed() {
-        ServerCommunication.upvoteQuestionById(questionId, RoomViewController.getCurrentUser().getId());
+        ServerCommunication.upvoteQuestionById(this.questionId, RoomViewController.getCurrentUser().getId());
     }
 
     /**
@@ -113,7 +129,7 @@ public class QuestionCell extends ListCell<Question> {
 
     @FXML
     public void downvoteButtonPressed() {
-        ServerCommunication.downvoteQuestionById(questionId, RoomViewController.getCurrentUser().getId());
+        ServerCommunication.downvoteQuestionById(this.questionId, RoomViewController.getCurrentUser().getId());
     }
 
     /**

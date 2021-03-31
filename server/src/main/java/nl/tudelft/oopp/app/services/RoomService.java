@@ -41,7 +41,7 @@ public class RoomService {
         if(roomById.isPresent()) {
             //TODO: pass real user info to the database
             Random id = new Random(System.currentTimeMillis());
-            User user = new User(Integer.toString(id.nextInt(), 16), "TestName", "test@testmail.com", "student", "24.241.241.21.24");
+            User user = new User("TestName", "test@testmail.com", "student", "24.241.241.21.24");
             userRepository.save(user);
 
             roomById.get().addUser(user);

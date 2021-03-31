@@ -135,7 +135,14 @@ public class RoomViewController implements Initializable {
     @FXML
     public void askQuestionButtonPressed() {
         //TODO add the question to the specific room you're in.
-        ServerCommunication.askQuestion(new Question(currentUser.getId(), "1", questionText.getText(), 0, 0, false, ""));
+        ServerCommunication.askQuestion(new Question(currentUser.getId(),
+                currentUser.getName(),
+                "1",
+                questionText.getText(),
+                0,
+                0,
+                false,
+                ""));
     }
 
     /**
