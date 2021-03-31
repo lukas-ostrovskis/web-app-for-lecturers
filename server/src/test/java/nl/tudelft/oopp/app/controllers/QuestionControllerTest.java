@@ -60,6 +60,7 @@ class QuestionControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content( "{ " +
                 "\"ownerId\": \"testOwnerId\"," +
+                "\"ownerName\": \"testOwnerName\"," +
                 "\"roomId\": \"testRoomId\"," +
                 "\"content\": \"Second q\"," +
                 "\"numberOfUpvotes\": 5, \"numberOfDownvotes\": 5," +
@@ -138,7 +139,7 @@ class QuestionControllerTest {
     @Order(5)
     void upvoteQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/upvote/" + id)
+            .put("/question/upvote?questionId=" + id + "&userId=testOwnerId")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 //            .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
@@ -157,7 +158,7 @@ class QuestionControllerTest {
     @Order(6)
     void downvoteQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/downvote/" + id)
+            .put("/question/downvote?questionId=" + id + "&userId=testOwnerId")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 //            .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
@@ -183,8 +184,6 @@ class QuestionControllerTest {
             .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
             .andExpect(jsonPath("$.content", is("Second q")))
             .andExpect(jsonPath("$.roomId", is("testRoomId")))
-            .andExpect(jsonPath("$.numberOfUpvotes", is(6)))
-            .andExpect(jsonPath("$.numberOfDownvotes", is(6)))
             .andExpect(jsonPath("$.status", is(true)))
             .andExpect(jsonPath("$.answer", is("yes smth")));
     }
