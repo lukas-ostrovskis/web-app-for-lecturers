@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class ServerCommunicationTest {
 
     @Test
-    public void testRoomCreate() {
-        assertNotNull(ServerCommunication.getRoomId());
+    public void getRoomIdTest() {
+
     }
 }

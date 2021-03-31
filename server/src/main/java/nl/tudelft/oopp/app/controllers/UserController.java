@@ -3,8 +3,11 @@ package nl.tudelft.oopp.app.controllers;
 import java.util.*;
 import java.util.List;
 
+import nl.tudelft.oopp.app.DatabaseLoader;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.UserRepository;
+import nl.tudelft.oopp.app.services.RoomService;
+import nl.tudelft.oopp.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,26 +15,71 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
-    public List<String> passwords = new ArrayList<String>(Arrays.asList("12345", "0000"));
+    private final UserService userService;
+    private final RoomService roomService;
+
+    private final DatabaseLoader dataLoader;
+    public List<String> passwords = List.of("12345");
+
     @Autowired
-    private UserRepository repository;
-
-    @GetMapping("/searchOrAdd")
-    public List<User> searchUsers(@RequestParam String email, @RequestParam String password) {
-
-        if(repository.findAllByEmailContains(email).size() == 0){
-            User user = new User(null, email, "student", null);
-            if(passwords.contains(password)){
-                user.setRole("lecturer");
-            }
-            repository.save(user);
-        }
-        if(passwords.contains(password)){
-            //to be added
-        }
-        return repository.findAllByEmailContains(email);
+    public UserController(UserService userService, RoomService roomService, DatabaseLoader dataLoader) {
+        this.userService = userService;
+        this.roomService = roomService;
+        this.dataLoader = dataLoader;
     }
 
+    @GetMapping("/searchOrAdd")
+    public User searchUsers(@RequestParam String email, @RequestParam String password, @RequestParam int role, @RequestParam String roomId) {
 
+        dataLoader.loadUsers();
+        User empty = new User(null, null, null, null);
+
+        if (role == 1){
+
+            if(userService.findAllByEmailContains(email).size() == 0) {
+                User user = new User(null, email, "student", null);
+                userService.save(user, null);
+                roomService.joinRoom(roomId, user.getId());
+                return user;
+            }
+
+            User user = userService.findByEmail(email);
+            return user;
+        }
+        if(role == 2) {
+
+            if(userService.findAllByEmailContains(email).size() != 0){
+
+                if(passwords.contains(password)){
+
+                    User user = userService.findByEmail(email);
+                    return user;
+                }
+                return empty;
+            }
+            User user = new User(null, email, "moderator", null);
+            if(passwords.contains(password)){
+                userService.save(user, null);
+                return user;
+            }
+            return empty;
+        }
+        if(role == 3) {
+            if(userService.findAllByEmailContains(email).size() != 0){
+                if(passwords.contains(password)){
+                    User user = userService.findByEmail(email);
+                    return user;
+                }
+                return empty;
+            }
+            return empty;
+        }
+        return empty;
+    }
+
+    @PostMapping ("/add")
+    public User addUser(@RequestBody User user, @RequestParam String password) {
+        return userService.save(user, password);
+    }
 
 }

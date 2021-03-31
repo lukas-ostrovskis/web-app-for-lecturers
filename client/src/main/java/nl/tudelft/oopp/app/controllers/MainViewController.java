@@ -15,7 +15,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import nl.tudelft.oopp.app.communication.ServerCommunication;
+import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
+
+import java.io.IOException;
 
 public class MainViewController {
 
@@ -30,6 +34,12 @@ public class MainViewController {
      * The default identity is set to student.
      */
     private int currentIdentity = IDENTITY_STUDENT;
+
+    @FXML
+    private Label emailLabel;
+
+    @FXML
+    private TextField emailTextField;
 
     @FXML
     private Button identityButton;
@@ -50,13 +60,19 @@ public class MainViewController {
     private GridPane dataFieldsGridPane;
 
     @FXML
-    private Button actionButton;
+    private Button joinRoomButton;
+
+    @FXML
+    private Button createRoomButton;
+
+    @FXML
+    private Label identityLabel;
 
     /**
      * Loads the layout for the specified identity.
      */
     public void setIdentity(int identityConstant) {
-        /**
+        /*
          * Load the layout for student.
          */
         if (identityConstant == IDENTITY_STUDENT) {
@@ -72,11 +88,15 @@ public class MainViewController {
             roomIdTextField.setVisible(true);
             roomIdTextField.setManaged(true);
 
-            dataFieldsGridPane.setVgap(0);
+            dataFieldsGridPane.setVgap(25);
 
-            actionButton.setText("Join Room");
+            joinRoomButton.setVisible(true);
+            joinRoomButton.setManaged(true);
+
+            createRoomButton.setVisible(false);
+            createRoomButton.setManaged(false);
         }
-        /**
+        /*
          * Load the layout for moderator.
          */
         else if (identityConstant == IDENTITY_MODERATOR) {
@@ -94,9 +114,13 @@ public class MainViewController {
 
             dataFieldsGridPane.setVgap(25);
 
-            actionButton.setText("Join Room");
+            joinRoomButton.setVisible(true);
+            joinRoomButton.setManaged(true);
+
+            createRoomButton.setVisible(false);
+            createRoomButton.setManaged(false);
         }
-        /**
+        /*
          * Load the layout for lecturer.
          */
         else {
@@ -112,18 +136,21 @@ public class MainViewController {
             roomIdTextField.setVisible(false);
             roomIdTextField.setManaged(false);
 
-            dataFieldsGridPane.setVgap(0);
+            dataFieldsGridPane.setVgap(12.5);
 
-            actionButton.setText("Create Room");
+            joinRoomButton.setVisible(false);
+            joinRoomButton.setManaged(false);
+
+            createRoomButton.setVisible(true);
+            createRoomButton.setManaged(true);
         }
     }
 
     /**
      * Changes the identity & updates the layout.
      */
-    @FXML
     public void identityButtonPressed(ActionEvent event) {
-        /**
+        /*
          * Change the current identity.
          */
         if (currentIdentity == IDENTITY_STUDENT) {
@@ -136,7 +163,7 @@ public class MainViewController {
             currentIdentity = IDENTITY_STUDENT;
         }
 
-        /**
+        /*
          * Update the layout.
          */
         setIdentity(currentIdentity);
@@ -150,7 +177,7 @@ public class MainViewController {
     public void initialize() {
         setIdentity(currentIdentity);
 
-        /**
+        /*
          * Animates the background gradient in the menu.
          * Source: https://stackoverflow.com/questions/24587342/how-to-animate-lineargradient-on-javafx
          */
@@ -175,26 +202,128 @@ public class MainViewController {
     }
 
     /**
-     * Handles pressing the actionButton
-     * Loads the room layout into the scene, passes that scene into the stage.
+     * It loads the MainView scene.
+     * @throws IOException if it cant load correctly
      */
-    @FXML
-    public void actionButtonPressed() throws Exception {
-        /**
-         * Create a new scene and load the layout from RoomView.fxml into the scene graph.
+    public void loadMainView() throws IOException {
+
+        /* Create a new scene and load the layout from MainView.fxml into the scene graph.
+         */
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
+        Scene mainViewScene = new Scene(root);
+
+        /* Load the roomScene into the primaryStage of MainView.
+         */
+        MainView.getPrimaryStage().setScene(mainViewScene);
+
+        /* Re-centers the stage on screen.
+         */
+        MainView.getPrimaryStage().centerOnScreen();
+
+    }
+
+    /**
+     * It loads the RoomView scene.
+     * @throws IOException if it cant load correctly
+     */
+    public void loadRoomView() throws IOException {
+
+        /* Create a new scene and load the layout from RoomView.fxml into the scene graph.
          */
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/RoomView.fxml"));
 
+        /* Load the roomScene into the primaryStage of RoomView.
+         */
         Scene roomScene = new Scene(root);
 
-        /**
-         * Load the roomScene into the primaryStage of MainView.
+        /* Re-centers the stage on screen.
          */
         MainView.getPrimaryStage().setScene(roomScene);
-
-        /**
-         * Recenters the stage on screen.
-         */
         MainView.getPrimaryStage().centerOnScreen();
+
+    }
+
+
+    /**
+     * Handles pressing the createRoomButton
+     * Communicates to the server to create a new room.
+     * It requires the E-Mail and the password of a lecturer.
+     */
+    public void createRoomButtonPressed() throws Exception {
+
+        try {
+
+            // Try creating a user
+            createUser();
+
+            // Try creating room
+            String roomId = ServerCommunication.createRoom(passwordField.getText());
+            System.out.printf(" > Created server-side room (id: %s)\n", roomId);
+            MainView.setRoomId(roomId);
+
+            loadRoomView();
+
+        } catch (ServerCommunication.UserNotAddedException
+                | ServerCommunication.RoomNotAddedException e) {
+
+            // If user could not be created server-side
+            presentError("Error!", e.getMessage());
+        }
+    }
+
+    /**
+     * Handles pressing the joinRoomButton
+     * Communicates to the server to join to an existing room.
+     * It requires the E-Mail and the roomId that the user wants to get in.
+     */
+    public void joinRoomButtonPressed() throws Exception {
+
+        try {
+            // Try creating the user
+            createUser();
+
+            loadRoomView();
+        } catch (ServerCommunication.UserNotAddedException e) {
+
+            // if user could not be created server-side
+           presentError("Error!", e.getMessage());
+        }
+    }
+
+
+    private void createUser() throws ServerCommunication.UserNotAddedException {
+
+        // Parse identity
+        String identity;
+        switch (currentIdentity) {
+            case IDENTITY_LECTURER: identity = "lecturer"; break;
+            case IDENTITY_MODERATOR: identity = "moderator"; break;
+            case IDENTITY_STUDENT: identity = "student"; break;
+            default: throw new ServerCommunication.UserNotAddedException("invalid role.");
+        }
+
+        // Client-side user
+        User user = new User(emailTextField.getText(), identity);
+        System.out.printf(" > Created client-side user (%s)\n", currentIdentity);
+
+        // Create the server-side user
+        user = ServerCommunication.addUser(user, passwordField.getText());
+        System.out.printf(" > Created server-side user (id: %s)\n", user.getId());
+
+        // And update the client-side user with the new user (containing id)
+        MainView.setUser(user);
+    }
+
+    /**
+     * Helper method for displaying errors.
+     * @param err error type
+     * @param msg error message
+     */
+    private void presentError(String err, String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(err);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }
