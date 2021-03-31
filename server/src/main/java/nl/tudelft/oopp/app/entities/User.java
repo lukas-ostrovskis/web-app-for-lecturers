@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +22,14 @@ public class User {
 
     @Column(name = "ip")
     private String ip;
+
+    @ManyToMany
+    private List<Question> upvotedQuestions;
+
+    @ManyToMany
+    private List<Question> downvotedQuestions;
+
+
 
     /**
      * Instantiates a new User.
@@ -76,6 +85,13 @@ public class User {
         return ip;
     }
 
+    public List<Question> getUpvotedQuestions() {
+        return upvotedQuestions;
+    }
+
+    public List<Question> getDownvotedQuestions() {
+        return downvotedQuestions;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

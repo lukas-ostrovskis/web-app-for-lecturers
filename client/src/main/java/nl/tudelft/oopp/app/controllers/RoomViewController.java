@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.data.Question;
+import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
 import nl.tudelft.oopp.app.views.QuestionCell;
 
@@ -25,6 +26,7 @@ import java.util.ResourceBundle;
 
 public class RoomViewController implements Initializable {
 
+
     @FXML
     private ListView<Question> questionsListView;
 
@@ -32,6 +34,8 @@ public class RoomViewController implements Initializable {
 
     @FXML
     private TextField questionText;
+
+    private static User currentUser = new User("1", "William", "email", "lecturer", "1234");
 
     public RoomViewController() {
         questions = FXCollections.observableArrayList();
@@ -118,13 +122,20 @@ public class RoomViewController implements Initializable {
     }
 
     /**
+     * @returns the current user
+     */
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    /**
      * Handles pressing the ask question button
      */
 
     @FXML
     public void askQuestionButtonPressed() {
-        //TODO add the question to the specific room you're in. And pass the real ownerId
-        ServerCommunication.askQuestion(new Question("1234", "1", questionText.getText(), 0, 0, false, ""));
+        //TODO add the question to the specific room you're in.
+        ServerCommunication.askQuestion(new Question(currentUser.getId(), "1", questionText.getText(), 0, 0, false, ""));
     }
 
     /**

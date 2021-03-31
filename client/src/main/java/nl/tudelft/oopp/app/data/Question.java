@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.data;
 
 import java.time.Instant;
+import java.util.List;
 
 public class Question {
 
@@ -13,7 +14,8 @@ public class Question {
     private boolean status;
     private String answer;
     private Instant creationTimestamp;
-
+    private List<User> upvoters;
+    private List<User> downvoters;
 
     /**
      * Instantiates a new Question.
@@ -75,6 +77,22 @@ public class Question {
      */
     public String getId() {
         return id;
+    }
+
+    public List<User> getUpvoters() {
+        return upvoters;
+    }
+
+    public void setUpvoters(List<User> upvoters) {
+        this.upvoters = upvoters;
+    }
+
+    public List<User> getDownvoters() {
+        return downvoters;
+    }
+
+    public void setDownvoters(List<User> downvoters) {
+        this.downvoters = downvoters;
     }
 
     /**

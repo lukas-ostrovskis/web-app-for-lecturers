@@ -84,10 +84,10 @@ public class QuestionController {
      * @param questionId the question id
      * @return instance of the upvoted Question entity in json format
      */
-    @GetMapping (value = "/upvote/{questionId}")
-    public Question upvoteQuestionById(@PathVariable String questionId) {
+    @GetMapping (value = "/upvote")
+    public Question upvoteQuestionById(@RequestParam String questionId, @RequestParam String userId) {
         try {
-            return questionService.upvoteQuestionById(questionId);
+            return questionService.upvoteQuestionById(questionId,userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,10 +100,10 @@ public class QuestionController {
      * @param questionId the question id
      * @return instance of the downvoted Question entity in json format
      */
-    @GetMapping(value = "/downvote/{questionId}")
-    public Question downvoteQuestionById(@PathVariable String questionId) {
+    @GetMapping(value = "/downvote")
+    public Question downvoteQuestionById(@RequestParam String questionId,@RequestParam String userId) {
         try {
-            return questionService.downvoteQuestionById(questionId);
+            return questionService.downvoteQuestionById(questionId,userId);
         } catch (Exception e) {
             e.printStackTrace();
         }

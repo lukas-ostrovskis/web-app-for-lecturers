@@ -73,8 +73,8 @@ public class ServerCommunication {
      * @param questionId
      */
 
-    public static void upvoteQuestionById(String questionId) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/upvote/" + questionId)).build();
+    public static void upvoteQuestionById(String questionId, String userId) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/upvote?questionId=" + questionId + "&userId=" + userId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -91,8 +91,8 @@ public class ServerCommunication {
      * @param questionId
      */
 
-    public static void downvoteQuestionById(String questionId) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/downvote/" + questionId)).build();
+    public static void downvoteQuestionById(String questionId, String userId) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/downvote?questionId=" + questionId + "&userId=" + userId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

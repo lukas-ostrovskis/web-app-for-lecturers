@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.app.data;
 
+import java.util.List;
+
 public class User {
 
     private String id;
@@ -7,6 +9,8 @@ public class User {
     private String email;
     private String role;
     private String ip;
+    private List<User> upvotedQuestions;
+    private List<User> downvotedQuestions;
 
     public User(){
 
@@ -48,6 +52,14 @@ public class User {
 
     public String getIp() {
         return ip;
+    }
+
+    public List<User> getUpvotedQuestions() {
+        return upvotedQuestions;
+    }
+
+    public List<User> getDownvotedQuestions() {
+        return downvotedQuestions;
     }
 
     @Override

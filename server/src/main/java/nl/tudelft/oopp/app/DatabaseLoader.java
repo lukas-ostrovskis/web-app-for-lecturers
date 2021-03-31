@@ -26,7 +26,7 @@ public class DatabaseLoader {
         this.questionService = questionService;
         this.userRepository = userRepository;
 //        loadQuestions();
-//        loadUsers();
+        loadUsers();
     }
 
     /**
@@ -82,8 +82,10 @@ public class DatabaseLoader {
         User u2 = new User(
             "10", "ayyythan", "athan@martin.martin", "pleb", "69.69.122.0"
         );
+        User u3 = new User("1", "William", "email", "lecturer", "1234");
 
         userRepository.save(u1);
         userRepository.save(u2);
+        userRepository.save(u3);
     }
 }

@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * The type Question.
@@ -36,6 +37,12 @@ public class Question {
 
     @Column(name = "answer")
     private String answer;
+
+    @ManyToMany
+    private List<User> upvoters;
+
+    @ManyToMany
+    private List<User> downvoters;
 
     @CreationTimestamp
     private Instant creationTimestamp;
@@ -173,11 +180,33 @@ public class Question {
         this.numberOfUpvotes++;
     }
 
+    public void setNumberOfUpvotes(int numberOfUpvotes) {
+        this.numberOfUpvotes = numberOfUpvotes;
+    }
+
+    public void setNumberOfDownvotes(int numberOfDownvotes) {
+        this.numberOfDownvotes = numberOfDownvotes;
+    }
+
     /**
      * Downvote question.
      */
     public void downvote() {
         this.numberOfDownvotes++;
+    }
+
+    /**
+     * @returns a list of all the id's of users that have upvoted this question
+     */
+    public List<User> getUpvoters() {
+        return upvoters;
+    }
+
+    /**
+     * @returns a list of all the id's of users that have downvoted this question
+     */
+    public List<User> getDownvoters() {
+        return downvoters;
     }
 
     /**

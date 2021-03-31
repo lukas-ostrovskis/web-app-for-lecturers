@@ -7,6 +7,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
+import nl.tudelft.oopp.app.controllers.RoomViewController;
 import nl.tudelft.oopp.app.data.Question;
 
 import java.io.IOException;
@@ -103,7 +104,7 @@ public class QuestionCell extends ListCell<Question> {
 
     @FXML
     public void upvoteButtonPressed() {
-        ServerCommunication.upvoteQuestionById(questionId);
+        ServerCommunication.upvoteQuestionById(questionId, RoomViewController.getCurrentUser().getId());
     }
 
     /**
@@ -112,7 +113,7 @@ public class QuestionCell extends ListCell<Question> {
 
     @FXML
     public void downvoteButtonPressed() {
-        ServerCommunication.downvoteQuestionById(questionId);
+        ServerCommunication.downvoteQuestionById(questionId, RoomViewController.getCurrentUser().getId());
     }
 
     /**
