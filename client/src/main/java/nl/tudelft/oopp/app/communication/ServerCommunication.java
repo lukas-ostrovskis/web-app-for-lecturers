@@ -112,24 +112,7 @@ public class ServerCommunication {
 
         return gson.fromJson(response, User.class);
     }
-    /**
-    public static void addUserToDB(String userId, String roomId) throws UserNotAddedException{
-        HttpRequest request = HttpRequest.newBuilder()
-                .header("Content-type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(userId)))
-                .uri(URI.create("http://localhost:8080/room" + password))
-                .build();
 
-
-
-        String response = sendRequest(request);
-        if (response == null) {
-            throw new UserNotAddedException("User not added, password may be wrong.");
-        }
-
-
-    }
-    */
     public static void deleteRoom() throws RoomNotDeletedException {
 
         HttpRequest request = HttpRequest.newBuilder()
