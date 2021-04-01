@@ -1,54 +1,22 @@
-package nl.tudelft.oopp.app.entities;
+package nl.tudelft.oopp.app.data;
 
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
-/**
- * The type Question.
- */
-@Entity
-@Table(name = "questions")
 public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private String id;
-
-    @Column(name = "ownerId")
     private String ownerId;
-
-    @Column(name = "ownerName")
     private String ownerName;
-
-    @Column(name = "roomId")
     private String roomId;
-
-    @Column(name = "content")
     private String content;
-
-    @Column(name = "numberOfUpvotes")
     private int numberOfUpvotes;
-
-    @Column(name = "numberOfDownvotes")
     private int numberOfDownvotes;
-
-    @Column(name = "status")
     private boolean status;
-
-    @Column(name = "answer")
     private String answer;
-
-    @ManyToMany
-    private List<User> upvoters;
-
-    @ManyToMany
-    private List<User> downvoters;
-
-    @CreationTimestamp
     private Instant creationTimestamp;
+    private List<User> upvoters;
+    private List<User> downvoters;
 
 
     /**
@@ -113,6 +81,22 @@ public class Question {
      */
     public String getId() {
         return id;
+    }
+
+    public List<User> getUpvoters() {
+        return upvoters;
+    }
+
+    public void setUpvoters(List<User> upvoters) {
+        this.upvoters = upvoters;
+    }
+
+    public List<User> getDownvoters() {
+        return downvoters;
+    }
+
+    public void setDownvoters(List<User> downvoters) {
+        this.downvoters = downvoters;
     }
 
     /**
@@ -185,33 +169,11 @@ public class Question {
         this.numberOfUpvotes++;
     }
 
-    public void setNumberOfUpvotes(int numberOfUpvotes) {
-        this.numberOfUpvotes = numberOfUpvotes;
-    }
-
-    public void setNumberOfDownvotes(int numberOfDownvotes) {
-        this.numberOfDownvotes = numberOfDownvotes;
-    }
-
     /**
      * Downvote question.
      */
     public void downvote() {
         this.numberOfDownvotes++;
-    }
-
-    /**
-     * @returns a list of all the id's of users that have upvoted this question
-     */
-    public List<User> getUpvoters() {
-        return upvoters;
-    }
-
-    /**
-     * @returns a list of all the id's of users that have downvoted this question
-     */
-    public List<User> getDownvoters() {
-        return downvoters;
     }
 
     /**

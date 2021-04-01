@@ -32,7 +32,6 @@ public class DatabaseLoader {
         this.userRepository = userRepository;
 //        loadQuestions();
         loadUsers();
-//        loadUsers();
         loadQuizzes();
     }
 
@@ -56,46 +55,19 @@ public class DatabaseLoader {
      * Load the test question to the database
      */
     public void loadQuestions() {
-        Question q1 = new Question("1",
-                "1",
-                "First q",
-                3,
-                3,
-                true,
-                "yes");
-        Question q2 = new Question("1",
-                "1",
-                "Second q",
-                5,
-                5,
-                false,
-                "yes smth");
-        Question q3 = new Question("2",
-                "2",
-                "Third q",
-                6,
-                3,
-                false,
-                "my man");
-        Question q4 = new Question("3",
-                "3",
-                "Forth q",
-                7,
-                7,
-                true,
-                "ma boi");
-        Question q5 = new Question("4",
-                "4",
-                "Fifth q",
-                8,
-                1,
-                true,
-                "sup girl??/");
+        Question q1 = new Question("1", "Petr","1", "First q", 3, 3, true, "yes");
+        Question q2 = new Question("1","Athan", "1", "Second q", 5, 5, false, "yes smth");
+        Question q3 = new Question("2", "Luka", "2", "Third q", 6, 3, false, "my man");
+        Question q4 = new Question("3", "Lukas", "3", "Forth q", 7, 7, true, "ma boi");
+        Question q5 = new Question("4", "David", "3", "Forth q", 7, 7, true, "ma boi");
+        Question q6 = new Question("5","Martin", "4", "Fifth q", 8, 1, true, "sup girl??/");
         questionService.addQuestion(q1);
         questionService.addQuestion(q2);
         questionService.addQuestion(q3);
         questionService.addQuestion(q4);
         questionService.addQuestion(q5);
+        questionService.addQuestion(q6);
+
     }
 
     public void loadUsers(){
@@ -104,6 +76,7 @@ public class DatabaseLoader {
         User u2 = new User(
             "10", "ayyythan", "athan@martin.martin", "pleb", "69.69.122.0"
         );
+        User u3 = new User("1", "William", "email", "lecturer", "1234");
 
         userRepository.save(u1);
         userRepository.save(u2);

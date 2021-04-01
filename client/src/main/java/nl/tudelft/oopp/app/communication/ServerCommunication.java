@@ -1,20 +1,28 @@
 package nl.tudelft.oopp.app.communication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import javafx.scene.control.Alert;
+import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.data.User;
 
 import nl.tudelft.oopp.app.views.MainView;
 import nl.tudelft.oopp.app.data.Quiz;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
+
+
 
 
 public class ServerCommunication {
@@ -67,9 +75,139 @@ public class ServerCommunication {
 
         return response.body().equals("") ? null : response.body();
     }
+    /**
+     * Fetches all questions with the roomId provided
+     * @param roomId
+     * @return a list of questions with a certain roomId
+     * @throws IOException if communication with the server fails
+     */
+
+    public static List<Question> fetchQuestionsByRoomId(String roomId) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/question/getAllByRoomId/" + roomId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of(); // empty list on error
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+
+        return mapper.readValue(response.body(), new TypeReference<List<Question>>(){});
+    }
 
     /**
-     * 
+     * Upvotes the question with the questionId
+     * @param questionId
+     */
+
+    public static void upvoteQuestionById(String questionId, String userId) {
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.ofString("")).uri(URI.create("http://localhost:8080/question/upvote?questionId=" + questionId + "&userId=" + userId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
+    /**
+     * Downvotes the question with the questionId
+     * @param questionId
+     */
+
+    public static void downvoteQuestionById(String questionId, String userId) {
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.ofString("")).uri(URI.create("http://localhost:8080/question/downvote?questionId=" + questionId + "&userId=" + userId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
+    /**
+     * Sends a question to the server
+     * @param question
+     */
+
+    public static void askQuestion(Question question){
+        System.out.println(question.getOwnerName());
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String requestBody = objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(question);
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/question/add/"))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+            HttpResponse<String> response = null;
+            try {
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (response.statusCode() != 200) {
+                System.out.println("Status: " + response.statusCode());
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends a request to the server to delete the question with the questionId provided
+     * @param questionId
+     */
+
+    public static void deleteQuestion(String questionId){
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/question/delete/" + questionId))
+            .DELETE()
+            .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
+    /**
+     * Toggles the status of the question
+     * @param questionId
+     */
+
+    public static void toggleStatus(String questionId) {
+        HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.ofString("")).uri(URI.create("http://localhost:8080/question/toggleStatus/" + questionId)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
+    /**
+     *
      * @param email the E-Mail of the lecturer inputed in the textField
      * @param password the password of the lecturer inputed in the textField
      * @param role is to check what type of user is

@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import java.util.List;
+
 public class User {
 
     private String id;
@@ -15,6 +17,13 @@ public class User {
     private String email;
     private String role;
     private String ip;
+    private List<Question> upvotedQuestions;
+    private List<Question> downvotedQuestions;
+
+
+    public User(){
+
+    }
 
     /**
      * Constructor used when initially creating client-side user
@@ -42,7 +51,6 @@ public class User {
      * @param role Role of the user (lecturer, student, moderator).
      * @param ip IP address of the user.
      */
-    @JsonCreator
     public User(String id, String name, String email, String role, String ip) {
         this.id = id;
         this.name = name;
@@ -65,6 +73,14 @@ public class User {
 
     public String getIp() {
         return ip;
+    }
+
+    public List<Question> getUpvotedQuestions() {
+        return upvotedQuestions;
+    }
+
+    public List<Question> getDownvotedQuestions() {
+        return downvotedQuestions;
     }
 
     public void setRole(String role) {

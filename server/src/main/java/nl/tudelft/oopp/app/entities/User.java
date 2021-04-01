@@ -1,9 +1,8 @@
 package nl.tudelft.oopp.app.entities;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import javax.persistence.*;
-import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +26,14 @@ public class User {
 
     @OneToOne
     private Room room;
+
+    @ManyToMany
+    private List<Question> upvotedQuestions;
+
+    @ManyToMany
+    private List<Question> downvotedQuestions;
+
+
 
     /**
      * Basic constructor required by the JPA specification.
@@ -83,6 +90,13 @@ public class User {
         return ip;
     }
 
+    public List<Question> getUpvotedQuestions() {
+        return upvotedQuestions;
+    }
+
+    public List<Question> getDownvotedQuestions() {
+        return downvotedQuestions;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

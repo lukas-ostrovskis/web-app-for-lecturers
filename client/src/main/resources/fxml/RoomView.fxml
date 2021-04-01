@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<VBox id="staticGradientVBox" alignment="CENTER" spacing="25" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.RoomViewController">
+<VBox id="staticGradientVBox" alignment="CENTER" prefWidth="1100.0" spacing="25" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.RoomViewController">
         <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
 
 
-    <HBox spacing="25">
+    <HBox   spacing="25">
 
-        <VBox spacing="25">
+        <VBox   spacing="25">
 
             <HBox spacing="25">
 
@@ -31,31 +31,40 @@
 
         <VBox alignment="TOP_RIGHT" spacing="25">
 
-            <HBox alignment="TOP_RIGHT" spacing="25">
-
-                <Button onAction="#removeQuestionButtonPressed" text="Remove" />
-
-                <Button disable="true" text="Upvote" />
-
-                <Button disable="true" text="Downvote" />
-
-                <Button disable="true" text="Mark As Answered" />
-
-            </HBox>
-
             <HBox alignment="CENTER" spacing="25">
 
-                <TextField prefWidth="400" />
+                <TextField fx:id="questionText" prefWidth="400">
+               <HBox.margin>
+                  <Insets top="-70.0" />
+               </HBox.margin></TextField>
 
-                <Button onAction="#askQuestionButtonPressed" text="Ask Question" />
+                <Button onAction="#askQuestionButtonPressed" text="Ask Question">
+               <HBox.margin>
+                  <Insets top="-70.0" />
+               </HBox.margin></Button>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <padding>
+               <Insets left="80.0" top="140.0" />
+            </padding>
+            <VBox.margin>
+               <Insets top="-50.0" />
+            </VBox.margin>
 
             </HBox>
+         <HBox.margin>
+            <Insets left="160.0" />
+         </HBox.margin>
 
         </VBox>
 
     </HBox>
 
-    <ListView fx:id="questionsListView" maxHeight="200" maxWidth="750" />
+    <ListView fx:id="questionsListView" editable="true" maxHeight="Infinity" maxWidth="Infinity" prefHeight="356.0" prefWidth="922.0" styleClass="listView" stylesheets="@../css/app.css">
+      <VBox.margin>
+         <Insets top="-50.0" />
+      </VBox.margin></ListView>
 
     <Rectangle arcHeight="10" arcWidth="10" fill="snow" height="200" width="750" />
 
