@@ -102,9 +102,20 @@ public class QuestionCell extends ListCell<Question> {
                 this.downvoteButton.setDisable(false);
                 this.upvoteButton.setDisable(false);
             }
+            if (RoomViewController.getCurrentUser().getRole().equals("student")){
+                toggleStatus.setVisible(false);
+            }
             questionId = q.getId();
             content.setText(q.getContent());
-            user.setText(q.getOwnerName());
+            if(q.getOwnerName().equals(RoomViewController.getCurrentUser().getName())){
+                user.setText(q.getOwnerName() + "  (You)");
+            }
+            else{ user.setText(q.getOwnerName());}
+            deleteButton.setVisible(false);
+            if (RoomViewController.getCurrentUser().getId().equals(q.getOwnerId()) || !(RoomViewController.getCurrentUser().getRole().equals("student"))){
+                deleteButton.setVisible(true);
+            }
+
             rating.setText(String.valueOf(q.getNumberOfUpvotes() - q.getNumberOfDownvotes()));
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }

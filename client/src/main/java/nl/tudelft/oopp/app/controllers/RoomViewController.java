@@ -32,8 +32,15 @@ import java.io.IOException;
 
 
 public class RoomViewController implements Initializable {
+
     @FXML
     private Label identityLabel;
+
+    @FXML
+    private Label roomId;
+
+    @FXML
+    private Button endLectureButton;
 
     @FXML
     private ListView<Question> questionsListView;
@@ -60,6 +67,11 @@ public class RoomViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.currentUser = MainView.getUser();
+        this.identityLabel.setText("You're a " + currentUser.getRole());
+        this.roomId.setText(MainView.getRoomId());
+        if(currentUser.getRole().equals("student")){
+            endLectureButton.setVisible(false);
+        }
         try {
             fetchQuestions();
         } catch (IOException e) {
@@ -152,10 +164,9 @@ public class RoomViewController implements Initializable {
 
     @FXML
     public void askQuestionButtonPressed() {
-        //TODO add the question to the specific room you're in.
         ServerCommunication.askQuestion(new Question(currentUser.getId(),
                 currentUser.getName(),
-                "1",
+                MainView.getRoomId(),
                 questionText.getText(),
                 0,
                 0,
@@ -172,8 +183,7 @@ public class RoomViewController implements Initializable {
     public void fetchQuestions() throws IOException {
         questions.removeAll();
         questionsListView.getItems().clear();
-        //TODO pass real room id
-        questions.addAll(ServerCommunication.fetchQuestionsByRoomId("1"));
+        questions.addAll(ServerCommunication.fetchQuestionsByRoomId(MainView.getRoomId()));
     }
 
 }
