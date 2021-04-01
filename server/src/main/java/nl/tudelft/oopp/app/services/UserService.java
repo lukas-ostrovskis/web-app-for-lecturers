@@ -28,11 +28,11 @@ public class UserService {
             }
         }
 
-        // If the user is a lecturer, check the password combination first
-        if (user.getRole().equals("lecturer") && passwords.contains(password)) {
+        // If the user is a lecturer
+        if (user.getRole().equals("lecturer")) {
 
-            // Then see whether this lecturer already exists, and return its entry
-            if (userRepo.existsByEmail(user.getEmail())) {
+            // Check if that E-Mail is already registered and if the password is valid
+            if (userRepo.existsByEmail(user.getEmail()) && passwords.contains(password)) {
                 System.out.println("Logging in " + user.getEmail());
                 return userRepo.findByEmail(user.getEmail());
             }
