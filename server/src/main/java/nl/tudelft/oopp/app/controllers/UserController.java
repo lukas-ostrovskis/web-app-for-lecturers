@@ -4,7 +4,10 @@ import java.util.*;
 import java.util.List;
 
 import nl.tudelft.oopp.app.DatabaseLoader;
+import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.entities.User;
+import nl.tudelft.oopp.app.repositories.IpBlacklistRepository;
+import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.UserRepository;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
@@ -20,6 +23,9 @@ public class UserController {
 
     private final DatabaseLoader dataLoader;
     public List<String> passwords = List.of("12345");
+
+    private QuestionRepository questionRepository;
+    private IpBlacklistRepository ipBlacklistRepository;
 
     @Autowired
     public UserController(UserService userService, RoomService roomService, DatabaseLoader dataLoader) {
@@ -80,6 +86,12 @@ public class UserController {
     @PostMapping ("/add")
     public User addUser(@RequestBody User user, @RequestParam String password) {
         return userService.save(user, password);
+    }
+
+    @PostMapping("/ban")
+    public String banUser(@RequestBody Question question) {
+        userService.banUser(question);
+        return "User banned";
     }
 
 }
