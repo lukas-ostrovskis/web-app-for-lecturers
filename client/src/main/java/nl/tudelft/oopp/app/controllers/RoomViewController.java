@@ -125,7 +125,7 @@ public class RoomViewController implements Initializable {
     public void endLectureButtonPressed() {
 
         try {
-
+            ServerCommunication.exportQuestionsToCsv(MainView.getRoomId());
             // Delete room from server
             ServerCommunication.deleteRoom();
 
