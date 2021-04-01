@@ -9,21 +9,25 @@
         <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
 
 
-    <HBox   spacing="25">
+    <HBox spacing="25">
 
-        <VBox   spacing="25">
+        <VBox spacing="25">
 
             <HBox spacing="25">
 
-                <Label text="Room ID: (room ID here)" />
-
-                <Button onAction="#leaveRoomButtonPressed" text="Leave Room" />
+                <Label minWidth="60.0" text="Room ID:" />
+            <Label fx:id="roomId" minWidth="70.0" text="Label">
+               <HBox.margin>
+                  <Insets left="-20.0" />
+               </HBox.margin>
+            </Label>
 
             </HBox>
 
-            <Button onAction="#endLectureButtonPressed" text="End Lecture (for lecturers)" />
-
-            <Label fx:id="indentityLabel" text="You're a (student / moderator / lecturer)" />
+            <Label fx:id="identityLabel" text="You're a (student / moderator / lecturer)">
+            <VBox.margin>
+               <Insets top="40.0" />
+            </VBox.margin></Label>
 
             <Label text="Lecture: (lecture title, e.g. CSE1200)" />
 
@@ -31,16 +35,27 @@
 
         <VBox alignment="TOP_RIGHT" spacing="25">
 
+             <Button minWidth="100.0" onAction="#leaveRoomButtonPressed" text="Leave Room">
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+         </Button>
+
+            <Button fx:id="endLectureButton" onAction="#endLectureButtonPressed" text="End Lecture">
+            <VBox.margin>
+               <Insets right="110.0" top="-60.0" />
+            </VBox.margin></Button>
+
             <HBox alignment="CENTER" spacing="25">
 
                 <TextField fx:id="questionText" prefWidth="400">
                <HBox.margin>
-                  <Insets top="-70.0" />
+                  <Insets top="-90.0" />
                </HBox.margin></TextField>
 
-                <Button onAction="#askQuestionButtonPressed" text="Ask Question">
+                <Button minWidth="120.0" onAction="#askQuestionButtonPressed" text="Ask Question">
                <HBox.margin>
-                  <Insets top="-70.0" />
+                  <Insets top="-90.0" />
                </HBox.margin></Button>
             <opaqueInsets>
                <Insets />
@@ -49,7 +64,7 @@
                <Insets left="80.0" top="140.0" />
             </padding>
             <VBox.margin>
-               <Insets top="-50.0" />
+               <Insets />
             </VBox.margin>
 
             </HBox>
