@@ -251,23 +251,23 @@ public class ServerCommunication {
         return gson.fromJson(response, User.class);
     }
 
-//    /**
-//     * Method for banning the user
-//     *
-//     * @param question the question by which the user is found.
-//     * @return "User banned"
-//     */
-//    public String banUser(Question question) {
-//
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .header("Content-type", "application/json")
-//                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(question)))
-//                .uri(URI.create("http://localhost:8080/user/ban"))
-//                .build();
-//
-//        String response = sendRequest(request);
-//        return response;
-//    }
+    /**
+     * Method for banning the user
+     *
+     * @param questionId the questionId by which the user is found.
+     * @return "User banned"
+     */
+    public static String banUser(String questionId) {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Content-type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(questionId))
+                .uri(URI.create("http://localhost:8080/user/ban"))
+                .build();
+
+        String response = sendRequest(request);
+        return response;
+    }
 
     public static void deleteRoom() throws RoomNotDeletedException {
 
