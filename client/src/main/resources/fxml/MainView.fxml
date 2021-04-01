@@ -22,13 +22,17 @@
 
             <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label fx:id="roomIdLabel" text="Room ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label fx:id="usernameLabel" text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-            <TextField fx:id="roomIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="userNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label fx:id="passwordLabel" text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Label fx:id="roomIdLabel" text="Room ID:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
-            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="roomIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label fx:id="passwordLabel" text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+
+            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints />
@@ -42,7 +46,7 @@
         </GridPane>
 
         <HBox alignment="CENTER">
-         <Button fx:id="createRoomButton" mnemonicParsing="false" onAction="#createRoomButtonPressed" text="Create Room sabe" />
+         <Button fx:id="createRoomButton" mnemonicParsing="false" onAction="#createRoomButtonPressed" text="Create Room" />
 
             <Button fx:id="joinRoomButton" text="Join Room" onAction="#joinRoomButtonPressed"/>
 

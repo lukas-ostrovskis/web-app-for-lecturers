@@ -22,7 +22,7 @@ public class Room {
     @Column(name = "time")
     private  int time;
 
-    @ManyToMany
+    @OneToMany
     private List<User> roomUsers;
 
     /**

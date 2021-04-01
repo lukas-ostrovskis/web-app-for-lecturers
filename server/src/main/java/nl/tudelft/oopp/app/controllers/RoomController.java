@@ -43,14 +43,17 @@ public class RoomController {
      * @param roomId - the id of the room.
      * @return to the client the response of the server of joining a room
      */
-    @GetMapping(path = "{roomId}")
-    public String joinRoom(@PathVariable("roomId") String roomId, @RequestParam User user) {
+    @PutMapping("/join")
+    public String joinRoom(@RequestParam String roomId, @RequestParam String userId) {
 
-        System.out.printf("User %s trying to join room %s", user.getId(), roomId);
+        System.out.println("vlizame v room controller-a ?");
+        System.out.println("test we: room id: " + roomId);
+        System.out.println("test we: user id: " + userId);
+
         // Check whether the room is expired
         // if it is, return empty string.
 
-        roomService.joinRoom(roomId, user.getId());
+        roomService.joinRoom(roomId, userId);
         return "Joined successfully!";
     }
 

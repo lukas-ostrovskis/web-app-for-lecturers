@@ -45,13 +45,14 @@ public class ServerCommunication {
 
     /**
      * Allows to join into a room
-     * @param id his id
+     * @param id room's id
      * @param user the user that is trying to enter
      * @return the response of the body to communicate between the server and the client
      */
     public static String joinRoom(String id, User user) {
         HttpRequest request = HttpRequest.newBuilder()
-                .GET().uri(URI.create("http://localhost:8080/room/" + id + "&user=" + user))
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/room/join?roomId=" + id + "&userId=" + user.getId()))
                 .build();
         HttpResponse<String> response = null;
         try {
@@ -82,7 +83,7 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return new User(null, null);
+            return new User(null, null, null);
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode() + " from findUsers method.");
