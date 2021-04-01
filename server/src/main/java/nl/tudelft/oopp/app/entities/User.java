@@ -25,6 +25,9 @@ public class User {
     @Column(name = "ip")
     private String ip;
 
+    @OneToOne
+    private Room room;
+
     /**
      * Basic constructor required by the JPA specification.
      */

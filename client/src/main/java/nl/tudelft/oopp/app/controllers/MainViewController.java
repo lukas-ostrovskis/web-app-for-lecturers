@@ -73,6 +73,8 @@ public class MainViewController {
 
     @FXML
     private Label usernameLabel;
+    private User user;
+
     /**
      * Loads the layout for the specified identity.
      */
@@ -257,6 +259,7 @@ public class MainViewController {
          */
         MainView.getPrimaryStage().setScene(roomScene);
         MainView.getPrimaryStage().centerOnScreen();
+        System.out.println(MainView.getRoomId() + " is the id of the joined room."); // returns 0 for User
 
     }
 
@@ -271,7 +274,7 @@ public class MainViewController {
         try {
 
             // Try creating a user
-            createUser();
+            user=createUser();
 
             // Try creating room
             String roomId = ServerCommunication.createRoom(passwordField.getText());
@@ -297,8 +300,14 @@ public class MainViewController {
 
         try {
             // Try creating the user
-            createUser();
+            user=createUser();
+
+            MainView.setRoomId(roomIdTextField.getText());
+            ServerCommunication.joinRoom(MainView.getRoomId(), user);
+           // System.out.println("RoomID: " + MainView.getRoomId());
+           // System.out.println("UserID: " + user.getId());
             loadRoomView();
+
         } catch (ServerCommunication.UserNotAddedException e) {
 
             // if user could not be created server-side
@@ -307,7 +316,7 @@ public class MainViewController {
     }
 
 
-    private void createUser() throws ServerCommunication.UserNotAddedException {
+    private User createUser() throws ServerCommunication.UserNotAddedException {
 
         // Parse identity
         String identity;
@@ -328,6 +337,8 @@ public class MainViewController {
 
         // And update the client-side user with the new user (containing id)
         MainView.setUser(user);
+
+        return user;
     }
 
     /**

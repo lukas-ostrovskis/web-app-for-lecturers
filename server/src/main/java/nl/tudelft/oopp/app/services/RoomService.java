@@ -59,14 +59,15 @@ public class RoomService {
      */
     public String joinRoom(String roomId, String userId) {
 
-        System.out.printf("User %s trying to join room %s", userId, roomId);
+        System.out.printf("User %s trying to join room %s\n", userId, roomId);
         //Check if the room is expired
         Optional<Room> roomById = roomRepository.findById(roomId);
-        Optional<User> userById = userRepository.findById(roomId);
-
+        Optional<User> userById = userRepository.findById(userId);
+        System.out.println(userById.isPresent()+".");
+        System.out.println(roomById.isPresent()+".");
         if(roomById.isPresent() && userById.isPresent()) {
-
-            roomById.get().addUser(userById.get());
+            System.out.println(roomById + "is present");
+            roomById.get().addUser(userRepository.getOne(userId));
             roomRepository.save(roomById.get());
             roomRepository.flush();
             return roomById.get().getId();

@@ -45,13 +45,14 @@ public class ServerCommunication {
 
     /**
      * Allows to join into a room
-     * @param id his id
+     * @param id room's id
      * @param user the user that is trying to enter
      * @return the response of the body to communicate between the server and the client
      */
     public static String joinRoom(String id, User user) {
         HttpRequest request = HttpRequest.newBuilder()
-                .GET().uri(URI.create("http://localhost:8080/room/" + id + "&user=" + user))
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/room/join?roomId=" + id + "&userId=" + user.getId()))
                 .build();
         HttpResponse<String> response = null;
         try {
@@ -111,7 +112,24 @@ public class ServerCommunication {
 
         return gson.fromJson(response, User.class);
     }
+    /**
+    public static void addUserToDB(String userId, String roomId) throws UserNotAddedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Content-type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(userId)))
+                .uri(URI.create("http://localhost:8080/room" + password))
+                .build();
 
+
+
+        String response = sendRequest(request);
+        if (response == null) {
+            throw new UserNotAddedException("User not added, password may be wrong.");
+        }
+
+
+    }
+    */
     public static void deleteRoom() throws RoomNotDeletedException {
 
         HttpRequest request = HttpRequest.newBuilder()
