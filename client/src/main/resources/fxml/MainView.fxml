@@ -42,7 +42,7 @@
         </GridPane>
 
         <HBox alignment="CENTER">
-         <Button fx:id="createRoomButton" mnemonicParsing="false" onAction="#createRoomButtonPressed" text="Create Room sabe" />
+         <Button fx:id="createRoomButton" mnemonicParsing="false" onAction="#createRoomButtonPressed" text="Create Room" />
 
             <Button fx:id="joinRoomButton" text="Join Room" onAction="#joinRoomButtonPressed"/>
 
