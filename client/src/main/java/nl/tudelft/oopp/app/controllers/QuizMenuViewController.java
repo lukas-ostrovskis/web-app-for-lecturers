@@ -69,7 +69,8 @@ public class QuizMenuViewController {
 
     @FXML
     public void addButtonPressed() {
-        Quiz quiz = new Quiz(MainView.getRoomId(), question.getText(), a.getText(), b.getText(), c.getText(), d.getText(), e.getText(), f.getText(), g.getText(), h.getText(), i.getText(), j.getText(), correctAnswer.getText().charAt(0));
+        char correctAns = correctAnswer.getText().length() == 1? correctAnswer.getText().charAt(0) : '?';
+        Quiz quiz = new Quiz(MainView.getRoomId(), question.getText(), a.getText(), b.getText(), c.getText(), d.getText(), e.getText(), f.getText(), g.getText(), h.getText(), i.getText(), j.getText(), correctAns);
         ServerCommunication.addQuiz(quiz);
 
         question.clear();
