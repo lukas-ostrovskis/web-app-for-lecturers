@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox id="staticGradientVBox" prefHeight="620.0" prefWidth="690.0" spacing="10.0" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.QuizViewController">
+        <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
+   <children>
+      <TextArea fx:id="questionArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+      <Button fx:id="answerA" mnemonicParsing="false" onAction="#answerAClicked" text="This might be answer A." />
+      <Button fx:id="answerB" layoutX="35.0" layoutY="90.0" mnemonicParsing="false" onAction="#answerBClicked" text="Button" />
+      <Button fx:id="answerC" layoutX="35.0" layoutY="149.0" mnemonicParsing="false" onAction="#answerCClicked" text="Button" />
+      <Button fx:id="answerD" layoutX="35.0" layoutY="208.0" mnemonicParsing="false" onAction="#answerDClicked" text="Button" />
+      <Button fx:id="answerE" layoutX="35.0" layoutY="210.0" mnemonicParsing="false" onAction="#answerEClicked" text="Button" />
+      <Button fx:id="answerF" layoutX="35.0" layoutY="255.0" mnemonicParsing="false" onAction="#answerFClicked" text="Button" />
+      <Button fx:id="answerG" layoutX="35.0" layoutY="300.0" mnemonicParsing="false" onAction="#answerGClicked" text="Button" />
+      <Button fx:id="answerH" layoutX="35.0" layoutY="344.0" mnemonicParsing="false" onAction="#answerHClicked" text="Button" />
+      <Button fx:id="answerI" layoutX="35.0" layoutY="389.0" mnemonicParsing="false" onAction="#answerIClicked" text="Button" />
+      <Button fx:id="answerJ" layoutX="35.0" layoutY="434.0" mnemonicParsing="false" onAction="#answerJClicked" text="Button" />
+   </children>
+
+</VBox>

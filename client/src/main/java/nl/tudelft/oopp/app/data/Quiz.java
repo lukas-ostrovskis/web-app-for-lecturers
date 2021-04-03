@@ -221,6 +221,8 @@ public class Quiz {
         return used;
     }
 
+    public boolean isOpen() {return open; }
+
     /**
      * Gets the answer distribution.
      *
@@ -246,5 +248,21 @@ public class Quiz {
      */
     public void setCorrectAnswer(char correctAnswer) {
         this.correctAnswer = correctAnswer;
+    }
+
+    @Override
+    public String toString() {
+        return "Question: " + question + "\n" +
+                "A) " + answerA + "\n" +
+                "B) " + answerB + "\n" +
+                "C) " + answerC + "\n" +
+                "D) " + answerD + "\n" +
+                "E) " + answerE + "\n" +
+                "F) " + answerF + "\n" +
+                "G) " + answerG + "\n" +
+                "H) " + answerH + "\n" +
+                "I) " + answerI + "\n" +
+                "J) " + answerJ + "\n" +
+                "Correct answer: " + correctAnswer;
     }
 }

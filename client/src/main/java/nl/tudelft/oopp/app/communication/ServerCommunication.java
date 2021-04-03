@@ -352,7 +352,7 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return List.of();
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
@@ -370,7 +370,7 @@ public class ServerCommunication {
      */
     public static String submitQuizAnswer(String roomId, String answer) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/quiz/answer" + roomId))
+                .uri(URI.create("http://localhost:8080/quiz/answer/" + roomId))
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(answer))
                 .build();
@@ -385,6 +385,7 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+        System.out.println(response.body());
         return response.body();
     }
 
@@ -475,6 +476,7 @@ public class ServerCommunication {
      * @return a Quiz if there's one, null otherwise.
      */
     public static Quiz checkQuizOpen(String roomId) {
+        System.out.println(System.currentTimeMillis());
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quiz/getOpen/" + roomId)).build();
         HttpResponse<String> response = null;
         try {
@@ -486,7 +488,7 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-
+        System.out.println(System.currentTimeMillis());
         return gson.fromJson(response.body(), new TypeToken<Quiz>(){}.getType());
     }
 
@@ -509,6 +511,6 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
 
-        return gson.fromJson(response.body(), new TypeToken<Quiz>(){}.getType());
+        return gson.fromJson(response.body(), new TypeToken<Map<Character,Integer>>(){}.getType());
     }
 }
