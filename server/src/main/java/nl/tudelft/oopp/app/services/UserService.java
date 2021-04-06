@@ -17,7 +17,7 @@ public class UserService {
     private UserRepository userRepo;
     private IpBlacklistRepository ipBlacklistRepository;
     private QuestionRepository questionRepository;
-    public List<String> passwords = List.of("12345");
+    public List<String> passwords = List.of("12345", "0000");
 
     @Autowired
     public UserService(UserRepository userRepository, IpBlacklistRepository ipBlacklistRepository, QuestionRepository questionRepository) {
@@ -42,8 +42,20 @@ public class UserService {
         }
 
         // If the user is a lecturer
-        if (user.getRole().equals("lecturer")) {
+        else if (user.getRole().equals("lecturer")) {
 
+            // Check if that E-Mail is already registered and if the password is valid
+            if (userRepo.existsByEmail(user.getEmail()) && passwords.contains(password)) {
+                System.out.println("Logging in " + user.getEmail());
+                return userRepo.findByEmail(user.getEmail());
+            }
+
+            // Otherwise, return null
+            return null;
+        }
+
+        // if the user is a moderator
+        else if(user.getRole().equals("moderator")) {
             // Check if that E-Mail is already registered and if the password is valid
             if (userRepo.existsByEmail(user.getEmail()) && passwords.contains(password)) {
                 System.out.println("Logging in " + user.getEmail());
@@ -56,6 +68,13 @@ public class UserService {
 
         System.out.println("Saving user: " + user.toString());
         return userRepo.save(user);
+    }
+
+    public String isBanned(String Ip){
+        if(ipBlacklistRepository.existsByIp(Ip)) {
+            return Ip;
+        }
+        else return null;
     }
 
     public List<User> findAllByEmailContains(String email) {

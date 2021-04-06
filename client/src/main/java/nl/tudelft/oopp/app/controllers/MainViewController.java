@@ -283,11 +283,21 @@ public class MainViewController {
 
             loadRoomView();
 
-        } catch (ServerCommunication.UserNotAddedException
-                | ServerCommunication.RoomNotAddedException e) {
-
+        } catch (ServerCommunication.UserNotAddedException e){
             // If user could not be created server-side
-            presentError("Error!", e.getMessage());
+            if(emailTextField.getText().trim().isEmpty())
+                presentError("Error!", "You have not entered an email address.");
+            // First we check if the password field is empty.
+            else if(passwordField.getText().trim().isEmpty())
+                presentError("Error!", "You have not entered a password.");
+
+            // if that is not the case, the only remaining reason is that the password is wrong
+            else presentError("Error!", e.getMessage());
+
+        }
+          catch (ServerCommunication.RoomNotAddedException e) {
+              // If room could not be created server-side
+              presentError("Error!", e.getMessage());
         }
     }
 
@@ -300,12 +310,12 @@ public class MainViewController {
 
         try {
             // Try creating the user
-            user=createUser();
+            user = createUser();
 
             MainView.setRoomId(roomIdTextField.getText());
+
             ServerCommunication.joinRoom(MainView.getRoomId(), user);
-           // System.out.println("RoomID: " + MainView.getRoomId());
-           // System.out.println("UserID: " + user.getId());
+
             loadRoomView();
 
         } catch (ServerCommunication.UserNotAddedException e) {
@@ -313,6 +323,10 @@ public class MainViewController {
             // if user could not be created server-side
            presentError("Error!", e.getMessage());
         }
+         catch (ServerCommunication.RoomDoesNotExistException e){
+            // if the room does not exist
+             presentError("Error!","Room does not exist.");
+         }
     }
 
 

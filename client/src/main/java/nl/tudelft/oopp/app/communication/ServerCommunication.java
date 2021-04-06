@@ -57,7 +57,7 @@ public class ServerCommunication {
      * @param user the user that is trying to enter
      * @return the response of the body to communicate between the server and the client
      */
-    public static String joinRoom(String id, User user) {
+    public static String joinRoom(String id, User user) throws RoomDoesNotExistException{
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/room/join?roomId=" + id + "&userId=" + user.getId()))
@@ -71,6 +71,7 @@ public class ServerCommunication {
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
+            throw new RoomDoesNotExistException("The room does not exist");
         }
 
         return response.body().equals("") ? null : response.body();
@@ -244,7 +245,21 @@ public class ServerCommunication {
                 .build();
 
         String response = sendRequest(request);
+
+
         if (response == null) {
+
+            // check for ip ban
+            /**
+            HttpRequest ipRequest = HttpRequest.newBuilder()
+                    .header("Content-type", "application/json")
+                    .GET()
+                    .uri(URI.create("http://localhost:8080/user/isbanned?ip="+user.getIp()))
+                    .build();
+            String ipResponse = sendRequest(ipRequest);
+            System.out.println(ipResponse + " makarena");
+            // check for lecturer_wrong_password
+            */
             throw new UserNotAddedException("User not added, lecturer password may be wrong or student ip may be banned");
         }
 
@@ -329,6 +344,9 @@ public class ServerCommunication {
         }
     }
 
+    public static class RoomDoesNotExistException extends Exception {
+        public RoomDoesNotExistException(String message){ super(message);}
+    }
     /**
      * Adds a Quiz to the database.
      *
