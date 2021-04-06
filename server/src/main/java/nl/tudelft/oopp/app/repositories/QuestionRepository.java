@@ -30,7 +30,5 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     @Query("SELECT q FROM Question q WHERE q.ownerId = ?1")
     List<Question> findAllQuestionsByOwnerId(String ownerId);
 
-//    @Query("DELETE FROM Question q WHERE q.roomId = ?1")
-//    List<Question> deleteAllQuestionByRoomId(String roomId);
     List<Question> removeByRoomId(String roomId);
 }

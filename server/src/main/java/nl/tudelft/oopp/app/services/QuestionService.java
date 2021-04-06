@@ -118,7 +118,6 @@ public class QuestionService {
 
     public Question getOneQuestionById(String questionId){
         return questionRepository.findById(questionId).get();
-
     }
 
     /**
