@@ -1,11 +1,17 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.util.List;
 import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.services.QuestionService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Question controller.
@@ -13,7 +19,7 @@ import java.util.List;
 @RequestMapping("/question")
 @RestController
 public class QuestionController {
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
     /**
      * Instantiates a new Question controller.
@@ -31,8 +37,8 @@ public class QuestionController {
      * @param questionId the question ID
      * @return question by with specified ID
      */
-    @GetMapping(value = "/getQuestionById/{questionId}", produces = "application" +
-        "/json")
+    @GetMapping(value = "/getQuestionById/{questionId}",
+                produces = "application" + "/json")
     public Question getOneQuestionById(@PathVariable String questionId) {
         return questionService.getOneQuestionById(questionId);
     }
@@ -43,8 +49,8 @@ public class QuestionController {
      * @param roomId the room id
      * @return the all questions by room id
      */
-    @GetMapping(value = "/getAllByRoomId/{roomId}", produces = "application" +
-            "/json")
+    @GetMapping(value = "/getAllByRoomId/{roomId}",
+                produces = "application" + "/json")
     public List<Question> getAllQuestionsByRoomId(@PathVariable String roomId) {
         return questionService.getAllQuestionByRoomId(roomId);
     }
@@ -55,8 +61,8 @@ public class QuestionController {
      * @param ownerId the owner id
      * @return the all questions by owner id
      */
-    @GetMapping(value = "/getAllByOwnerId/{ownerId}", produces = "application" +
-            "/json")
+    @GetMapping(value = "/getAllByOwnerId/{ownerId}",
+                produces = "application" + "/json")
     public List<Question> getAllQuestionsByOwnerId(@PathVariable String ownerId) {
         return questionService.getAllQuestionByOwnerId(ownerId);
     }
@@ -65,6 +71,7 @@ public class QuestionController {
      * PUT Endpoint to toggle question status.
      * True - Answered
      * False - Unanswered
+     *
      * @param questionId the question id
      * @return String
      */
@@ -84,10 +91,10 @@ public class QuestionController {
      * @param questionId the question id
      * @return String
      */
-    @PutMapping (value = "/upvote")
+    @PutMapping(value = "/upvote")
     public String upvoteQuestionById(@RequestParam String questionId, @RequestParam String userId) {
         try {
-            questionService.upvoteQuestionById(questionId,userId);
+            questionService.upvoteQuestionById(questionId, userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,9 +108,10 @@ public class QuestionController {
      * @return String
      */
     @PutMapping(value = "/downvote")
-    public String downvoteQuestionById(@RequestParam String questionId, @RequestParam String userId) {
+    public String downvoteQuestionById(@RequestParam String questionId,
+                                       @RequestParam String userId) {
         try {
-            questionService.downvoteQuestionById(questionId,userId);
+            questionService.downvoteQuestionById(questionId, userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,7 +135,8 @@ public class QuestionController {
     }
 
     /**
-     * DELETE Endpoint to delete all question from the room by it's ID
+     * DELETE Endpoint to delete all question from the room by it's ID.
+     *
      * @param roomId ID of the room
      * @return String
      */
@@ -149,8 +158,8 @@ public class QuestionController {
      * @return String
      */
     @PutMapping(
-            value = "/add",
-            consumes = MediaType.APPLICATION_JSON_VALUE
+        value = "/add",
+        consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public String addQuestion(@RequestBody Question question) {
         try {

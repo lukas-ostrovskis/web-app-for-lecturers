@@ -1,10 +1,17 @@
 package nl.tudelft.oopp.app.entities;
 
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+
 
 /**
  * The type Question.
@@ -194,13 +201,14 @@ public class Question {
     }
 
     /**
-     * Downvote question.
+     * Downvotes a question.
      */
     public void downvote() {
         this.numberOfDownvotes++;
     }
 
     /**
+     * Getter for the upvoters of the question.
      * @returns a list of all the id's of users that have upvoted this question
      */
     public List<User> getUpvoters() {
@@ -208,6 +216,7 @@ public class Question {
     }
 
     /**
+     * Getter for the downvoters of the question.
      * @returns a list of all the id's of users that have downvoted this question
      */
     public List<User> getDownvoters() {
@@ -229,6 +238,7 @@ public class Question {
     }
 
     /**
+     * Getter for the creation timestamp of the question.
      * @return the creation timestamp
      */
     public Instant getCreationTimestamp() {
@@ -236,7 +246,8 @@ public class Question {
     }
 
     /**
-     * @param creationTimestamp
+     * Sets the creation timestamp.
+     * @param creationTimestamp - timestamp of the moment when question was created
      */
     public void setCreationTimestamp(Instant creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
@@ -244,18 +255,28 @@ public class Question {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Question question = (Question) o;
-        return numberOfUpvotes == question.numberOfUpvotes &&
-                numberOfDownvotes == question.numberOfDownvotes &&
-                status == question.status &&
-                ownerId.equals(question.ownerId) &&
-                roomId.equals(question.roomId) &&
-                content.equals(question.content) &&
-                answer.equals(question.answer);
+        return numberOfUpvotes == question.numberOfUpvotes
+            && numberOfDownvotes == question.numberOfDownvotes
+            && status == question.status
+            && ownerId.equals(question.ownerId)
+            && roomId.equals(question.roomId)
+            && content.equals(question.content)
+            && answer.equals(question.answer);
     }
 
+
+    /**
+     * Gets question's owner's name.
+     *
+     * @return the owner name
+     */
     public String getOwnerName() {
         return ownerName;
     }

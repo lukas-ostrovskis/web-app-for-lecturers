@@ -1,23 +1,21 @@
 package nl.tudelft.oopp.app.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import java.time.Instant;
 import java.util.List;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
-import nl.tudelft.oopp.app.services.QuestionService;
-import nl.tudelft.oopp.app.services.UserService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.querydsl.QuerydslRepositoryInvokerAdapter;
-import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
 class QuestionTest {
@@ -195,7 +193,8 @@ class QuestionTest {
             "answer"
         ));
 
-        assertNotNull(questionRepository.findAllQuestionsByOwnerId("testOwnerId").get(0).getCreationTimestamp());
+        assertNotNull(questionRepository.findAllQuestionsByOwnerId("testOwnerId").get(0)
+            .getCreationTimestamp());
     }
 
     @Test

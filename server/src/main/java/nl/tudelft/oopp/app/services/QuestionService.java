@@ -1,13 +1,12 @@
 package nl.tudelft.oopp.app.services;
 
+import java.util.List;
 import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * The type Question service.
@@ -20,8 +19,8 @@ public class QuestionService {
     /**
      * Instantiates a new Question service.
      *
-     * @param questionRepository the question repository
-     * @param userRepository
+     * @param questionRepository - question repository
+     * @param userRepository - user repository
      */
     @Autowired
     public QuestionService(QuestionRepository questionRepository, UserRepository userRepository) {
@@ -65,19 +64,21 @@ public class QuestionService {
      */
     public Question upvoteQuestionById(String questionId, String userId) {
         Question question = questionRepository.findById(questionId).get();
-        if (contains(question.getDownvoters(),userId)){
+        if (contains(question.getDownvoters(), userId)) {
             question.getDownvoters().remove(userRepository.getOne(userId));
-            question.setNumberOfDownvotes(question.getNumberOfDownvotes()-1);
+            question.setNumberOfDownvotes(question.getNumberOfDownvotes() - 1);
         }
-        if (!contains(question.getUpvoters(),userId)){
+        if (!contains(question.getUpvoters(), userId)) {
             question.upvote();
             question.getUpvoters().add(userRepository.getOne(userId));
             questionRepository.save(question);
-        } else {question.setNumberOfUpvotes(question.getNumberOfUpvotes()-1);}
+        } else {
+            question.setNumberOfUpvotes(question.getNumberOfUpvotes() - 1);
+        }
         return question;
     }
 
-    public boolean contains(final List<User> list, final String userId){
+    public boolean contains(final List<User> list, final String userId) {
         return list.stream().filter(o -> o.getId().equals(userId)).findFirst().isPresent();
     }
 
@@ -88,15 +89,17 @@ public class QuestionService {
      */
     public Question downvoteQuestionById(String questionId, String userId) {
         Question question = questionRepository.findById(questionId).get();
-        if (contains(question.getUpvoters(),userId)){
+        if (contains(question.getUpvoters(), userId)) {
             question.getUpvoters().remove(userRepository.getOne(userId));
-            question.setNumberOfUpvotes(question.getNumberOfUpvotes()-1);
+            question.setNumberOfUpvotes(question.getNumberOfUpvotes() - 1);
         }
-        if (!contains(question.getDownvoters(),userId)){
+        if (!contains(question.getDownvoters(), userId)) {
             question.downvote();
             question.getDownvoters().add(userRepository.getOne(userId));
             questionRepository.save(question);
-        } else {question.setNumberOfDownvotes(question.getNumberOfDownvotes()-1);}
+        } else {
+            question.setNumberOfDownvotes(question.getNumberOfDownvotes() - 1);
+        }
         return question;
     }
 
@@ -116,7 +119,7 @@ public class QuestionService {
         return question;
     }
 
-    public Question getOneQuestionById(String questionId){
+    public Question getOneQuestionById(String questionId) {
         return questionRepository.findById(questionId).get();
     }
 
@@ -129,7 +132,7 @@ public class QuestionService {
         questionRepository.deleteById(questionId);
     }
 
-    public void deleteAllQuestionByRoomId(String roomId){
+    public void deleteAllQuestionByRoomId(String roomId) {
         questionRepository.removeByRoomId(roomId);
     }
 }
