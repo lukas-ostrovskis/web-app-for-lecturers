@@ -112,7 +112,6 @@ public class ServerCommunication {
      * @throws IOException
      */
     public static void exportQuestionsToCsv(String roomId, String filepath) throws IOException{
-        System.out.println("eto moja komnata: " + roomId);
         List<Question> questions = fetchQuestionsByRoomId(roomId);
         List<String[]> serializedQuestions = new ArrayList<>();
 
