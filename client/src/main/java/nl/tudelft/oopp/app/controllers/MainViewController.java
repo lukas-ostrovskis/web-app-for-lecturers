@@ -358,9 +358,11 @@ public class MainViewController {
 
         } catch (ServerCommunication.EmptyEmailFieldException e) {
             presentError("Error", "You have not given an email address.");
+            return null;
         }
           catch (ServerCommunication.EmptyPasswordFieldException e){
             presentError("Error", "You have not given a password.");
+            return null;
           }
 
 
@@ -371,10 +373,12 @@ public class MainViewController {
          catch(ServerCommunication.UserBannedByIp e)
          {
              presentError("Error", "You have been banned.");
+             return null;
          }
         catch(ServerCommunication.UserNotAddedException e)
         {
             presentError("Error", e.getMessage());
+            return null;
         }
 
         System.out.printf(" > Created server-side user (id: %s)\n", user.getId());
