@@ -251,23 +251,23 @@ public class ServerCommunication {
         return gson.fromJson(response, User.class);
     }
 
-//    /**
-//     * Method for banning the user
-//     *
-//     * @param question the question by which the user is found.
-//     * @return "User banned"
-//     */
-//    public String banUser(Question question) {
-//
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .header("Content-type", "application/json")
-//                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(question)))
-//                .uri(URI.create("http://localhost:8080/user/ban"))
-//                .build();
-//
-//        String response = sendRequest(request);
-//        return response;
-//    }
+    /**
+     * Method for banning the user
+     *
+     * @param questionId the questionId by which the user is found.
+     * @return "User banned"
+     */
+    public static String banUser(String questionId) {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Content-type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(questionId))
+                .uri(URI.create("http://localhost:8080/user/ban"))
+                .build();
+
+        String response = sendRequest(request);
+        return response;
+    }
 
     public static void deleteRoom() throws RoomNotDeletedException {
 
@@ -370,7 +370,7 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return List.of();
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
@@ -388,7 +388,7 @@ public class ServerCommunication {
      */
     public static String submitQuizAnswer(String roomId, String answer) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/quiz/answer" + roomId))
+                .uri(URI.create("http://localhost:8080/quiz/answer/" + roomId))
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(answer))
                 .build();
@@ -403,6 +403,7 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+        System.out.println(response.body());
         return response.body();
     }
 
@@ -493,6 +494,7 @@ public class ServerCommunication {
      * @return a Quiz if there's one, null otherwise.
      */
     public static Quiz checkQuizOpen(String roomId) {
+        System.out.println(System.currentTimeMillis());
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quiz/getOpen/" + roomId)).build();
         HttpResponse<String> response = null;
         try {
@@ -504,7 +506,7 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-
+        System.out.println(System.currentTimeMillis());
         return gson.fromJson(response.body(), new TypeToken<Quiz>(){}.getType());
     }
 
@@ -527,6 +529,6 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
 
-        return gson.fromJson(response.body(), new TypeToken<Quiz>(){}.getType());
+        return gson.fromJson(response.body(), new TypeToken<Map<Character,Integer>>(){}.getType());
     }
 }
