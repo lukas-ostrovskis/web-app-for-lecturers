@@ -111,7 +111,8 @@ public class ServerCommunication {
      * @param roomId the room id.
      * @throws IOException
      */
-    public static void exportQuestionsToCsv(String roomId) throws IOException{
+    public static void exportQuestionsToCsv(String roomId, String filepath) throws IOException{
+        System.out.println("eto moja komnata: " + roomId);
         List<Question> questions = fetchQuestionsByRoomId(roomId);
         List<String[]> serializedQuestions = new ArrayList<>();
 
@@ -128,7 +129,8 @@ public class ServerCommunication {
             serializedQuestions.add(serializedQuestion);
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter("./questions.csv"), ',', CSVWriter.NO_QUOTE_CHARACTER);
+        CSVWriter writer = new CSVWriter(new FileWriter(filepath + ".csv"), ',',
+            CSVWriter.NO_QUOTE_CHARACTER);
         writer.writeAll(serializedQuestions);
         writer.close();
     }
