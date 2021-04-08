@@ -225,14 +225,17 @@ public class RoomViewController implements Initializable {
 
     @FXML
     public void exportRoomButtonPressed() throws IOException {
-        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getDefaultDirectory());
+        JFileChooser jfc =
+            new JFileChooser(FileSystemView.getFileSystemView().getDefaultDirectory());
 
         int returnValue = jfc.showSaveDialog(null);
 
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jfc.getSelectedFile();
-            ServerCommunication.exportQuestionsToCsv(MainView.getRoomId(), selectedFile.getAbsolutePath());
+            ServerCommunication
+                .exportQuestionsToCsv(MainView.getRoomId(), selectedFile.getAbsolutePath());
         }
+    }
 
     public void startCheckingQuizOpen(String roomId) {
         new Thread(new Runnable() {

@@ -33,26 +33,19 @@
 
         </VBox>
 
-        <VBox alignment="TOP_RIGHT" spacing="30.0">
-         <Button fx:id="quizzesButton" mnemonicParsing="false" onAction="#quizzesButtonPressed" text="Quizzes" />
-
-             <Button minWidth="100.0" onAction="#leaveRoomButtonPressed" text="Leave Room">
-                <VBox.margin>
-                   <Insets />
-                </VBox.margin>
-             </Button>
-
-            <Button minWidth="100.0" onAction="#exportRoomButtonPressed" text="Export">
-                <VBox.margin>
-                    <Insets right="110.0" top="-60.0"/>
-                </VBox.margin>
-            </Button>
-
-            <Button fx:id="endLectureButton" onAction="#endLectureButtonPressed" text="End Lecture">
-                <VBox.margin>
-                   <Insets right="220.0" top="-60.0"/>
-                </VBox.margin>
-            </Button>
+        <VBox alignment="TOP_RIGHT" spacing="25.0">
+         <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+      
+                 <Button layoutX="636.0" layoutY="-3.0" minWidth="100.0" onAction="#leaveRoomButtonPressed" text="Leave Room" />
+      
+                  <Button fx:id="quizzesButton" layoutX="479.0" layoutY="-3.0" mnemonicParsing="false" onAction="#quizzesButtonPressed" text="Quizzes" />
+      
+                  <Button layoutX="560.0" layoutY="-3.0" onAction="#exportRoomButtonPressed" text="Export" />
+      
+                  <Button fx:id="endLectureButton" layoutX="368.0" layoutY="-3.0" onAction="#endLectureButtonPressed" text="End Lecture" />
+            </children>
+         </AnchorPane>
 
 
 
