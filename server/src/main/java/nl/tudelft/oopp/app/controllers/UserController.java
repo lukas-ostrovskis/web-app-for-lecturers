@@ -89,8 +89,8 @@ public class UserController {
     }
 
     @PostMapping("/ban")
-    public String banUser(@RequestBody Question question) {
-        userService.banUser(question);
+    public String banUser(@RequestBody String questionId) {
+        userService.banUser(questionId);
         return "User banned";
     }
 

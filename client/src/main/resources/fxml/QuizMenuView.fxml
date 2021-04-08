@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox id="staticGradientVBox" alignment="TOP_CENTER" prefHeight="620.0" prefWidth="771.0" spacing="10.0" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.QuizMenuViewController">
+        <padding><Insets bottom="25.0" left="25.0" right="25.0" top="25.0" /></padding>
+   <children>
+      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a quiz" wrappingWidth="70.63768005371094" />
+      <HBox prefHeight="200.0" prefWidth="641.0" spacing="5.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="313.0" spacing="2.0">
+               <children>
+                  <TextField fx:id="question" promptText="Question" />
+                  <TextField fx:id="a" promptText="Answer A" />
+                  <TextField fx:id="b" promptText="Answer B" />
+                  <TextField fx:id="c" layoutX="10.0" layoutY="90.0" promptText="Answer C" />
+                  <TextField fx:id="d" promptText="Answer D" />
+                  <TextField fx:id="e" promptText="Answer E" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="313.0" spacing="2.0">
+               <children>
+                  <TextField fx:id="f" promptText="Answer F" />
+                  <TextField fx:id="g" promptText="Answer G" />
+                  <TextField fx:id="h" promptText="Answer H" />
+                  <TextField fx:id="i" promptText="Answer I" />
+                  <TextField fx:id="j" promptText="Answer J" />
+                  <TextField fx:id="correctAnswer" promptText="Correct answer (lowercase letter)" />
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></VBox>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <Button mnemonicParsing="false" onAction="#addButtonPressed" prefHeight="30.0" prefWidth="174.0" text="Add">
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
+      </Button>
+      <Text fill="WHITE" layoutX="320.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All quizzes" wrappingWidth="75.63768005371094" />
+      <ListView fx:id="quizzesListView" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+
+</VBox>

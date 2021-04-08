@@ -16,12 +16,14 @@ public class UserService {
 
     private UserRepository userRepo;
     private IpBlacklistRepository ipBlacklistRepository;
+    private QuestionRepository questionRepository;
     public List<String> passwords = List.of("12345");
 
     @Autowired
-    public UserService(UserRepository userRepository, IpBlacklistRepository ipBlacklistRepository) {
+    public UserService(UserRepository userRepository, IpBlacklistRepository ipBlacklistRepository, QuestionRepository questionRepository) {
         this.userRepo = userRepository;
         this.ipBlacklistRepository = ipBlacklistRepository;
+        this.questionRepository = questionRepository;
     }
 
     public User save(User user, String password) {
@@ -64,7 +66,8 @@ public class UserService {
         return userRepo.findByEmail(email);
     }
 
-    public void banUser(Question question) {
+    public void banUser(String questionId) {
+        Question question = questionRepository.findById(questionId).get();
         String userIp = userRepo.findById(question.getOwnerId()).get().getIp();
         ipBlacklistRepository.save(new IpBlacklist(userIp));
     }

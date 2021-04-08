@@ -41,6 +41,9 @@ public class QuestionCell extends ListCell<Question> {
     private Button deleteButton;
 
     @FXML
+    private Button banButton;
+
+    @FXML
     private Label answered;
 
     public QuestionCell() {
@@ -112,8 +115,13 @@ public class QuestionCell extends ListCell<Question> {
             }
             else{ user.setText(q.getOwnerName());}
             deleteButton.setVisible(false);
+            banButton.setVisible(false);
+
             if (RoomViewController.getCurrentUser().getId().equals(q.getOwnerId()) || !(RoomViewController.getCurrentUser().getRole().equals("student"))){
                 deleteButton.setVisible(true);
+            }
+            if(!(RoomViewController.getCurrentUser().getRole().equals("student"))) {
+                banButton.setVisible(true);
             }
 
             rating.setText(String.valueOf(q.getNumberOfUpvotes() - q.getNumberOfDownvotes()));
@@ -150,6 +158,11 @@ public class QuestionCell extends ListCell<Question> {
     @FXML
     public void deleteButtonPressed() {
         ServerCommunication.deleteQuestion(questionId);
+    }
+
+    @FXML
+    public void banButtonPressed() {
+        ServerCommunication.banUser(this.questionId);
     }
 
     /**
