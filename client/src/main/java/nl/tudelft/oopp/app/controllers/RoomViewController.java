@@ -34,7 +34,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 public class RoomViewController implements Initializable {
@@ -98,7 +100,22 @@ public class RoomViewController implements Initializable {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
             try {
                 fetchQuestions();
+                isBanned();         // checks whether the user has been banned
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+            /**
+             *
+             *  If the user has been banned
+             *  First an error message is being displayed.
+             *  After that the application will close itself and the user
+             *  will not be able to enter a room because his IP is in the
+             *  server's blacklist.
+             *
+             * */
+            catch (ServerCommunication.UserBannedByIpExtension e) {
+                 System.exit(0);
+             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             java.util.Collections.sort(questionsListView.getItems(), new java.util.Comparator<Question>() {
@@ -120,7 +137,6 @@ public class RoomViewController implements Initializable {
      * Handles pressing the leaveRoomButton
      * Loads the menu layout into the scene, passes that scene into the stage.
      */
-
     @FXML
     public void leaveRoomButtonPressed() {
 
@@ -221,6 +237,29 @@ public class RoomViewController implements Initializable {
         questions.removeAll();
         questionsListView.getItems().clear();
         questions.addAll(ServerCommunication.fetchQuestionsByRoomId(MainView.getRoomId()));
+    }
+
+    /**
+     * Checks whether a student has been recently banned
+     * If he has, an error message will be displayed.
+     * It is going to disappear after 3 seconds and the
+     * application will close itself.
+     * @throws ServerCommunication.UserBannedByIpExtension if true
+     */
+    @FXML
+    public void isBanned() throws ServerCommunication.UserBannedByIpExtension, InterruptedException {
+
+            if(ServerCommunication.isUserBanned(currentUser)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText(null);
+                alert.setContentText("You have been banned.");
+                alert.show();
+                TimeUnit.SECONDS.sleep(3);
+                alert.close();
+                System.exit(0);
+            }
+
     }
 
     @FXML

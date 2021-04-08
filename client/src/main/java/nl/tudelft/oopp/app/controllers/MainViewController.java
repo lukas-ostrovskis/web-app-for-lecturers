@@ -334,7 +334,7 @@ public class MainViewController {
     }
 
 
-    private User createUser() throws ServerCommunication.UserNotAddedException, ServerCommunication.UserBannedByIp, ServerCommunication.EmptyEmailFieldException, ServerCommunication.EmptyPasswordFieldException {
+    private User createUser() throws ServerCommunication.UserNotAddedException, ServerCommunication.UserBannedByIpExtension, ServerCommunication.EmptyEmailFieldException, ServerCommunication.EmptyPasswordFieldException {
 
         // Parse identity
         String identity;
@@ -370,7 +370,7 @@ public class MainViewController {
         try{
             user = ServerCommunication.addUser(user, passwordField.getText());
         }
-         catch(ServerCommunication.UserBannedByIp e)
+         catch(ServerCommunication.UserBannedByIpExtension e)
          {
              presentError("Error", "You have been banned.");
              return null;

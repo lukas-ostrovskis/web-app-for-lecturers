@@ -70,11 +70,11 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public String isBanned(String Ip){
+    public boolean isBanned(String Ip){
         if(ipBlacklistRepository.existsByIp(Ip)) {
-            return Ip;
+            return true;
         }
-        else return null;
+        return false;
     }
 
     public List<User> findAllByEmailContains(String email) {

@@ -87,7 +87,7 @@ public class UserController {
     }
 
     @GetMapping("/isbanned")
-    public String isBanned(@RequestParam String ipAddress) {
+    public boolean isBanned(@RequestParam String ipAddress) {
         return userService.isBanned(ipAddress);
     }
 
