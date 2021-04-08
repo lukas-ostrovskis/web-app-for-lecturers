@@ -283,12 +283,26 @@ public class MainViewController {
 
             loadRoomView();
 
-        } catch (ServerCommunication.UserNotAddedException
-                | ServerCommunication.RoomNotAddedException e) {
-
+        } catch (ServerCommunication.UserNotAddedException e){
             // If user could not be created server-side
-            presentError("Error!", e.getMessage());
+            if(emailTextField.getText().trim().isEmpty())
+                presentError("Error!", "You have not entered an email address.");
+            // First we check if the password field is empty.
+            else if(passwordField.getText().trim().isEmpty())
+                presentError("Error!", "You have not entered a password.");
+
+            // if that is not the case, the only remaining reason is that the password is wrong
+            else presentError("Error!", e.getMessage());
+
         }
+          catch (ServerCommunication.RoomNotAddedException e) {
+              // If room could not be created server-side
+              presentError("Error!", e.getMessage());
+        }
+          catch(ServerCommunication.EmptyPasswordFieldException e){
+            presentError("Error", e.getMessage());
+          }
+
     }
 
     /**
@@ -300,12 +314,12 @@ public class MainViewController {
 
         try {
             // Try creating the user
-            user=createUser();
+            user = createUser();
 
             MainView.setRoomId(roomIdTextField.getText());
+
             ServerCommunication.joinRoom(MainView.getRoomId(), user);
-           // System.out.println("RoomID: " + MainView.getRoomId());
-           // System.out.println("UserID: " + user.getId());
+
             loadRoomView();
 
         } catch (ServerCommunication.UserNotAddedException e) {
@@ -313,10 +327,14 @@ public class MainViewController {
             // if user could not be created server-side
            presentError("Error!", e.getMessage());
         }
+         catch (ServerCommunication.RoomDoesNotExistException e){
+            // if the room does not exist
+             presentError("Error!","Room does not exist.");
+         }
     }
 
 
-    private User createUser() throws ServerCommunication.UserNotAddedException {
+    private User createUser() throws ServerCommunication.UserNotAddedException, ServerCommunication.UserBannedByIp, ServerCommunication.EmptyEmailFieldException, ServerCommunication.EmptyPasswordFieldException {
 
         // Parse identity
         String identity;
@@ -330,9 +348,39 @@ public class MainViewController {
         // Client-side user
         User user = new User(emailTextField.getText(), identity, userNameTextField.getText());
         System.out.printf(" > Created client-side user (%s)\n", currentIdentity);
+        try{
+            if(identity.equals("lecturer") || identity.equals("moderator")){
+                if(emailTextField.getText().trim().isEmpty())
+                    throw new ServerCommunication.EmptyEmailFieldException("");
+                if(passwordField.getText().trim().isEmpty())
+                    throw new ServerCommunication.EmptyPasswordFieldException("");
+        }
+
+        } catch (ServerCommunication.EmptyEmailFieldException e) {
+            presentError("Error", "You have not given an email address.");
+            return null;
+        }
+          catch (ServerCommunication.EmptyPasswordFieldException e){
+            presentError("Error", "You have not given a password.");
+            return null;
+          }
+
 
         // Create the server-side user
-        user = ServerCommunication.addUser(user, passwordField.getText());
+        try{
+            user = ServerCommunication.addUser(user, passwordField.getText());
+        }
+         catch(ServerCommunication.UserBannedByIp e)
+         {
+             presentError("Error", "You have been banned.");
+             return null;
+         }
+        catch(ServerCommunication.UserNotAddedException e)
+        {
+            presentError("Error", e.getMessage());
+            return null;
+        }
+
         System.out.printf(" > Created server-side user (id: %s)\n", user.getId());
 
         // And update the client-side user with the new user (containing id)
@@ -343,6 +391,7 @@ public class MainViewController {
 
     /**
      * Helper method for displaying errors.
+     * If the error message is about being banned, the application will be terminated.
      * @param err error type
      * @param msg error message
      */
@@ -352,5 +401,7 @@ public class MainViewController {
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
+        if(msg.equals("You have been banned."))
+            System.exit(0);
     }
 }

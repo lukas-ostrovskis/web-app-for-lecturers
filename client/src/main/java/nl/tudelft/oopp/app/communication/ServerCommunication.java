@@ -62,7 +62,7 @@ public class ServerCommunication {
      * @param user the user that is trying to enter
      * @return the response of the body to communicate between the server and the client
      */
-    public static String joinRoom(String id, User user) {
+    public static String joinRoom(String id, User user) throws RoomDoesNotExistException{
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/room/join?roomId=" + id + "&userId=" + user.getId()))
@@ -72,10 +72,12 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return "Communication with server failed";
+            throw new RoomDoesNotExistException("");
+            //return "Communication with server failed";
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
+            throw new RoomDoesNotExistException("The room does not exist");
         }
 
         return response.body().equals("") ? null : response.body();
@@ -269,7 +271,7 @@ public class ServerCommunication {
      * @param user to be added
      * @return the response of the body to communicate between the server and the client
      */
-    public static User addUser(User user, String password) throws UserNotAddedException {
+    public static User addUser(User user, String password) throws UserNotAddedException, UserBannedByIp {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .header("Content-type", "application/json")
@@ -278,8 +280,29 @@ public class ServerCommunication {
                 .build();
 
         String response = sendRequest(request);
+
+
         if (response == null) {
-            throw new UserNotAddedException("User not added, lecturer password may be wrong or student ip may be banned");
+            if(user.getRole().equals("student"))
+            {
+                // basically, the only reason a student could find problems with joining a room
+                // is if he has been banned by Ip, since there are no requirements for his name or email.
+                // That is why we assume that if the response is null, an exception has been thrown
+                // and that it was for the IP
+                throw new UserBannedByIp("You have been banned from the app.");
+            }
+            // check for ip ban
+            /**
+            HttpRequest ipRequest = HttpRequest.newBuilder()
+                    .header("Content-type", "application/json")
+                    .GET()
+                    .uri(URI.create("http://localhost:8080/user/isbanned?ip="+user.getIp()))
+                    .build();
+            String ipResponse = sendRequest(ipRequest);
+            System.out.println(ipResponse + " makarena");
+            // check for lecturer_wrong_password
+            */
+            else throw new UserNotAddedException("User not added: Please verify that you have used the correct email and password.");
         }
 
         return gson.fromJson(response, User.class);
@@ -362,6 +385,29 @@ public class ServerCommunication {
             super(message);
         }
     }
+
+    /**
+     * Exception indicating inexistence of a room.
+     */
+    public static class RoomDoesNotExistException extends Exception {
+        public RoomDoesNotExistException(String message){ super(message);}
+    }
+
+    /**
+     * Exception indicating that the user's ip is in the blacklist of the app
+     */
+    public static class UserBannedByIp extends Exception {
+        public UserBannedByIp(String message){ super(message);}
+    }
+
+    public static class EmptyEmailFieldException extends Exception{
+        public EmptyEmailFieldException(String message){ super(message);}
+    }
+
+    public static class EmptyPasswordFieldException extends Exception{
+        public EmptyPasswordFieldException(String message){ super(message);}
+    }
+
 
     /**
      * Adds a Quiz to the database.
