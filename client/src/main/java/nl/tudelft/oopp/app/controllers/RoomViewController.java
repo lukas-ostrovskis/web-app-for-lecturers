@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.io.File;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,6 +21,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.data.Quiz;
@@ -141,7 +144,7 @@ public class RoomViewController implements Initializable {
         ServerCommunication.deleteQuizFromServerMemory(MainView.getRoomId());
 
         try {
-
+//            ServerCommunication.exportQuestionsToCsv(MainView.getRoomId());
             // Delete room from server
             ServerCommunication.deleteRoom();
 
@@ -220,6 +223,20 @@ public class RoomViewController implements Initializable {
         questions.addAll(ServerCommunication.fetchQuestionsByRoomId(MainView.getRoomId()));
     }
 
+    @FXML
+    public void exportRoomButtonPressed() throws IOException {
+        JFileChooser jfc =
+            new JFileChooser(FileSystemView.getFileSystemView().getDefaultDirectory());
+
+        int returnValue = jfc.showSaveDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = jfc.getSelectedFile();
+            ServerCommunication
+                .exportQuestionsToCsv(MainView.getRoomId(), selectedFile.getAbsolutePath());
+        }
+    }
+
     public void startCheckingQuizOpen(String roomId) {
         new Thread(new Runnable() {
             @Override
@@ -262,3 +279,4 @@ public class RoomViewController implements Initializable {
         stage.show();
     }
 }
+

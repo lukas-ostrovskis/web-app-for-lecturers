@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.opencsv.CSVWriter;
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.data.User;
@@ -14,11 +15,15 @@ import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
 import nl.tudelft.oopp.app.data.Quiz;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +103,35 @@ public class ServerCommunication {
         }
 
         return mapper.readValue(response.body(), new TypeReference<List<Question>>(){});
+    }
+
+    /**
+     * Exports the current list of questions to a CSV file.
+     *
+     * @param roomId the room id.
+     * @throws IOException
+     */
+    public static void exportQuestionsToCsv(String roomId, String filepath) throws IOException{
+        List<Question> questions = fetchQuestionsByRoomId(roomId);
+        List<String[]> serializedQuestions = new ArrayList<>();
+
+        String[] topRow = {"ASK TIME", "OWNER ID", "OWNER NAME", "QUESTION", "UPVOTES", "DOWNVOTES", "ANSWER"};
+        serializedQuestions.add(topRow);
+
+        DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+
+
+        for(Question q: questions) {
+
+            String[] serializedQuestion = {DATE_TIME_FORMATTER.format(q.getCreationTimestamp()), q.getOwnerId(), q.getOwnerName(), q.getContent(), String.valueOf(q.getNumberOfUpvotes()), String.valueOf(q.getNumberOfDownvotes()), q.getAnswer()};
+            serializedQuestions.add(serializedQuestion);
+        }
+
+        CSVWriter writer = new CSVWriter(new FileWriter(filepath + ".csv"), ',',
+            CSVWriter.NO_QUOTE_CHARACTER);
+        writer.writeAll(serializedQuestions);
+        writer.close();
     }
 
     /**
