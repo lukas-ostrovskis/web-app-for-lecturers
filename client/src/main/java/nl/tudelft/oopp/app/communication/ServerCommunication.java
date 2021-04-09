@@ -75,6 +75,7 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
         }
 
+        //Stores the response to check it in the future
         checkNullResponse = response.body();
 
         return response.body().equals("") ? null : response.body();

@@ -303,7 +303,10 @@ public class MainViewController {
             user=createUser();
 
             MainView.setRoomId(roomIdTextField.getText());
+
+            //Checks if the response.body() is not null
             if ( ServerCommunication.getCheckNullResponse() != null ) {
+
                 ServerCommunication.joinRoom(MainView.getRoomId(), user);
                 // System.out.println("RoomID: " + MainView.getRoomId());
                 // System.out.println("UserID: " + user.getId());
