@@ -68,9 +68,18 @@ public class RoomService {
 
         if (roomById.isPresent() && userById.isPresent()) {
             System.out.println(roomById + "is present");
-            roomById.get().addUser(userRepository.getOne(userId));
+            if (roomById.get().getRoomUsers().contains(userId)) {
+                roomById.get().addUser(userRepository.getOne(userId));
+            }
+            if (roomById.get().getId().contains(userId)) {
+
+                return roomById.get().getId();
+
+            }
+
             roomRepository.save(roomById.get());
             roomRepository.flush();
+
             return roomById.get().getId();
         } else {
             throw new IllegalStateException("Room doesn't exist");

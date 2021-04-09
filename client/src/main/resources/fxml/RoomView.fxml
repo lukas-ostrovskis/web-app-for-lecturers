@@ -3,7 +3,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 
 <VBox id="staticGradientVBox" alignment="CENTER" prefHeight="789.0" prefWidth="1173.0" spacing="25" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.app.controllers.RoomViewController">
         <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
@@ -26,7 +25,7 @@
 
             <Label fx:id="identityLabel" text="You're a (student / moderator / lecturer)">
             <VBox.margin>
-               <Insets top="40.0" />
+               <Insets top="80.0" />
             </VBox.margin></Label>
 
             <Label text="Lecture: (lecture title, e.g. CSE1200)" />
@@ -36,24 +35,24 @@
         <VBox alignment="TOP_RIGHT" spacing="25.0">
          <AnchorPane prefHeight="200.0" prefWidth="200.0">
             <children>
-      
+
                  <Button layoutX="636.0" layoutY="-3.0" minWidth="100.0" onAction="#leaveRoomButtonPressed" text="Leave Room" />
-      
+
                   <Button fx:id="quizzesButton" layoutX="479.0" layoutY="-3.0" mnemonicParsing="false" onAction="#quizzesButtonPressed" text="Quizzes" />
-      
+
                   <Button layoutX="560.0" layoutY="-3.0" onAction="#exportRoomButtonPressed" text="Export" />
-      
+
                   <Button fx:id="endLectureButton" layoutX="368.0" layoutY="-3.0" onAction="#endLectureButtonPressed" text="End Lecture" />
             </children>
          </AnchorPane>
 
 
 
-            <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="725.0" spacing="25">
+            <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="730.0" spacing="25">
 
                 <TextField fx:id="questionText" prefWidth="400">
                <HBox.margin>
-                  <Insets top="-90.0" />
+                  <Insets left="125.0" top="-90.0" />
                </HBox.margin></TextField>
 
                 <Button minWidth="120.0" onAction="#askQuestionButtonPressed" text="Ask Question">
@@ -67,7 +66,7 @@
                <Insets left="80.0" top="70.0" />
             </padding>
             <VBox.margin>
-               <Insets />
+               <Insets top="-40.0" />
             </VBox.margin>
 
             </HBox>
@@ -76,14 +75,15 @@
          </HBox.margin>
 
         </VBox>
+      <VBox.margin>
+         <Insets top="-130.0" />
+      </VBox.margin>
 
     </HBox>
 
-    <ListView fx:id="questionsListView" editable="true" maxHeight="Infinity" maxWidth="Infinity" prefHeight="356.0" prefWidth="922.0" styleClass="listView" stylesheets="@../css/app.css">
+    <ListView fx:id="questionsListView" editable="true" maxHeight="Infinity" maxWidth="1118.0" prefHeight="356.0" prefWidth="1118.0" styleClass="listView" stylesheets="@../css/app.css">
       <VBox.margin>
          <Insets top="-50.0" />
       </VBox.margin></ListView>
-
-    <Rectangle arcHeight="10" arcWidth="10" fill="snow" height="200" width="750" />
 
 </VBox>
