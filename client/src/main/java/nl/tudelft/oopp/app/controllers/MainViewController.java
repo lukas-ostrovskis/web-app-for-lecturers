@@ -330,10 +330,6 @@ public class MainViewController {
            presentError("Error!", e.getMessage());
 
         }
-         catch (ServerCommunication.RoomDoesNotExistException e){
-            // if the room does not exist
-             presentError("Error!","Room does not exist.");
-         }
     }
 
 
