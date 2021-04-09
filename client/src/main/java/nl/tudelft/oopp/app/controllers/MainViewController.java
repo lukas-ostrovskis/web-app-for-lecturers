@@ -303,15 +303,10 @@ public class MainViewController {
             user=createUser();
 
             MainView.setRoomId(roomIdTextField.getText());
-            if (ServerCommunication.getCheckNullResponse() != null) {
-
-                ServerCommunication.joinRoom(MainView.getRoomId(), user);
-                // System.out.println("RoomID: " + MainView.getRoomId());
-                // System.out.println("UserID: " + user.getId());
-                loadRoomView();
-            } else {
-                presentError(" ", "Invalid Room ID Please try again");
-            }
+            ServerCommunication.joinRoom(MainView.getRoomId(), user);
+           // System.out.println("RoomID: " + MainView.getRoomId());
+           // System.out.println("UserID: " + user.getId());
+            loadRoomView();
 
         } catch (ServerCommunication.UserNotAddedException e) {
 
