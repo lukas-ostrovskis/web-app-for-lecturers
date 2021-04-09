@@ -82,9 +82,9 @@ public class DatabaseLoader {
         User u1 = new User("John", "john", "lecturer", "69.69.122.0"
         );
         User u2 = new User(
-                "Athan", "athan@gmail.com", "moderator", "69.69.122.0"
+                "Sebastian", "moderator@gmail.com", "moderator", "69.69.122.0"
         );
-        User u3 = new User("1", "William", "email", "lecturer", "1234");
+        User u3 = new User("William", "email", "lecturer", "1234");
 
         userRepository.save(u1);
         userRepository.save(u2);
