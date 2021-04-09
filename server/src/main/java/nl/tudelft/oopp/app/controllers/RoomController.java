@@ -1,26 +1,31 @@
 package nl.tudelft.oopp.app.controllers;
 
-
-import nl.tudelft.oopp.app.entities.Room;
-import nl.tudelft.oopp.app.entities.User;
-import nl.tudelft.oopp.app.services.RoomService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import nl.tudelft.oopp.app.entities.Room;
+import nl.tudelft.oopp.app.entities.User;
+
+import nl.tudelft.oopp.app.services.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("room")
 public class RoomController {
 
-    private Random id = new Random(System.currentTimeMillis());
-    private RoomService roomService;
+    private final Random id = new Random(System.currentTimeMillis());
+    private final RoomService roomService;
 
     /**
      * Constructor for the RoomController.
+     *
      * @param roomService service layer class for room actions.
      */
     @Autowired
@@ -30,6 +35,7 @@ public class RoomController {
 
     /**
      * Create a new room on the server and save it in a database.
+     *
      * @return roomId - the id of the created room.
      */
     @GetMapping("/create")
@@ -40,6 +46,7 @@ public class RoomController {
 
     /**
      * Allows a client to join an existing room with a specific id.
+     *
      * @param roomId - the id of the room.
      * @return to the client the response of the server of joining a room
      */
@@ -59,6 +66,7 @@ public class RoomController {
 
     /**
      * Delete the room from the database.
+     *
      * @param userId - the id of the room.
      */
     @GetMapping("/delete")
@@ -69,6 +77,7 @@ public class RoomController {
 
     /**
      * Archive the room by changing its status to offline while keeping it on the database.
+     *
      * @param id - the id of the room.
      */
     @PutMapping("archive")

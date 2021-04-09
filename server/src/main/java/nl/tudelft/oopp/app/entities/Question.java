@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 
@@ -158,6 +159,10 @@ public class Question {
         return numberOfUpvotes;
     }
 
+    public void setNumberOfUpvotes(int numberOfUpvotes) {
+        this.numberOfUpvotes = numberOfUpvotes;
+    }
+
     /**
      * Gets question's number of downvotes.
      *
@@ -165,6 +170,10 @@ public class Question {
      */
     public int getNumberOfDownvotes() {
         return numberOfDownvotes;
+    }
+
+    public void setNumberOfDownvotes(int numberOfDownvotes) {
+        this.numberOfDownvotes = numberOfDownvotes;
     }
 
     /**
@@ -192,14 +201,6 @@ public class Question {
         this.numberOfUpvotes++;
     }
 
-    public void setNumberOfUpvotes(int numberOfUpvotes) {
-        this.numberOfUpvotes = numberOfUpvotes;
-    }
-
-    public void setNumberOfDownvotes(int numberOfDownvotes) {
-        this.numberOfDownvotes = numberOfDownvotes;
-    }
-
     /**
      * Downvotes a question.
      */
@@ -209,6 +210,7 @@ public class Question {
 
     /**
      * Getter for the upvoters of the question.
+     *
      * @returns a list of all the id's of users that have upvoted this question
      */
     public List<User> getUpvoters() {
@@ -217,6 +219,7 @@ public class Question {
 
     /**
      * Getter for the downvoters of the question.
+     *
      * @returns a list of all the id's of users that have downvoted this question
      */
     public List<User> getDownvoters() {
@@ -239,6 +242,7 @@ public class Question {
 
     /**
      * Getter for the creation timestamp of the question.
+     *
      * @return the creation timestamp
      */
     public Instant getCreationTimestamp() {
@@ -247,6 +251,7 @@ public class Question {
 
     /**
      * Sets the creation timestamp.
+     *
      * @param creationTimestamp - timestamp of the moment when question was created
      */
     public void setCreationTimestamp(Instant creationTimestamp) {
@@ -263,12 +268,12 @@ public class Question {
         }
         Question question = (Question) o;
         return numberOfUpvotes == question.numberOfUpvotes
-            && numberOfDownvotes == question.numberOfDownvotes
-            && status == question.status
-            && ownerId.equals(question.ownerId)
-            && roomId.equals(question.roomId)
-            && content.equals(question.content)
-            && answer.equals(question.answer);
+                && numberOfDownvotes == question.numberOfDownvotes
+                && status == question.status
+                && ownerId.equals(question.ownerId)
+                && roomId.equals(question.roomId)
+                && content.equals(question.content)
+                && answer.equals(question.answer);
     }
 
 

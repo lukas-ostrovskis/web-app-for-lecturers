@@ -1,11 +1,11 @@
 package nl.tudelft.oopp.app.repositories;
 
+import java.util.List;
+import java.util.Optional;
 import nl.tudelft.oopp.app.entities.Quiz;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-import java.util.Optional;
 
 public interface QuizRepository extends JpaRepository<Quiz, String> {
     /**

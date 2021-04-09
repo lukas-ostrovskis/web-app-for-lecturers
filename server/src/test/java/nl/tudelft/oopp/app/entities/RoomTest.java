@@ -1,4 +1,8 @@
-package nl.tudelft.oopp.app;
+package nl.tudelft.oopp.app.entities;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +12,14 @@ import nl.tudelft.oopp.app.entities.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 class RoomTest {
 
-    private static Room room;
     private static final String ownerId = "XYZ789";
     private static final boolean status = true;
     private static final int time = 360;
-    private static final List<User> roomUsers = new ArrayList<>();
+    private static final List<User> roomUsers = new ArrayList<User>();
+    private static Room room;
 
     @BeforeAll
     static void setUp() {
@@ -28,16 +30,6 @@ class RoomTest {
     @Test
     void constructorTest() {
         assertNotNull(room);
-    }
-
-    @Test
-    public void getIdTest() {
-        assertEquals("ABC123", room.getId());
-    }
-
-    @Test
-    public void getOwnerIdTest() {
-        assertEquals("XYZ789", room.getOwnerId());
     }
 
     @Test
@@ -54,6 +46,16 @@ class RoomTest {
     }
 
     @Test
+    void getIdTest() {
+        assertEquals(room.getId(), "ABC123");
+    }
+
+    @Test
+    void getOwnerIdTest() {
+        assertEquals(room.getOwnerId(), "XYZ789");
+    }
+
+    @Test
     void getStatusTest() {
         assertEquals(room.isStatus(), true);
     }
@@ -67,6 +69,7 @@ class RoomTest {
     void getList() {
         assertEquals(roomUsers, room.getRoomUsers());
     }
+
     @Test
     void setStatusTest() {
         Room room3 = new Room("XDDX2", ownerId, status, time);

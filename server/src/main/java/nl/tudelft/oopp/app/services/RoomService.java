@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.app.services;
 
+import java.util.List;
+import java.util.Optional;
 import nl.tudelft.oopp.app.entities.Room;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.RoomRepository;
@@ -7,15 +9,13 @@ import nl.tudelft.oopp.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
 
 @Service
 public class RoomService {
 
-    private RoomRepository roomRepository;
-    private UserRepository userRepository;
-
-    public List<String> passwords = List.of("12345", "qwert");
+    public List<String> passwords = List.of("12345");
+    private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public RoomService(RoomRepository roomRepository, UserRepository userRepository) {
@@ -25,7 +25,8 @@ public class RoomService {
 
     /**
      * Saves a room in the database.
-     * @param userId - the room to save
+     *
+     * @param userId   - the room to save
      * @param password of the user
      */
     public String createRoom(String userId, String password) {
@@ -55,6 +56,7 @@ public class RoomService {
 
     /**
      * Allows the client to join a room with a specific id if it exists in the database.
+     *
      * @param roomId - id of the room that the client is trying to access.
      */
     public String joinRoom(String roomId, String userId) {
@@ -64,8 +66,7 @@ public class RoomService {
         Optional<Room> roomById = roomRepository.findById(roomId);
         Optional<User> userById = userRepository.findById(userId);
 
-        if(roomById.isPresent() && userById.isPresent()) {
-
+        if (roomById.isPresent() && userById.isPresent()) {
             System.out.println(roomById + "is present");
             if (roomById.get().getRoomUsers().contains(userId)) {
                 roomById.get().addUser(userRepository.getOne(userId));
@@ -80,19 +81,21 @@ public class RoomService {
             roomRepository.flush();
 
             return roomById.get().getId();
+        } else {
+            throw new IllegalStateException("Room doesn't exist");
         }
-        else throw new IllegalStateException("Room doesn't exist");
     }
 
     /**
      * Deletes a room from the database.
+     *
      * @param userId - the id of the room to delete.
      */
     public String deleteRoomByOwnerId(String userId) {
 
         Optional<Room> roomById = roomRepository.findByOwnerId(userId);
 
-        if(roomById.isEmpty()) {
+        if (roomById.isEmpty()) {
             return null;
         }
 
@@ -103,15 +106,17 @@ public class RoomService {
 
     /**
      * Archives a room by changing its status to offline and updating the status on the database.
+     *
      * @param roomId - the id of the room to archive.
      */
     public void archiveRoom(String roomId) {
         Optional<Room> roomById = roomRepository.findById(roomId);
 
-        if(roomById.isPresent()) {
+        if (roomById.isPresent()) {
             roomById.get().setStatus(false);
             roomRepository.save(roomById.get());
+        } else {
+            throw new IllegalStateException("Room doesn't exist");
         }
-        else throw new IllegalStateException("Room doesn't exist");
     }
 }

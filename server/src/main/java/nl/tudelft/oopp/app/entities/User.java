@@ -1,8 +1,16 @@
 package nl.tudelft.oopp.app.entities;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "users")
@@ -34,7 +42,6 @@ public class User {
     private List<Question> downvotedQuestions;
 
 
-
     /**
      * Basic constructor required by the JPA specification.
      */
@@ -59,15 +66,18 @@ public class User {
         this.ip = ip;
     }
 
+    /**
+     * Constructor for the User entity.
+     * @param name - name of the user
+     * @param email - email of the user
+     * @param role - role of the user
+     * @param ip - ip address of the user
+     */
     public User(String name, String email, String role, String ip) {
         this.name = name;
         this.email = email;
         this.role = role;
         this.ip = ip;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getId() {
@@ -86,6 +96,10 @@ public class User {
         return role;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getIp() {
         return ip;
     }
@@ -97,16 +111,21 @@ public class User {
     public List<Question> getDownvotedQuestions() {
         return downvotedQuestions;
     }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
         User user = (User) o;
-        return id.equals(user.id) &&
-                name.equals(user.name) &&
-                email.equals(user.email) &&
-                role.equals(user.role) &&
-                ip.equals(user.ip);
+        return id.equals(user.id)
+                && name.equals(user.name)
+                && email.equals(user.email)
+                && role.equals(user.role)
+                && ip.equals(user.ip);
     }
 
 }

@@ -1,10 +1,14 @@
-package nl.tudelft.oopp.app;
+package nl.tudelft.oopp.app.entities;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nl.tudelft.oopp.app.entities.Quiz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class QuizTest {
 
@@ -14,9 +18,12 @@ class QuizTest {
 
     @BeforeEach
     void setUp() {
-        qz1 = new Quiz("aaaaaaa", "Question1", "AnswerA1", "AnswerA2", "AnswerA3", "AnswerA4", "AnswerA5", "AnswerA6", "AnswerA7", "AnswerA8", "AnswerA9", "AnswerA10", 'a');
-        qz2 = new Quiz("bbbbbb", "Question2", "AnswerB1", "AnswerB2", "AnswerB3", "AnswerB4", "AnswerB5", "AnswerB6", "AnswerB7", "AnswerB8", "AnswerB9", "AnswerB10", 'b');
-        qz3 = new Quiz("cccccccc", "Question3", "AnswerC1", "AnswerC2", "AnswerC3", "AnswerC4", "AnswerC5", "AnswerC6", "AnswerC7", "AnswerC8", "AnswerC9", "AnswerC10", 'c');
+        qz1 = new Quiz("aaaaaaa", "Question1", "AnswerA1", "AnswerA2", "AnswerA3", "AnswerA4",
+                "AnswerA5", "AnswerA6", "AnswerA7", "AnswerA8", "AnswerA9", "AnswerA10", 'a');
+        qz2 = new Quiz("bbbbbb", "Question2", "AnswerB1", "AnswerB2", "AnswerB3", "AnswerB4",
+                "AnswerB5", "AnswerB6", "AnswerB7", "AnswerB8", "AnswerB9", "AnswerB10", 'b');
+        qz3 = new Quiz("cccccccc", "Question3", "AnswerC1", "AnswerC2", "AnswerC3", "AnswerC4",
+                "AnswerC5", "AnswerC6", "AnswerC7", "AnswerC8", "AnswerC9", "AnswerC10", 'c');
     }
 
     @Test

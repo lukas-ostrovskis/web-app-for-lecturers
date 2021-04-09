@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.util.List;
+
 import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.services.QuestionService;
 import org.springframework.http.MediaType;
@@ -38,7 +39,7 @@ public class QuestionController {
      * @return question by with specified ID
      */
     @GetMapping(value = "/getQuestionById/{questionId}",
-                produces = "application" + "/json")
+            produces = "application" + "/json")
     public Question getOneQuestionById(@PathVariable String questionId) {
         return questionService.getOneQuestionById(questionId);
     }
@@ -50,7 +51,7 @@ public class QuestionController {
      * @return the all questions by room id
      */
     @GetMapping(value = "/getAllByRoomId/{roomId}",
-                produces = "application" + "/json")
+            produces = "application" + "/json")
     public List<Question> getAllQuestionsByRoomId(@PathVariable String roomId) {
         return questionService.getAllQuestionByRoomId(roomId);
     }
@@ -62,7 +63,7 @@ public class QuestionController {
      * @return the all questions by owner id
      */
     @GetMapping(value = "/getAllByOwnerId/{ownerId}",
-                produces = "application" + "/json")
+            produces = "application" + "/json")
     public List<Question> getAllQuestionsByOwnerId(@PathVariable String ownerId) {
         return questionService.getAllQuestionByOwnerId(ownerId);
     }
@@ -158,8 +159,8 @@ public class QuestionController {
      * @return String
      */
     @PutMapping(
-        value = "/add",
-        consumes = MediaType.APPLICATION_JSON_VALUE
+            value = "/add",
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public String addQuestion(@RequestBody Question question) {
         try {

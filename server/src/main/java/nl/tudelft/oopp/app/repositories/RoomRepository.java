@@ -1,9 +1,10 @@
 package nl.tudelft.oopp.app.repositories;
 
+import java.util.Optional;
 import nl.tudelft.oopp.app.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+
 
 /**
  * The interface Room repository.
