@@ -89,9 +89,9 @@ public class UserController {
 
 
     @PostMapping ("/add")
-    public String addUser(@RequestBody User user, @RequestParam String password) {
-        userService.save(user, password);
-        return "User Added Successfully";
+    public User addUser(@RequestBody User user, @RequestParam String password) {
+        return userService.save(user, password);
+        //return "User Added Successfully";
     }
 
     @PostMapping("/ban")
