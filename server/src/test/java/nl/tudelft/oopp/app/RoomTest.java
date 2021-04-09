@@ -1,9 +1,5 @@
 package nl.tudelft.oopp.app;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +7,8 @@ import nl.tudelft.oopp.app.entities.Room;
 import nl.tudelft.oopp.app.entities.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class RoomTest {
@@ -30,6 +28,26 @@ class RoomTest {
     @Test
     void constructorTest() {
         assertNotNull(room);
+    }
+
+    @Test
+    public void getIdTest() {
+        assertEquals("ABC123", room.getId());
+    }
+
+    @Test
+    public void getOwnerIdTest() {
+        assertEquals("XYZ789", room.getOwnerId());
+    }
+
+    @Test
+    public void isStatusTest() {
+        assertTrue(room.isStatus());
+    }
+
+    @Test
+    public void getTimeTest() {
+        assertEquals(360, room.getTime());
     }
 
     @Test
