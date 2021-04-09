@@ -63,8 +63,7 @@ public class RoomService {
         //Check if the room is expired
         Optional<Room> roomById = roomRepository.findById(roomId);
         Optional<User> userById = userRepository.findById(userId);
-        //System.out.println(userById.isPresent()+".");
-        //System.out.println(roomById.isPresent()+".");
+
         if(roomById.isPresent() && userById.isPresent()) {
 
             System.out.println(roomById + "is present");

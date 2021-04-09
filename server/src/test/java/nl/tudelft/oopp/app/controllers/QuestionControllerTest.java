@@ -1,17 +1,17 @@
 package nl.tudelft.oopp.app.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 import nl.tudelft.oopp.app.entities.Question;
+import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
+import nl.tudelft.oopp.app.services.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -23,23 +23,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.hamcrest.Matchers.*;
 
 /**
  * The type Question controller test.
  */
 
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class QuestionControllerTest {
     private static String id;
-
+    @Autowired
+    private static UserService userService;
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private QuestionRepository questionRepository;
 
     /**
      * Sets up.
@@ -58,7 +59,7 @@ class QuestionControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
             .put("/question/add")
             .contentType(MediaType.APPLICATION_JSON)
-            .content( "{ " +
+            .content("{ " +
                 "\"ownerId\": \"testOwnerId\"," +
                 "\"ownerName\": \"testOwnerName\"," +
                 "\"roomId\": \"testRoomId\"," +
@@ -123,6 +124,9 @@ class QuestionControllerTest {
             .put("/question/toggleStatus/" + id)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+
+        assertTrue(questionService.getOneQuestionById("1").isStatus());
+
 //            .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
 //            .andExpect(jsonPath("$.content", is("Second q")))
 //            .andExpect(jsonPath("$.roomId", is("testRoomId")))
@@ -139,16 +143,11 @@ class QuestionControllerTest {
     @Order(5)
     void upvoteQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/upvote?questionId=" + id + "&userId=testOwnerId")
+            .put("/question/upvote?questionId=" + id + "&userId=1")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-//            .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
-//            .andExpect(jsonPath("$.content", is("Second q")))
-//            .andExpect(jsonPath("$.roomId", is("testRoomId")))
-//            .andExpect(jsonPath("$.numberOfUpvotes", is(6)))
-//            .andExpect(jsonPath("$.numberOfDownvotes", is(5)))
-//            .andExpect(jsonPath("$.status", is(true)))
-//            .andExpect(jsonPath("$.answer", is("yes smth")));
+
+        System.out.println(questionRepository.findAll());
     }
 
     /**
@@ -158,16 +157,9 @@ class QuestionControllerTest {
     @Order(6)
     void downvoteQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/downvote?questionId=" + id + "&userId=testOwnerId")
+            .put("/question/downvote?questionId=" + id + "&userId=1")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-//            .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
-//            .andExpect(jsonPath("$.content", is("Second q")))
-//            .andExpect(jsonPath("$.roomId", is("testRoomId")))
-//            .andExpect(jsonPath("$.numberOfUpvotes", is(6)))
-//            .andExpect(jsonPath("$.numberOfDownvotes", is(6)))
-//            .andExpect(jsonPath("$.status", is(true)))
-//            .andExpect(jsonPath("$.answer", is("yes smth")));
     }
 
 
@@ -220,6 +212,7 @@ class QuestionControllerTest {
 
         assertEquals(questionService.getAllQuestionByRoomId("666").size(), 0);
     }
+
     /**
      * Delete question by id.
      */

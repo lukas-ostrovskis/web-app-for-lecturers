@@ -212,7 +212,6 @@ public class Question {
         return numberOfUpvotes == question.numberOfUpvotes &&
                 numberOfDownvotes == question.numberOfDownvotes &&
                 status == question.status &&
-//                id.equals(question.id) &&
                 ownerId.equals(question.ownerId) &&
                 roomId.equals(question.roomId) &&
                 content.equals(question.content) &&

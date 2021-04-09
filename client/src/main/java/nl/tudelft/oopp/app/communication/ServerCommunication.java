@@ -7,18 +7,22 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import javafx.scene.control.Alert;
+import com.opencsv.CSVWriter;
 import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.data.User;
 
 import nl.tudelft.oopp.app.views.MainView;
 import nl.tudelft.oopp.app.data.Quiz;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -105,6 +109,35 @@ public class ServerCommunication {
         }
 
         return mapper.readValue(response.body(), new TypeReference<List<Question>>(){});
+    }
+
+    /**
+     * Exports the current list of questions to a CSV file.
+     *
+     * @param roomId the room id.
+     * @throws IOException
+     */
+    public static void exportQuestionsToCsv(String roomId, String filepath) throws IOException{
+        List<Question> questions = fetchQuestionsByRoomId(roomId);
+        List<String[]> serializedQuestions = new ArrayList<>();
+
+        String[] topRow = {"ASK TIME", "OWNER ID", "OWNER NAME", "QUESTION", "UPVOTES", "DOWNVOTES", "ANSWER"};
+        serializedQuestions.add(topRow);
+
+        DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+
+
+        for(Question q: questions) {
+
+            String[] serializedQuestion = {DATE_TIME_FORMATTER.format(q.getCreationTimestamp()), q.getOwnerId(), q.getOwnerName(), q.getContent(), String.valueOf(q.getNumberOfUpvotes()), String.valueOf(q.getNumberOfDownvotes()), q.getAnswer()};
+            serializedQuestions.add(serializedQuestion);
+        }
+
+        CSVWriter writer = new CSVWriter(new FileWriter(filepath + ".csv"), ',',
+            CSVWriter.NO_QUOTE_CHARACTER);
+        writer.writeAll(serializedQuestions);
+        writer.close();
     }
 
     /**
@@ -242,7 +275,7 @@ public class ServerCommunication {
      * @param user to be added
      * @return the response of the body to communicate between the server and the client
      */
-    public static User addUser(User user, String password) throws UserNotAddedException {
+    public static User addUser(User user, String password) throws UserNotAddedException, UserBannedByIpExtension {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .header("Content-type", "application/json")
@@ -251,8 +284,20 @@ public class ServerCommunication {
                 .build();
 
         String response = sendRequest(request);
+
+
         if (response == null) {
-            throw new UserNotAddedException("User not added, lecturer password may be wrong or student ip may be banned");
+            if(user.getRole().equals("student"))
+            {
+                // basically, the only reason a student could find problems with joining a room
+                // is if he has been banned by Ip, since there are no requirements for his name or email.
+                // That is why we assume that if the response is null, an exception has been thrown
+                // and that it was for the IP
+                throw new UserBannedByIpExtension("You have been banned from the app.");
+            }
+
+
+            else throw new UserNotAddedException("User not added: Please verify that you have used the correct email and password.");
         }
 
         return gson.fromJson(response, User.class);
@@ -275,7 +320,9 @@ public class ServerCommunication {
         String response = sendRequest(request);
         return response;
     }
-
+    /**
+     *  The method deletes a room from the database
+     * */
     public static void deleteRoom() throws RoomNotDeletedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -311,6 +358,33 @@ public class ServerCommunication {
     }
 
     /**
+     * The method checks whether the given user has been banned.
+     * @param currentUser
+     * @return true if the user has been banned, false otherwise
+     */
+    public static boolean isUserBanned(User currentUser) {
+        // tuk si pisha requesta
+        HttpRequest request = HttpRequest
+                              .newBuilder()
+                              .GET().uri(URI.create("http://localhost:8080/user/isbanned?ipAddress=" + currentUser.getIp()))
+                              .build();
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode() + " from isUserBanned method.");
+        }
+
+        //System.out.println(response.body());
+
+        return Boolean.parseBoolean(response.body());
+    }
+
+    /**
      * Exception indicating miscommunication when adding user server-side.
      */
     public static class UserNotAddedException extends Exception {
@@ -336,6 +410,35 @@ public class ServerCommunication {
             super(message);
         }
     }
+
+    /**
+     * Exception indicating inexistence of a room.
+     */
+    public static class RoomDoesNotExistException extends Exception {
+        public RoomDoesNotExistException(String message){ super(message);}
+    }
+
+    /**
+     * Exception indicating that the user's ip is in the blacklist of the app
+     */
+    public static class UserBannedByIpExtension extends Exception {
+        public UserBannedByIpExtension(String message){ super(message);}
+    }
+
+    /**
+     * Exception indicating that the Email Field in the Main View is empty
+     */
+    public static class EmptyEmailFieldException extends Exception{
+        public EmptyEmailFieldException(String message){ super(message);}
+    }
+
+    /**
+     * Exception indicating that the Password Fiels in the Main View is empty
+     */
+    public static class EmptyPasswordFieldException extends Exception{
+        public EmptyPasswordFieldException(String message){ super(message);}
+    }
+
 
     /**
      * Adds a Quiz to the database.

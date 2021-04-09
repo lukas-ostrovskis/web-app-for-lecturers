@@ -52,4 +52,35 @@ class RoomTest {
 
         assertNotEquals(room2, room);
     }
+
+    @Test
+    void getIdTest() {
+        assertEquals(room.getId(),"ABC123");
+    }
+
+    @Test
+    void getOwnerIdTest() {
+        assertEquals(room.getOwnerId(), "XYZ789");
+    }
+
+    @Test
+    void getStatusTest() {
+        assertEquals(room.isStatus(), true);
+    }
+
+    @Test
+    void getTimeTest() {
+        assertEquals(room.getTime(), time);
+    }
+
+    @Test
+    void getList() {
+        assertEquals(roomUsers, room.getRoomUsers());
+    }
+    @Test
+    void setStatusTest() {
+        Room room3 = new Room("XDDX2", ownerId, status, time);
+        room3.setStatus(false);
+        assertEquals(room3.isStatus(), false);
+    }
 }
