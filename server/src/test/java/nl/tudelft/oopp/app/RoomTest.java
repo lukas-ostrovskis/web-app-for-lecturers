@@ -54,16 +54,6 @@ class RoomTest {
     }
 
     @Test
-    void getIdTest() {
-        assertEquals(room.getId(),"ABC123");
-    }
-
-    @Test
-    void getOwnerIdTest() {
-        assertEquals(room.getOwnerId(), "XYZ789");
-    }
-
-    @Test
     void getStatusTest() {
         assertEquals(room.isStatus(), true);
     }
