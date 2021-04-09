@@ -1,10 +1,9 @@
-package nl.tudelft.oopp.app;
+package nl.tudelft.oopp.app.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import nl.tudelft.oopp.app.entities.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -59,13 +58,6 @@ public class UserTest {
     @Test
     public void equalsTest() {
         assertTrue(user.equals(user1));
-    }
-
-    @Test
-    public void setRoleTest() {
-        User newuser = new User("5", "Martin", "martin@tudelft.nl", "student", "192.133.331.777");
-        newuser.setRole("moderator");
-        assertEquals(newuser.getRole(), "moderator");
     }
 
 }

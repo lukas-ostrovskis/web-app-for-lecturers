@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.util.List;
-
 import nl.tudelft.oopp.app.DatabaseLoader;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.IpBlacklistRepository;
@@ -9,7 +8,13 @@ import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/user")
@@ -19,27 +24,43 @@ public class UserController {
     private final RoomService roomService;
 
     private final DatabaseLoader dataLoader;
-    public List<String> passwords = List.of("12345","0000");
+    public List<String> passwords = List.of("12345", "0000");
 
     private QuestionRepository questionRepository;
     private IpBlacklistRepository ipBlacklistRepository;
 
+    /**
+     * Constructor for UserController.
+     * @param userService - user service
+     * @param roomService - room service
+     * @param dataLoader - Loading the previously saved data
+     */
     @Autowired
-    public UserController(UserService userService, RoomService roomService, DatabaseLoader dataLoader) {
+    public UserController(UserService userService,
+                          RoomService roomService, DatabaseLoader dataLoader) {
         this.userService = userService;
         this.roomService = roomService;
         this.dataLoader = dataLoader;
     }
 
+    /**
+     *  Searches for a user in the database with the given parameters.
+     * @param email - email of the user
+     * @param password - password (could be empty)
+     * @param role - role of the user
+     * @param roomId - roomId
+     * @return
+     */
     @GetMapping("/searchOrAdd")
-    public User searchUsers(@RequestParam String email, @RequestParam String password, @RequestParam int role, @RequestParam String roomId) {
+    public User searchUsers(@RequestParam String email, @RequestParam String password,
+                            @RequestParam int role, @RequestParam String roomId) {
 
         dataLoader.loadUsers();
         User empty = new User(null, null, null, null);
 
-        if (role == 1){
+        if (role == 1) {
 
-            if(userService.findAllByEmailContains(email).size() == 0) {
+            if (userService.findAllByEmailContains(email).size() == 0) {
                 User user = new User(null, email, "student", null);
                 userService.save(user, null);
                 roomService.joinRoom(roomId, user.getId());
@@ -50,28 +71,27 @@ public class UserController {
             return user;
         }
 
-        if(role == 2) {
-
-            if(userService.findAllByEmailContains(email).size() != 0){
-
-                if(passwords.contains(password)){
-
+        if (role == 2) {
+            if (userService.findAllByEmailContains(email).size() != 0) {
+                if (passwords.contains(password)) {
                     User user = userService.findByEmail(email);
                     return user;
+                } else {
+                    return empty;
                 }
-                else return empty;
             }
             User user = new User(null, email, "moderator", null);
-            if(passwords.contains(password)){
+            if (passwords.contains(password)) {
                 userService.save(user, password);
                 return user;
+            } else {
+                return empty;
             }
-            else return empty;
         }
 
-        if(role == 3) {
-            if(userService.findAllByEmailContains(email).size() != 0){
-                if(passwords.contains(password)){
+        if (role == 3) {
+            if (userService.findAllByEmailContains(email).size() != 0) {
+                if (passwords.contains(password)) {
                     User user = userService.findByEmail(email);
                     return user;
                 }
@@ -88,7 +108,7 @@ public class UserController {
     }
 
 
-    @PostMapping ("/add")
+    @PostMapping("/add")
     public User addUser(@RequestBody User user, @RequestParam String password) {
         return userService.save(user, password);
         //return "User Added Successfully";

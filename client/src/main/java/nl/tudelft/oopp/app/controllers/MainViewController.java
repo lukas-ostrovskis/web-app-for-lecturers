@@ -1,17 +1,22 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.io.IOException;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -19,12 +24,11 @@ import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
 
-import java.io.IOException;
-
 public class MainViewController {
 
     /**
-     * Identity constants are used for loading the respective layouts for a student/moderator/lecturer.
+     * Identity constants are used for loading the
+     * respective layouts for a student/moderator/lecturer.
      */
     public static final int IDENTITY_STUDENT = 1;
     public static final int IDENTITY_MODERATOR = 2;
@@ -108,11 +112,10 @@ public class MainViewController {
 
             userNameTextField.setVisible(true);
             userNameTextField.setManaged(true);
-        }
-        /*
-         * Load the layout for moderator.
-         */
-        else if (identityConstant == IDENTITY_MODERATOR) {
+        } else if (identityConstant == IDENTITY_MODERATOR) {
+            /*
+             * Load the layout for moderator.
+             */
             identityButton.setText("Moderator");
 
             passwordLabel.setVisible(true);
@@ -138,11 +141,10 @@ public class MainViewController {
 
             createRoomButton.setVisible(false);
             createRoomButton.setManaged(false);
-        }
-        /*
-         * Load the layout for lecturer.
-         */
-        else {
+        } else {
+            /*
+             * Load the layout for lecturer.
+             */
             identityButton.setText("Lecturer");
 
             passwordLabel.setVisible(true);
@@ -174,11 +176,9 @@ public class MainViewController {
          */
         if (currentIdentity == IDENTITY_STUDENT) {
             currentIdentity = IDENTITY_MODERATOR;
-        }
-        else if (currentIdentity == IDENTITY_MODERATOR) {
+        } else if (currentIdentity == IDENTITY_MODERATOR) {
             currentIdentity = IDENTITY_LECTURER;
-        }
-        else {
+        } else {
             currentIdentity = IDENTITY_STUDENT;
         }
 
@@ -202,17 +202,18 @@ public class MainViewController {
          */
         ObjectProperty<Color> baseColor = new SimpleObjectProperty<>();
 
-        KeyValue keyValue1 = new KeyValue(baseColor, Color.web("045AAF",1.0));
-        KeyValue keyValue2 = new KeyValue(baseColor, Color.web("F48999",1.0));
+        KeyValue keyValue1 = new KeyValue(baseColor, Color.web("045AAF", 1.0));
+        KeyValue keyValue2 = new KeyValue(baseColor, Color.web("F48999", 1.0));
         KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, keyValue1);
         KeyFrame keyFrame2 = new KeyFrame(Duration.millis(10000), keyValue2);
         Timeline timeline = new Timeline(keyFrame1, keyFrame2);
 
         baseColor.addListener((obs, oldColor, newColor) -> {
-            MainView.getPrimaryStage().getScene().getRoot().setStyle(String.format("-gradient-variable: #%02x%02x%02x; ",
-                    (int)(newColor.getRed()*255),
-                    (int)(newColor.getGreen()*255),
-                    (int)(newColor.getBlue()*255)));
+            MainView.getPrimaryStage().getScene().getRoot()
+                .setStyle(String.format("-gradient-variable: #%02x%02x%02x; ",
+                    (int) (newColor.getRed() * 255),
+                    (int) (newColor.getGreen() * 255),
+                    (int) (newColor.getBlue() * 255)));
         });
 
         timeline.setAutoReverse(true);
@@ -222,6 +223,7 @@ public class MainViewController {
 
     /**
      * It loads the MainView scene.
+     *
      * @throws IOException if it cant load correctly
      */
     public void loadMainView() throws IOException {
@@ -243,6 +245,7 @@ public class MainViewController {
 
     /**
      * It loads the RoomView scene.
+     *
      * @throws IOException if it cant load correctly
      */
     public void loadRoomView() throws IOException {
@@ -259,7 +262,8 @@ public class MainViewController {
          */
         MainView.getPrimaryStage().setScene(roomScene);
         MainView.getPrimaryStage().centerOnScreen();
-        System.out.println(MainView.getRoomId() + " is the id of the joined room."); // returns 0 for User
+        System.out
+            .println(MainView.getRoomId() + " is the id of the joined room."); // returns 0 for User
 
     }
 
@@ -274,7 +278,7 @@ public class MainViewController {
         try {
 
             // Try creating a user
-            user=createUser();
+            user = createUser();
 
             // Try creating room
             String roomId = ServerCommunication.createRoom(passwordField.getText());
@@ -283,25 +287,24 @@ public class MainViewController {
 
             loadRoomView();
 
-        } catch (ServerCommunication.UserNotAddedException e){
+        } catch (ServerCommunication.UserNotAddedException e) {
             // If user could not be created server-side
-            if(emailTextField.getText().trim().isEmpty())
+            if (emailTextField.getText().trim().isEmpty()) {
                 presentError("Error!", "You have not entered an email address.");
-            // First we check if the password field is empty.
-            else if(passwordField.getText().trim().isEmpty())
+            } else if (passwordField.getText().trim().isEmpty()) {
+                // First we check if the password field is empty.
                 presentError("Error!", "You have not entered a password.");
+            } else {
+                // if that is not the case, the only remaining reason is that the password is wrong.
+                presentError("Error!", e.getMessage());
+            }
 
-            // if that is not the case, the only remaining reason is that the password is wrong
-            else presentError("Error!", e.getMessage());
-
-        }
-          catch (ServerCommunication.RoomNotAddedException e) {
-              // If room could not be created server-side
-              presentError("Error!", e.getMessage());
-        }
-          catch(ServerCommunication.EmptyPasswordFieldException e){
+        } catch (ServerCommunication.RoomNotAddedException e) {
+            // If room could not be created server-side
+            presentError("Error!", e.getMessage());
+        } catch (ServerCommunication.EmptyPasswordFieldException e) {
             presentError("Error", e.getMessage());
-          }
+        }
 
     }
 
@@ -327,55 +330,61 @@ public class MainViewController {
         } catch (ServerCommunication.UserNotAddedException e) {
 
             // if user could not be created server-side
-           presentError("Error!", e.getMessage());
+            presentError("Error!", e.getMessage());
 
         }
     }
 
 
-    private User createUser() throws ServerCommunication.UserNotAddedException, ServerCommunication.UserBannedByIpExtension, ServerCommunication.EmptyEmailFieldException, ServerCommunication.EmptyPasswordFieldException {
+    private User createUser() throws ServerCommunication.UserNotAddedException,
+        ServerCommunication.UserBannedByIpExtension, ServerCommunication.EmptyEmailFieldException,
+        ServerCommunication.EmptyPasswordFieldException {
 
         // Parse identity
         String identity;
         switch (currentIdentity) {
-            case IDENTITY_LECTURER: identity = "lecturer"; break;
-            case IDENTITY_MODERATOR: identity = "moderator"; break;
-            case IDENTITY_STUDENT: identity = "student"; break;
-            default: throw new ServerCommunication.UserNotAddedException("invalid role.");
+            case IDENTITY_LECTURER:
+                identity = "lecturer";
+                break;
+            case IDENTITY_MODERATOR:
+                identity = "moderator";
+                break;
+            case IDENTITY_STUDENT:
+                identity = "student";
+                break;
+            default:
+                throw new ServerCommunication.UserNotAddedException("invalid role.");
         }
 
         // Client-side user
         User user = new User(emailTextField.getText(), identity, userNameTextField.getText());
         System.out.printf(" > Created client-side user (%s)\n", currentIdentity);
-        try{
-            if(identity.equals("lecturer") || identity.equals("moderator")){
-                if(emailTextField.getText().trim().isEmpty())
+        try {
+            if (identity.equals("lecturer") || identity.equals("moderator")) {
+                if (emailTextField.getText().trim().isEmpty()) {
                     throw new ServerCommunication.EmptyEmailFieldException("");
-                if(passwordField.getText().trim().isEmpty())
+                }
+                if (passwordField.getText().trim().isEmpty()) {
                     throw new ServerCommunication.EmptyPasswordFieldException("");
-        }
+                }
+            }
 
         } catch (ServerCommunication.EmptyEmailFieldException e) {
             presentError("Error", "You have not given an email address.");
             return null;
-        }
-          catch (ServerCommunication.EmptyPasswordFieldException e){
+        } catch (ServerCommunication.EmptyPasswordFieldException e) {
             presentError("Error", "You have not given a password.");
             return null;
-          }
+        }
 
 
         // Create the server-side user
-        try{
+        try {
             user = ServerCommunication.addUser(user, passwordField.getText());
-        }
-         catch(ServerCommunication.UserBannedByIpExtension e)
-         {
-             presentError("Error", "You have been banned.");
-             return null;
-         }
-        catch(ServerCommunication.UserNotAddedException e)
-        {
+        } catch (ServerCommunication.UserBannedByIpExtension e) {
+            presentError("Error", "You have been banned.");
+            return null;
+        } catch (ServerCommunication.UserNotAddedException e) {
             presentError("Error", e.getMessage());
             return null;
         }
@@ -391,6 +400,7 @@ public class MainViewController {
     /**
      * Helper method for displaying errors.
      * If the error message is about being banned, the application will be terminated.
+     *
      * @param err error type
      * @param msg error message
      */
@@ -400,7 +410,8 @@ public class MainViewController {
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
-        if(msg.equals("You have been banned."))
+        if (msg.equals("You have been banned.")) {
             System.exit(0);
+        }
     }
 }

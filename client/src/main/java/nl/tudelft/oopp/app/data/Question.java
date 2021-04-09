@@ -191,6 +191,8 @@ public class Question {
     }
 
     /**
+     * Getter for creation timestamp.
+     *
      * @return the creation timestamp
      */
     public Instant getCreationTimestamp() {
@@ -198,7 +200,9 @@ public class Question {
     }
 
     /**
-     * @param creationTimestamp
+     * Setter for creation timestamp.
+     *
+     * @param creationTimestamp - creation timestamp
      */
     public void setCreationTimestamp(Instant creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
@@ -206,16 +210,20 @@ public class Question {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Question question = (Question) o;
-        return numberOfUpvotes == question.numberOfUpvotes &&
-                numberOfDownvotes == question.numberOfDownvotes &&
-                status == question.status &&
-                ownerId.equals(question.ownerId) &&
-                roomId.equals(question.roomId) &&
-                content.equals(question.content) &&
-                answer.equals(question.answer);
+        return numberOfUpvotes == question.numberOfUpvotes
+            && numberOfDownvotes == question.numberOfDownvotes
+            && status == question.status
+            && ownerId.equals(question.ownerId)
+            && roomId.equals(question.roomId)
+            && content.equals(question.content)
+            && answer.equals(question.answer);
     }
 
     public String getOwnerName() {

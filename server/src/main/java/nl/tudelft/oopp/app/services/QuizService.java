@@ -1,21 +1,22 @@
 package nl.tudelft.oopp.app.services;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import nl.tudelft.oopp.app.entities.Quiz;
 import nl.tudelft.oopp.app.repositories.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
 
 @Service
 public class QuizService {
 
-    private QuizRepository quizRepository;
+    private final QuizRepository quizRepository;
 
-    private Map<String, Quiz> quizzes;
+    private final Map<String, Quiz> quizzes;
 
 
     /**
@@ -34,7 +35,9 @@ public class QuizService {
      *
      * @param quiz the quiz.
      */
-    public void addQuiz(Quiz quiz) { quizRepository.save(quiz); }
+    public void addQuiz(Quiz quiz) {
+        quizRepository.save(quiz);
+    }
 
 
     /**
@@ -43,7 +46,9 @@ public class QuizService {
      * @param roomId the room id.
      * @return a List of Quizzes.
      */
-    public List<Quiz> getAllQuizzesByRoomId(String roomId) { return quizRepository.findAllQuizzesByRoomId(roomId); }
+    public List<Quiz> getAllQuizzesByRoomId(String roomId) {
+        return quizRepository.findAllQuizzesByRoomId(roomId);
+    }
 
     /**
      * Get an open Quiz (if it exists) belonging to certain room.
@@ -64,14 +69,13 @@ public class QuizService {
      */
     public void quizUserAnswer(String roomId, char answer) {
         Quiz quiz;
-        if(quizzes.containsKey(roomId)) {
+        if (quizzes.containsKey(roomId)) {
             quiz = quizzes.get(roomId);
             System.out.println(quiz.answerDistribution);
-            if(!quiz.answerDistribution.containsKey(answer)) {
+            if (!quiz.answerDistribution.containsKey(answer)) {
                 quiz.answerDistribution.put(answer, 1);
-            }
-            else {
-                quiz.answerDistribution.put(answer, quiz.answerDistribution.get(answer)+1);
+            } else {
+                quiz.answerDistribution.put(answer, quiz.answerDistribution.get(answer) + 1);
             }
         }
     }
@@ -84,7 +88,7 @@ public class QuizService {
      */
     public Map<Character, Integer> getQuizAnswerDistribution(String roomId) {
         Quiz quiz = quizRepository.findQuizByRoomIdWhereAnswerDistributionIsReady(roomId);
-        if(quiz != null) {
+        if (quiz != null) {
             return quizzes.get(quiz.getRoomId()).answerDistribution;
         }
         return null;
@@ -98,14 +102,14 @@ public class QuizService {
     public Quiz toggleQuizOpenStatus(String quizId) {
         Quiz quizById = quizRepository.findById(quizId).get();
         Quiz openQuizByRoomId = quizRepository.findOpenQuizByRoomId(quizById.getRoomId());
-        if(quizById != null && (openQuizByRoomId == null || openQuizByRoomId.equals(quizById))) {
-                quizById.setOpen(!quizById.isOpen());
-                if(quizById.isOpen()) {
-                    quizById.setAnswerDistributionReady(false);
-                    quizById.answerDistribution = new HashMap<Character, Integer>();
-                    quizzes.put(quizById.getRoomId(), quizById);
-                }
-                quizRepository.save(quizById);
+        if (quizById != null && (openQuizByRoomId == null || openQuizByRoomId.equals(quizById))) {
+            quizById.setOpen(!quizById.isOpen());
+            if (quizById.isOpen()) {
+                quizById.setAnswerDistributionReady(false);
+                quizById.answerDistribution = new HashMap<Character, Integer>();
+                quizzes.put(quizById.getRoomId(), quizById);
+            }
+            quizRepository.save(quizById);
         }
         return quizById;
     }
@@ -117,7 +121,7 @@ public class QuizService {
      */
     public Quiz toggleAnswerDistributionReadyStatus(String quizId) {
         Quiz quizById = quizRepository.findById(quizId).get();
-        if(quizById != null) {
+        if (quizById != null) {
             quizById.setAnswerDistributionReady(!quizById.isAnswerDistributionReady());
             quizRepository.save(quizById);
         }
@@ -132,7 +136,7 @@ public class QuizService {
      */
     public Quiz deleteQuizFromServerMemory(String roomId) {
         Quiz quiz = null;
-        if(quizzes.containsKey(roomId)) {
+        if (quizzes.containsKey(roomId)) {
             quiz = quizzes.get(roomId);
             quizzes.remove(roomId);
         }

@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.app.controllers;
 
+import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,51 +10,48 @@ import nl.tudelft.oopp.app.communication.ServerCommunication;
 import nl.tudelft.oopp.app.data.Quiz;
 import nl.tudelft.oopp.app.views.MainView;
 import nl.tudelft.oopp.app.views.QuizCell;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 
 
 public class QuizMenuViewController {
 
+    private final ObservableList<Quiz> quizzes;
     @FXML
     private TextField question;
     @FXML
-    private TextField a;
+    private TextField optionA;
     @FXML
-    private TextField b;
+    private TextField optionB;
     @FXML
-    private TextField c;
+    private TextField optionC;
     @FXML
-    private TextField d;
+    private TextField optionD;
     @FXML
-    private TextField e;
+    private TextField optionE;
     @FXML
-    private TextField f;
+    private TextField optionF;
     @FXML
-    private TextField g;
+    private TextField optionG;
     @FXML
-    private TextField h;
+    private TextField optionH;
     @FXML
-    private TextField i;
+    private TextField optionI;
     @FXML
-    private TextField j;
+    private TextField optionJ;
     @FXML
     private TextField correctAnswer;
-
-
     @FXML
     private ListView<Quiz> quizzesListView;
-
-    private final ObservableList<Quiz> quizzes;
 
     public QuizMenuViewController() {
         quizzes = FXCollections.observableArrayList();
     }
 
+    /**
+     * Initializes the list view for the quizzes.
+     */
     @FXML
     public void initialize() {
-        try{
+        try {
             getAllQuizzes();
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,26 +65,44 @@ public class QuizMenuViewController {
         quizzes.addAll(ServerCommunication.getAllQuizzes(MainView.getRoomId()));
     }
 
+    /**
+     * Add the quiz.
+     */
     @FXML
     public void addButtonPressed() {
-        char correctAns = correctAnswer.getText().length() == 1? correctAnswer.getText().charAt(0) : '?';
-        Quiz quiz = new Quiz(MainView.getRoomId(), question.getText(), a.getText(), b.getText(), c.getText(), d.getText(), e.getText(), f.getText(), g.getText(), h.getText(), i.getText(), j.getText(), correctAns);
+        char correctAns =
+            correctAnswer.getText().length() == 1 ? correctAnswer.getText().charAt(0) : '?';
+        Quiz quiz = new Quiz(
+            MainView.getRoomId(),
+            question.getText(),
+            optionA.getText(),
+            optionB.getText(),
+            optionC.getText(),
+            optionD.getText(),
+            optionE.getText(),
+            optionF.getText(),
+            optionG.getText(),
+            optionH.getText(),
+            optionI.getText(),
+            optionJ.getText(),
+            correctAns
+        );
         ServerCommunication.addQuiz(quiz);
 
         question.clear();
-        a.clear();
-        b.clear();
-        c.clear();
-        d.clear();
-        e.clear();
-        f.clear();
-        g.clear();
-        h.clear();
-        i.clear();
-        j.clear();
+        optionA.clear();
+        optionB.clear();
+        optionC.clear();
+        optionD.clear();
+        optionE.clear();
+        optionF.clear();
+        optionG.clear();
+        optionH.clear();
+        optionI.clear();
+        optionJ.clear();
         correctAnswer.clear();
 
-        try{
+        try {
             getAllQuizzes();
         } catch (IOException e) {
             e.printStackTrace();

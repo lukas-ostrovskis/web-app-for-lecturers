@@ -1,9 +1,14 @@
 package nl.tudelft.oopp.app.entities;
 
+import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
-import java.time.Instant;
 
 /**
  * The type Reply.
@@ -44,13 +49,13 @@ public class Reply {
      * @param numberOfUpvotes   Number of upvotes the reply has.
      * @param numberOfDownvotes Number of downvotes the reply has.
      */
-    public Reply(String     id,
-                 String     ownerId,
-                 String     questionId,
-                 String     content,
-                 int        numberOfUpvotes,
-                 int        numberOfDownvotes,
-                 Instant    creationTimestamp) {
+    public Reply(String id,
+                 String ownerId,
+                 String questionId,
+                 String content,
+                 int numberOfUpvotes,
+                 int numberOfDownvotes,
+                 Instant creationTimestamp) {
 
         this.id = id;
         this.ownerId = ownerId;
@@ -70,12 +75,12 @@ public class Reply {
      * @param numberOfUpvotes   Number of upvotes the reply has.
      * @param numberOfDownvotes Number of downvotes the reply has.
      */
-    public Reply(String     ownerId,
-                 String     questionId,
-                 String     content,
-                 int        numberOfUpvotes,
-                 int        numberOfDownvotes,
-                 Instant    creationTimestamp) {
+    public Reply(String ownerId,
+                 String questionId,
+                 String content,
+                 int numberOfUpvotes,
+                 int numberOfDownvotes,
+                 Instant creationTimestamp) {
 
         this.ownerId = ownerId;
         this.questionId = questionId;
@@ -90,7 +95,7 @@ public class Reply {
      */
     public Reply() {
 
-    };
+    }
 
     /**
      * Gets the id field.
@@ -177,16 +182,20 @@ public class Reply {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Reply)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Reply)) {
+            return false;
+        }
         Reply reply = (Reply) o;
-        return  id.equals(reply.id) &&
-                ownerId.equals(reply.ownerId) &&
-                questionId.equals(reply.questionId) &&
-                content.equals(reply.content) &&
-                numberOfUpvotes == reply.numberOfUpvotes &&
-                numberOfDownvotes == reply.numberOfDownvotes &&
-                creationTimestamp.equals(reply.creationTimestamp);
+        return id.equals(reply.id)
+                && ownerId.equals(reply.ownerId)
+                && questionId.equals(reply.questionId)
+                && content.equals(reply.content)
+                && numberOfUpvotes == reply.numberOfUpvotes
+                && numberOfDownvotes == reply.numberOfDownvotes
+                && creationTimestamp.equals(reply.creationTimestamp);
     }
 
 }

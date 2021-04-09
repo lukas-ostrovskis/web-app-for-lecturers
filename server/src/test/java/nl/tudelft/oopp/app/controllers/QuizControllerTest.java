@@ -1,8 +1,11 @@
 package nl.tudelft.oopp.app.controllers;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import nl.tudelft.oopp.app.services.QuizService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -15,8 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.hamcrest.Matchers.*;
+
 
 
 
@@ -25,7 +27,7 @@ import static org.hamcrest.Matchers.*;
  */
 
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class QuizControllerTest {
     private static String id;
@@ -38,6 +40,8 @@ class QuizControllerTest {
 
     /**
      * Test adding a quiz.
+     *
+     * @throws Exception the exception
      */
     @Test
     @Order(1)
@@ -45,20 +49,20 @@ class QuizControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/quiz/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( "{ " +
-                        "\"roomId\": \"testRoomId\"," +
-                        "\"question\": \"testQuestion\"," +
-                        "\"answerA\": \"testAnswerA\"," +
-                        "\"answerB\": \"testAnswerB\"," +
-                        "\"answerC\": \"testAnswerC\"," +
-                        "\"answerD\": \"testAnswerD\"," +
-                        "\"answerE\": \"testAnswerE\"," +
-                        "\"answerF\": \"testAnswerF\"," +
-                        "\"answerG\": \"testAnswerG\"," +
-                        "\"answerH\": \"testAnswerH\"," +
-                        "\"answerI\": \"testAnswerI\"," +
-                        "\"answerJ\": \"testAnswerJ\"," +
-                        "\"correctAnswer\": \"c\" }")
+                .content("{ "
+                        + "\"roomId\": \"testRoomId\","
+                        + "\"question\": \"testQuestion\","
+                        + "\"answerA\": \"testAnswerA\","
+                        + "\"answerB\": \"testAnswerB\","
+                        + "\"answerC\": \"testAnswerC\","
+                        + "\"answerD\": \"testAnswerD\","
+                        + "\"answerE\": \"testAnswerE\","
+                        + "\"answerF\": \"testAnswerF\","
+                        + "\"answerG\": \"testAnswerG\","
+                        + "\"answerH\": \"testAnswerH\","
+                        + "\"answerI\": \"testAnswerI\","
+                        + "\"answerJ\": \"testAnswerJ\","
+                        + "\"correctAnswer\": \"c\" }")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Quiz Added Successfully"));
@@ -140,7 +144,7 @@ class QuizControllerTest {
     /**
      * Test getting an open quiz by room id.
      *
-     * @throws Exception
+     * @throws Exception the exception
      */
     @Test
     @Order(5)
@@ -166,7 +170,7 @@ class QuizControllerTest {
     /**
      * Test adding a student answer to an open quiz.
      *
-     * @throws Exception
+     * @throws Exception the exception
      */
     @Test
     @Order(6)
@@ -186,8 +190,8 @@ class QuizControllerTest {
     }
 
     /**
-     * Test toggling answerDistributionReady status
-     * Checks if answerDistributionReady status can be toggled on
+     * Test toggling answerDistributionReady status.
+     * Checks if answerDistributionReady status can be toggled on.
      *
      * @throws Exception the exception
      */
@@ -209,8 +213,8 @@ class QuizControllerTest {
     }
 
     /**
-     * Test toggling answerDistributionReady status
-     * Checks if answerDistributionReady status can be toggled off
+     * Test toggling answerDistributionReady status.
+     * Checks if answerDistributionReady status can be toggled off.
      *
      * @throws Exception the exception
      */
@@ -240,7 +244,7 @@ class QuizControllerTest {
      * Test getting quiz answer distribution.
      * Checks if server correctly returns a map with submitted answers.
      *
-     * @throws Exception
+     * @throws Exception the exception
      */
     @Test
     @Order(9)
@@ -277,7 +281,7 @@ class QuizControllerTest {
      * Test getting quiz answer distribution.
      * Checks if server correctly returns null content if answer distribution is not ready.
      *
-     * @throws Exception
+     * @throws Exception the exception
      */
     @Test
     @Order(10)
@@ -301,9 +305,9 @@ class QuizControllerTest {
     }
 
     /**
-     * Test deleting quiz from server's memory (quizzes list on QuizService)
+     * Test deleting quiz from server's memory (quizzes list on QuizService).
      *
-     * @throws Exception
+     * @throws Exception the exception
      */
     @Test
     @Order(11)
