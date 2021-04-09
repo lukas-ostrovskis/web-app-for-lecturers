@@ -70,6 +70,11 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    /**
+     * Checks whether an ip address is in the server's blacklist
+     * @param Ip of the user
+     * @return true if the IP address is in the blacklist, false if it's not
+     */
     public boolean isBanned(String Ip){
         if(ipBlacklistRepository.existsByIp(Ip)) {
             return true;

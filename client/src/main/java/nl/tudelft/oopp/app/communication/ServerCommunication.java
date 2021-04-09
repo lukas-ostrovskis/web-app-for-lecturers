@@ -315,7 +315,9 @@ public class ServerCommunication {
         String response = sendRequest(request);
         return response;
     }
-
+    /**
+     *  The method deletes a room from the database
+     * */
     public static void deleteRoom() throws RoomNotDeletedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -349,6 +351,11 @@ public class ServerCommunication {
         return response.body().equals("") ? null : response.body();
     }
 
+    /**
+     * The method checks whether the given user has been banned.
+     * @param currentUser
+     * @return true if the user has been banned, false otherwise
+     */
     public static boolean isUserBanned(User currentUser) {
         // tuk si pisha requesta
         HttpRequest request = HttpRequest
@@ -412,10 +419,16 @@ public class ServerCommunication {
         public UserBannedByIpExtension(String message){ super(message);}
     }
 
+    /**
+     * Exception indicating that the Email Field in the Main View is empty
+     */
     public static class EmptyEmailFieldException extends Exception{
         public EmptyEmailFieldException(String message){ super(message);}
     }
 
+    /**
+     * Exception indicating that the Password Fiels in the Main View is empty
+     */
     public static class EmptyPasswordFieldException extends Exception{
         public EmptyPasswordFieldException(String message){ super(message);}
     }
