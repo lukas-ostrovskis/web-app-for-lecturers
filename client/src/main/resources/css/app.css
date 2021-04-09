@@ -17,11 +17,11 @@
 
 .listCell {
     -fx-background-color: linear-gradient(to bottom right, -tudelft-blue, #045AAF);
-    -fx-selection-bar:#3697cf;
+    -fx-selection-bar: #3697cf;
 }
 
 .listView {
- -fx-background-color: linear-gradient(to bottom right, #45d5ff, #00a6d6);
+    -fx-background-color: linear-gradient(to bottom right, #45d5ff, #00a6d6);
 }
 
 .list-view:focused .list-cell:filled:focused:selected {

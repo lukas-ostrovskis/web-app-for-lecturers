@@ -1,6 +1,10 @@
 package nl.tudelft.oopp.app.controllers;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,8 +19,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -30,57 +32,59 @@ import nl.tudelft.oopp.app.data.User;
 import nl.tudelft.oopp.app.views.MainView;
 import nl.tudelft.oopp.app.views.QuestionCell;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import java.io.IOException;
-
 
 public class RoomViewController implements Initializable {
 
+    private static Quiz openedQuiz;
+    private static User currentUser = new User("1", "William", "email", "lecturer", "1234");
+    private final ObservableList<Question> questions;
     @FXML
     private Label identityLabel;
-
     @FXML
     private Label roomId;
-
     @FXML
     private Button endLectureButton;
-
     @FXML
     private ListView<Question> questionsListView;
-
-    private final ObservableList<Question> questions;
-
     private boolean quizOpen = false;
-
-    private static Quiz openedQuiz;
-
     @FXML
     private TextField questionText;
     @FXML
     private Button quizzesButton;
-
-    private static User currentUser = new User("1", "William", "email", "lecturer", "1234");
 
     public RoomViewController() {
         questions = FXCollections.observableArrayList();
     }
 
     /**
-     * Initializes the roomview  with the questions
-     * Sets a timeline to fetch questions and order them every 2 seconds
-     * @param location
-     * @param resources
+     * Getter for the current user.
+     * @returns the current user
      */
+    public static User getCurrentUser() {
+        return currentUser;
+    }
 
+    /**
+     * Returns the open quiz.
+     * @returns the opened quiz.
+     */
+    public static Quiz getOpenedQuiz() {
+        return openedQuiz;
+    }
+
+    /**
+     * Initializes the roomview  with the questions.
+     * Sets a timeline to fetch questions and order them every 2 seconds
+     *
+     * @param location - URL
+     * @param resources - ResourceBundle
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.currentUser = MainView.getUser();
+        currentUser = MainView.getUser();
         this.identityLabel.setText("You're a " + currentUser.getRole());
         this.roomId.setText(MainView.getRoomId());
-        if(currentUser.getRole().equals("student")){
+        if (currentUser.getRole().equals("student")) {
             endLectureButton.setVisible(false);
         }
         try {
@@ -91,7 +95,7 @@ public class RoomViewController implements Initializable {
         questionsListView.setItems(questions);
         questionsListView.setCellFactory(questionList -> new QuestionCell());
 
-        if(currentUser.getRole().equals("student")) {
+        if (currentUser.getRole().equals("student")) {
             quizzesButton.setVisible(false);
         }
 
@@ -101,7 +105,7 @@ public class RoomViewController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            java.util.Collections.sort(questionsListView.getItems(), new java.util.Comparator<Question>() {
+            questionsListView.getItems().sort(new java.util.Comparator<Question>() {
                 @Override
                 public int compare(Question q1, Question q2) {
                     int rating1 = q1.getNumberOfUpvotes() - q1.getNumberOfDownvotes();
@@ -120,7 +124,6 @@ public class RoomViewController implements Initializable {
      * Handles pressing the leaveRoomButton
      * Loads the menu layout into the scene, passes that scene into the stage.
      */
-
     @FXML
     public void leaveRoomButtonPressed() {
 
@@ -138,13 +141,15 @@ public class RoomViewController implements Initializable {
 
     }
 
+    /**
+     * End lecture button pressed.
+     */
     @FXML
     public void endLectureButtonPressed() {
 
         ServerCommunication.deleteQuizFromServerMemory(MainView.getRoomId());
 
         try {
-//            ServerCommunication.exportQuestionsToCsv(MainView.getRoomId());
             // Delete room from server
             ServerCommunication.deleteRoom();
 
@@ -170,52 +175,44 @@ public class RoomViewController implements Initializable {
         }
     }
 
+    /**
+     * Quizzes button pressed.
+     *
+     * @throws IOException the io exception
+     */
     @FXML
-    public void quizzesButtonPressed() throws IOException{
+    public void quizzesButtonPressed() throws IOException {
         System.out.println("bbb");
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/QuizMenuView.fxml"));
+        Parent root = FXMLLoader.load(
+            Objects.requireNonNull(getClass().getResource("/fxml/QuizMenuView.fxml"))
+        );
 
         Stage stage = new Stage();
         stage.setTitle("Quizzes Menu");
-        stage.setScene(new Scene(root, 770,620));
+        stage.setScene(new Scene(root, 770, 620));
         stage.show();
     }
 
     /**
-     * @returns the current user
+     * Handles pressing the ask question button.
      */
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    /**
-     * @returns the opened quiz.
-     */
-    public static Quiz getOpenedQuiz() {
-        return openedQuiz;
-    }
-
-    /**
-     * Handles pressing the ask question button
-     */
-
     @FXML
     public void askQuestionButtonPressed() {
         ServerCommunication.askQuestion(new Question(currentUser.getId(),
-                currentUser.getName(),
-                MainView.getRoomId(),
-                questionText.getText(),
-                0,
-                0,
-                false,
-                ""));
+            currentUser.getName(),
+            MainView.getRoomId(),
+            questionText.getText(),
+            0,
+            0,
+            false,
+            ""));
     }
 
     /**
-     * Fetches all questions from the server and displays them
-     * @throws IOException
+     * Fetches all questions from the server and displays them.
+     *
+     * @throws IOException - the io exception
      */
-
     @FXML
     public void fetchQuestions() throws IOException {
         questions.removeAll();
@@ -223,6 +220,11 @@ public class RoomViewController implements Initializable {
         questions.addAll(ServerCommunication.fetchQuestionsByRoomId(MainView.getRoomId()));
     }
 
+    /**
+     * Export room button pressed.
+     *
+     * @throws IOException the io exception
+     */
     @FXML
     public void exportRoomButtonPressed() throws IOException {
         JFileChooser jfc =
@@ -237,45 +239,56 @@ public class RoomViewController implements Initializable {
         }
     }
 
+    /**
+     * Start checking quiz open.
+     *
+     * @param roomId the room id
+     */
     public void startCheckingQuizOpen(String roomId) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    while(true) {
-                        Quiz currentQuiz = ServerCommunication.checkQuizOpen(roomId);
-                        System.out.println(currentQuiz);
-                        openedQuiz = currentQuiz;
-                        if(currentQuiz != null) {
-                            if(!quizOpen) {
-                                quizOpen = true;
-                                Platform.runLater(new Runnable() {
-                                    @Override public void run() {
-                                        try {
-                                            loadQuizView();
-                                        } catch(IOException e) {
-                                            e.printStackTrace();
-                                        }
+                while (true) {
+                    Quiz currentQuiz = ServerCommunication.checkQuizOpen(roomId);
+                    System.out.println(currentQuiz);
+                    openedQuiz = currentQuiz;
+                    if (currentQuiz != null) {
+                        if (!quizOpen) {
+                            quizOpen = true;
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        loadQuizView();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
-                                });
-                            }
+                                }
+                            });
                         }
-                        else {
-                            if(quizOpen) {
-                                quizOpen = false;
-                                //remove quiz view
-                            }
+                    } else {
+                        if (quizOpen) {
+                            quizOpen = false;
+                            //remove quiz view
                         }
                     }
+                }
             }
         }).start();
     }
 
-    public void loadQuizView() throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/QuizView.fxml"));
+    /**
+     * Load quiz view.
+     *
+     * @throws IOException the io exception
+     */
+    public void loadQuizView() throws IOException {
+        Parent root = FXMLLoader.load(
+            Objects.requireNonNull(getClass().getResource("/fxml/QuizView.fxml")));
 
         Stage stage = new Stage();
         stage.setTitle("Quiz");
-        stage.setScene(new Scene(root, 620,620));
+        stage.setScene(new Scene(root, 620, 620));
         stage.show();
     }
 }

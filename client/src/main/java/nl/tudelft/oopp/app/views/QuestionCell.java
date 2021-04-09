@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.app.views;
 
+import java.io.IOException;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -11,12 +13,7 @@ import nl.tudelft.oopp.app.controllers.RoomViewController;
 import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.data.User;
 
-import java.io.IOException;
-import java.util.List;
-
 public class QuestionCell extends ListCell<Question> {
-
-
     private String questionId;
 
     @FXML
@@ -46,23 +43,26 @@ public class QuestionCell extends ListCell<Question> {
     @FXML
     private Label answered;
 
+    /**
+     * Instantiates a new Question cell.
+     */
     public QuestionCell() {
-        loadFXML();
+        loadFxml();
     }
 
     /**
-     * @returns the Id of the question une the current cell
+     * Getter for the question ID.
+     *
+     * @returns the Id of the question une the current cell.
      */
-
     public String getQuestionId() {
         return questionId;
     }
 
     /**
-     * Loads the fxml QuestionCell file
+     * Loads the fxml QuestionCell file.
      */
-
-    private void loadFXML() {
+    private void loadFxml() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/QuestionCell.fxml"));
             loader.setController(this);
@@ -74,11 +74,11 @@ public class QuestionCell extends ListCell<Question> {
     }
 
     /**
-     * Updates the cell with the current properties of the question
-     * @param q The question contained in the cell
-     * @param empty
+     * Updates the cell with the current properties of the question.
+     *
+     * @param q     The question contained in the cell
+     * @param empty - is empty
      */
-
     @Override
     protected void updateItem(Question q, boolean empty) {
         super.updateItem(q, empty);
@@ -87,40 +87,41 @@ public class QuestionCell extends ListCell<Question> {
             setText(null);
             setContentDisplay(ContentDisplay.TEXT_ONLY);
         } else {
-            if (q.isStatus()){
+            if (q.isStatus()) {
                 toggleStatus.setText("Mark as not answered");
                 answered.setVisible(true);
-            }
-            else {
+            } else {
                 toggleStatus.setText("Mark as answered");
                 answered.setVisible(false);
             }
-            if(contains(q.getUpvoters(),RoomViewController.getCurrentUser().getId())){
+            if (contains(q.getUpvoters(), RoomViewController.getCurrentUser().getId())) {
                 this.upvoteButton.setDisable(true);
                 this.downvoteButton.setDisable(false);
-            } else if(contains(q.getDownvoters(),RoomViewController.getCurrentUser().getId())){
+            } else if (contains(q.getDownvoters(), RoomViewController.getCurrentUser().getId())) {
                 this.downvoteButton.setDisable(true);
                 this.upvoteButton.setDisable(false);
             } else {
                 this.downvoteButton.setDisable(false);
                 this.upvoteButton.setDisable(false);
             }
-            if (RoomViewController.getCurrentUser().getRole().equals("student")){
+            if (RoomViewController.getCurrentUser().getRole().equals("student")) {
                 toggleStatus.setVisible(false);
             }
             questionId = q.getId();
             content.setText(q.getContent());
-            if(q.getOwnerName().equals(RoomViewController.getCurrentUser().getName())){
+            if (q.getOwnerName().equals(RoomViewController.getCurrentUser().getName())) {
                 user.setText(q.getOwnerName() + "  (You)");
+            } else {
+                user.setText(q.getOwnerName());
             }
-            else{ user.setText(q.getOwnerName());}
             deleteButton.setVisible(false);
             banButton.setVisible(false);
 
-            if (RoomViewController.getCurrentUser().getId().equals(q.getOwnerId()) || !(RoomViewController.getCurrentUser().getRole().equals("student"))){
+            if (RoomViewController.getCurrentUser().getId().equals(q.getOwnerId())
+                || !(RoomViewController.getCurrentUser().getRole().equals("student"))) {
                 deleteButton.setVisible(true);
             }
-            if(!(RoomViewController.getCurrentUser().getRole().equals("student"))) {
+            if (!(RoomViewController.getCurrentUser().getRole().equals("student"))) {
                 banButton.setVisible(true);
             }
 
@@ -129,46 +130,54 @@ public class QuestionCell extends ListCell<Question> {
         }
     }
 
-    public boolean contains(final List<User> list, final String userId){
-        return list.stream().filter(o -> o.getId().equals(userId)).findFirst().isPresent();
+    /**
+     * Helper method to detect if the used has already upvoted/downvoted the question.
+     *
+     * @param list   the list
+     * @param userId the user id
+     * @return the boolean
+     */
+    public boolean contains(final List<User> list, final String userId) {
+        return list.stream().anyMatch(o -> o.getId().equals(userId));
     }
 
     /**
-     * Handles clicking the upvote button
+     * Handles clicking the upvote button.
      */
-
     @FXML
     public void upvoteButtonPressed() {
-        ServerCommunication.upvoteQuestionById(this.questionId, RoomViewController.getCurrentUser().getId());
+        ServerCommunication
+            .upvoteQuestionById(this.questionId, RoomViewController.getCurrentUser().getId());
     }
 
     /**
-     * Handles clicking the downvote button
+     * Handles clicking the downvote button.
      */
-
     @FXML
     public void downvoteButtonPressed() {
-        ServerCommunication.downvoteQuestionById(this.questionId, RoomViewController.getCurrentUser().getId());
+        ServerCommunication
+            .downvoteQuestionById(this.questionId, RoomViewController.getCurrentUser().getId());
     }
 
     /**
-     * Handles clicking the delete button
+     * Handles clicking the delete button.
      */
-
     @FXML
     public void deleteButtonPressed() {
         ServerCommunication.deleteQuestion(questionId);
     }
 
+    /**
+     * Ban button pressed.
+     */
     @FXML
     public void banButtonPressed() {
         ServerCommunication.banUser(this.questionId);
     }
 
     /**
-     * Handles clicking the "mark as answered" button
+     * Handles clicking the "mark as answered" button.
      */
-
     @FXML
     public void toggleButtonPressed() {
         ServerCommunication.toggleStatus(questionId);

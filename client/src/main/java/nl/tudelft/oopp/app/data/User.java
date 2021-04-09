@@ -1,13 +1,9 @@
 package nl.tudelft.oopp.app.data;
 
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
 import java.util.List;
 
 public class User {
@@ -21,14 +17,15 @@ public class User {
     private List<Question> downvotedQuestions;
 
 
-    public User(){
+    public User() {
 
     }
 
     /**
-     * Constructor used when initially creating client-side user
+     * Constructor used when initially creating client-side user.
+     *
      * @param email of user
-     * @param role of user
+     * @param role  of user
      */
     public User(String email, String role, String name) {
         this.email = email;
@@ -45,11 +42,11 @@ public class User {
     /**
      * Constructor used by the JSON Creator to construct a new user.
      *
-     * @param id Unique identifier as to be used in the database.
-     * @param name Actual name of the user.
+     * @param id    Unique identifier as to be used in the database.
+     * @param name  Actual name of the user.
      * @param email Email of the user.
-     * @param role Role of the user (lecturer, student, moderator).
-     * @param ip IP address of the user.
+     * @param role  Role of the user (lecturer, student, moderator).
+     * @param ip    IP address of the user.
      */
     public User(String id, String name, String email, String role, String ip) {
         this.id = id;
@@ -59,7 +56,9 @@ public class User {
         this.ip = ip;
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -69,7 +68,13 @@ public class User {
         return email;
     }
 
-    public String getRole() { return role; }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getIp() {
         return ip;
@@ -83,20 +88,20 @@ public class User {
         return downvotedQuestions;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
         User user = (User) o;
-        return id.equals(user.id) &&
-                name.equals(user.name) &&
-                email.equals(user.email) &&
-                role.equals(user.role) &&
-                ip.equals(user.ip);
+        return id.equals(user.id)
+            && name.equals(user.name)
+            && email.equals(user.email)
+            && role.equals(user.role)
+            && ip.equals(user.ip);
     }
 
 }

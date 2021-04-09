@@ -1,15 +1,14 @@
 package nl.tudelft.oopp.app.views;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.TextArea;
 import nl.tudelft.oopp.app.communication.ServerCommunication;
-import nl.tudelft.oopp.app.controllers.RoomViewController;
 import nl.tudelft.oopp.app.data.Quiz;
-import nl.tudelft.oopp.app.data.User;
-
-import java.io.IOException;
-import java.util.List;
 
 public class QuizCell extends ListCell<Quiz> {
 
@@ -22,22 +21,22 @@ public class QuizCell extends ListCell<Quiz> {
     private Button toggleStatus;
 
     public QuizCell() {
-        loadFXML();
+        loadFxml();
     }
 
     /**
-     * @returns the Id of the quiz in the current cell
+     * Getter for quiz ID.
+     *
+     * @returns the Id of the quiz in the current cell.
      */
-
     public String getQuizId() {
         return quizId;
     }
 
     /**
-     * Loads the fxml QuizCell file
+     * Loads the fxml QuizCell file.
      */
-
-    private void loadFXML() {
+    private void loadFxml() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/QuizCell.fxml"));
             loader.setController(this);
@@ -49,11 +48,11 @@ public class QuizCell extends ListCell<Quiz> {
     }
 
     /**
-     * Updates the cell with the current properties of the quiz
-     * @param q The question contained in the cell
-     * @param empty
+     * Updates the cell with the current properties of the quiz.
+     *
+     * @param q     The question contained in the cell
+     * @param empty - is empty
      */
-
     @Override
     protected void updateItem(Quiz q, boolean empty) {
         super.updateItem(q, empty);
@@ -62,10 +61,9 @@ public class QuizCell extends ListCell<Quiz> {
             setText(null);
             setContentDisplay(ContentDisplay.TEXT_ONLY);
         } else {
-            if (q.isOpen()){
+            if (q.isOpen()) {
                 toggleStatus.setText("Close");
-            }
-            else {
+            } else {
                 toggleStatus.setText("Open");
             }
             quizId = q.getId();
@@ -74,15 +72,22 @@ public class QuizCell extends ListCell<Quiz> {
         }
     }
 
+    /**
+     * Toggle button pressed.
+     */
     @FXML
     public void toggleButtonPressed() {
         ServerCommunication.quizToggleOpenStatus(quizId);
-        if(toggleStatus.getText().equals("Open")) {
+        if (toggleStatus.getText().equals("Open")) {
             toggleStatus.setText("Close");
+        } else {
+            toggleStatus.setText("Open");
         }
-        else toggleStatus.setText("Open");
     }
 
+    /**
+     * Toggle answer distribution ready pressed.
+     */
     @FXML
     public void toggleAnswerDistributionReadyPressed() {
         ServerCommunication.quizToggleAnswerDistributionReadyStatus(quizId);
