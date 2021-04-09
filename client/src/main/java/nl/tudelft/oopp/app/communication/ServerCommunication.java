@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.opencsv.CSVWriter;
-import javafx.scene.control.Alert;
 import nl.tudelft.oopp.app.data.Question;
 import nl.tudelft.oopp.app.data.User;
 
@@ -271,7 +270,7 @@ public class ServerCommunication {
      * @param user to be added
      * @return the response of the body to communicate between the server and the client
      */
-    public static User addUser(User user, String password) throws UserNotAddedException, UserBannedByIp {
+    public static User addUser(User user, String password) throws UserNotAddedException, UserBannedByIpExtension {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .header("Content-type", "application/json")
@@ -289,19 +288,10 @@ public class ServerCommunication {
                 // is if he has been banned by Ip, since there are no requirements for his name or email.
                 // That is why we assume that if the response is null, an exception has been thrown
                 // and that it was for the IP
-                throw new UserBannedByIp("You have been banned from the app.");
+                throw new UserBannedByIpExtension("You have been banned from the app.");
             }
-            // check for ip ban
-            /**
-            HttpRequest ipRequest = HttpRequest.newBuilder()
-                    .header("Content-type", "application/json")
-                    .GET()
-                    .uri(URI.create("http://localhost:8080/user/isbanned?ip="+user.getIp()))
-                    .build();
-            String ipResponse = sendRequest(ipRequest);
-            System.out.println(ipResponse + " makarena");
-            // check for lecturer_wrong_password
-            */
+
+
             else throw new UserNotAddedException("User not added: Please verify that you have used the correct email and password.");
         }
 
@@ -325,7 +315,9 @@ public class ServerCommunication {
         String response = sendRequest(request);
         return response;
     }
-
+    /**
+     *  The method deletes a room from the database
+     * */
     public static void deleteRoom() throws RoomNotDeletedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -357,6 +349,33 @@ public class ServerCommunication {
         }
         System.out.println(" < Server response: " + response.body());
         return response.body().equals("") ? null : response.body();
+    }
+
+    /**
+     * The method checks whether the given user has been banned.
+     * @param currentUser
+     * @return true if the user has been banned, false otherwise
+     */
+    public static boolean isUserBanned(User currentUser) {
+        // tuk si pisha requesta
+        HttpRequest request = HttpRequest
+                              .newBuilder()
+                              .GET().uri(URI.create("http://localhost:8080/user/isbanned?ipAddress=" + currentUser.getIp()))
+                              .build();
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode() + " from isUserBanned method.");
+        }
+
+        //System.out.println(response.body());
+
+        return Boolean.parseBoolean(response.body());
     }
 
     /**
@@ -396,14 +415,20 @@ public class ServerCommunication {
     /**
      * Exception indicating that the user's ip is in the blacklist of the app
      */
-    public static class UserBannedByIp extends Exception {
-        public UserBannedByIp(String message){ super(message);}
+    public static class UserBannedByIpExtension extends Exception {
+        public UserBannedByIpExtension(String message){ super(message);}
     }
 
+    /**
+     * Exception indicating that the Email Field in the Main View is empty
+     */
     public static class EmptyEmailFieldException extends Exception{
         public EmptyEmailFieldException(String message){ super(message);}
     }
 
+    /**
+     * Exception indicating that the Password Fiels in the Main View is empty
+     */
     public static class EmptyPasswordFieldException extends Exception{
         public EmptyPasswordFieldException(String message){ super(message);}
     }
