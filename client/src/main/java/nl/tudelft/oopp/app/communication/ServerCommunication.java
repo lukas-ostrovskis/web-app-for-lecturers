@@ -31,6 +31,8 @@ public class ServerCommunication {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private static String checkNullResponse;
+
     /**
      * Creates a new room on the server.
      * @return ID of the created room.
@@ -73,8 +75,20 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
         }
 
+        checkNullResponse = response.body();
+
         return response.body().equals("") ? null : response.body();
     }
+
+    /**
+     *
+     * Gets the response.body()
+     * @return checkNullResponse as response.body()
+     */
+    public static String getCheckNullResponse() {
+        return checkNullResponse;
+    }
+
     /**
      * Fetches all questions with the roomId provided
      * @param roomId
