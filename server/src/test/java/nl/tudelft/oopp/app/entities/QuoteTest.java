@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.app;
+package nl.tudelft.oopp.app.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

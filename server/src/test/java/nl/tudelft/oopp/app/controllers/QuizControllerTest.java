@@ -3,6 +3,7 @@ package nl.tudelft.oopp.app.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import nl.tudelft.oopp.app.services.QuizService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -15,9 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.*;
-
 
 
 /**
@@ -25,7 +26,7 @@ import static org.hamcrest.Matchers.*;
  */
 
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class QuizControllerTest {
     private static String id;
@@ -45,7 +46,7 @@ class QuizControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/quiz/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content( "{ " +
+                .content("{ " +
                         "\"roomId\": \"testRoomId\"," +
                         "\"question\": \"testQuestion\"," +
                         "\"answerA\": \"testAnswerA\"," +

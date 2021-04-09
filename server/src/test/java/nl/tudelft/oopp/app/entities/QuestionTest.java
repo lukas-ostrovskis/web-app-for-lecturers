@@ -9,8 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.time.Instant;
 import java.util.List;
+
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,30 +32,30 @@ class QuestionTest {
     void setUp() {
         questionRepository.deleteAll();
         questionA = new Question("666",
-            "ownerId",
-            "ownerName",
-            "roomId",
-            "content",
-            666,
-            666,
-            true,
-            "answer");
+                "ownerId",
+                "ownerName",
+                "roomId",
+                "content",
+                666,
+                666,
+                true,
+                "answer");
         questionB = new Question("1232asd",
-            "41224as",
-            "1212ads",
-            "What is the time",
-            10,
-            3,
-            false,
-            "");
+                "41224as",
+                "1212ads",
+                "What is the time",
+                10,
+                3,
+                false,
+                "");
         questionC = new Question("123u0j",
-            "n123n",
-            "zma2m",
-            "Is this going to be on the exam?",
-            15,
-            0,
-            false,
-            "");
+                "n123n",
+                "zma2m",
+                "Is this going to be on the exam?",
+                15,
+                0,
+                false,
+                "");
     }
 
     @Test
@@ -133,14 +135,14 @@ class QuestionTest {
     @Test
     void getUpvoters() {
         questionRepository.save(new Question(
-            "testOwnerId",
-            "ownerName",
-            "roomId",
-            "content",
-            121,
-            121,
-            true,
-            "answer"
+                "testOwnerId",
+                "ownerName",
+                "roomId",
+                "content",
+                121,
+                121,
+                true,
+                "answer"
         ));
 
         List<Question> q = questionRepository.findAllQuestionsByOwnerId("testOwnerId");
@@ -151,14 +153,14 @@ class QuestionTest {
     @Test
     void getDownvoters() {
         questionRepository.save(new Question(
-            "testOwnerId",
-            "ownerName",
-            "roomId",
-            "content",
-            121,
-            121,
-            true,
-            "answer"
+                "testOwnerId",
+                "ownerName",
+                "roomId",
+                "content",
+                121,
+                121,
+                true,
+                "answer"
         ));
 
         List<Question> q = questionRepository.findAllQuestionsByOwnerId("testOwnerId");
@@ -183,18 +185,18 @@ class QuestionTest {
     @Test
     void getCreationTimestamp() {
         questionRepository.save(new Question(
-            "testOwnerId",
-            "ownerName",
-            "roomId",
-            "content",
-            121,
-            121,
-            true,
-            "answer"
+                "testOwnerId",
+                "ownerName",
+                "roomId",
+                "content",
+                121,
+                121,
+                true,
+                "answer"
         ));
 
         assertNotNull(questionRepository.findAllQuestionsByOwnerId("testOwnerId").get(0)
-            .getCreationTimestamp());
+                .getCreationTimestamp());
     }
 
     @Test

@@ -57,19 +57,19 @@ class QuestionControllerTest {
     @Order(1)
     void addQuestion() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/add")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{ " +
-                "\"ownerId\": \"testOwnerId\"," +
-                "\"ownerName\": \"testOwnerName\"," +
-                "\"roomId\": \"testRoomId\"," +
-                "\"content\": \"Second q\"," +
-                "\"numberOfUpvotes\": 5, \"numberOfDownvotes\": 5," +
-                "\"status\": false," +
-                "\"answer\": \"yes smth\" }")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string("Question Added Successfully"));
+                .put("/question/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ " +
+                        "\"ownerId\": \"testOwnerId\"," +
+                        "\"ownerName\": \"testOwnerName\"," +
+                        "\"roomId\": \"testRoomId\"," +
+                        "\"content\": \"Second q\"," +
+                        "\"numberOfUpvotes\": 5, \"numberOfDownvotes\": 5," +
+                        "\"status\": false," +
+                        "\"answer\": \"yes smth\" }")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Question Added Successfully"));
     }
 
     /**
@@ -81,16 +81,16 @@ class QuestionControllerTest {
     @Order(2)
     void getAllQuestionsByRoomId() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .get("/question/getAllByRoomId/" + "testRoomId")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].ownerId", is("testOwnerId")))
-            .andExpect(jsonPath("$[0].content", is("Second q")))
-            .andExpect(jsonPath("$[0].roomId", is("testRoomId")))
-            .andExpect(jsonPath("$[0].numberOfUpvotes", is(5)))
-            .andExpect(jsonPath("$[0].numberOfDownvotes", is(5)))
-            .andExpect(jsonPath("$[0].status", is(false)))
-            .andExpect(jsonPath("$[0].answer", is("yes smth")));
+                .get("/question/getAllByRoomId/" + "testRoomId")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].ownerId", is("testOwnerId")))
+                .andExpect(jsonPath("$[0].content", is("Second q")))
+                .andExpect(jsonPath("$[0].roomId", is("testRoomId")))
+                .andExpect(jsonPath("$[0].numberOfUpvotes", is(5)))
+                .andExpect(jsonPath("$[0].numberOfDownvotes", is(5)))
+                .andExpect(jsonPath("$[0].status", is(false)))
+                .andExpect(jsonPath("$[0].answer", is("yes smth")));
     }
 
 
@@ -101,16 +101,16 @@ class QuestionControllerTest {
     @Order(3)
     void getAllQuestionsByOwnerId() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .get("/question/getAllByOwnerId/" + "testOwnerId")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].ownerId", is("testOwnerId")))
-            .andExpect(jsonPath("$[0].content", is("Second q")))
-            .andExpect(jsonPath("$[0].roomId", is("testRoomId")))
-            .andExpect(jsonPath("$[0].numberOfUpvotes", is(5)))
-            .andExpect(jsonPath("$[0].numberOfDownvotes", is(5)))
-            .andExpect(jsonPath("$[0].status", is(false)))
-            .andExpect(jsonPath("$[0].answer", is("yes smth")));
+                .get("/question/getAllByOwnerId/" + "testOwnerId")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].ownerId", is("testOwnerId")))
+                .andExpect(jsonPath("$[0].content", is("Second q")))
+                .andExpect(jsonPath("$[0].roomId", is("testRoomId")))
+                .andExpect(jsonPath("$[0].numberOfUpvotes", is(5)))
+                .andExpect(jsonPath("$[0].numberOfDownvotes", is(5)))
+                .andExpect(jsonPath("$[0].status", is(false)))
+                .andExpect(jsonPath("$[0].answer", is("yes smth")));
 
     }
 
@@ -121,9 +121,9 @@ class QuestionControllerTest {
     @Order(4)
     void toggleQuestionStatus() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/toggleStatus/" + id)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+                .put("/question/toggleStatus/" + id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
         assertTrue(questionService.getOneQuestionById("1").isStatus());
 
@@ -143,9 +143,9 @@ class QuestionControllerTest {
     @Order(5)
     void upvoteQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/upvote?questionId=" + id + "&userId=1")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+                .put("/question/upvote?questionId=" + id + "&userId=1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
         System.out.println(questionRepository.findAll());
     }
@@ -157,9 +157,9 @@ class QuestionControllerTest {
     @Order(6)
     void downvoteQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .put("/question/downvote?questionId=" + id + "&userId=1")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+                .put("/question/downvote?questionId=" + id + "&userId=1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 
@@ -170,45 +170,45 @@ class QuestionControllerTest {
     @Order(7)
     void getOneQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .get("/question/getQuestionById/" + id)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
-            .andExpect(jsonPath("$.content", is("Second q")))
-            .andExpect(jsonPath("$.roomId", is("testRoomId")))
-            .andExpect(jsonPath("$.status", is(true)))
-            .andExpect(jsonPath("$.answer", is("yes smth")));
+                .get("/question/getQuestionById/" + id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
+                .andExpect(jsonPath("$.content", is("Second q")))
+                .andExpect(jsonPath("$.roomId", is("testRoomId")))
+                .andExpect(jsonPath("$.status", is(true)))
+                .andExpect(jsonPath("$.answer", is("yes smth")));
     }
 
     @Test
     @Order(8)
     void deleteAllQuestionByRoomId() throws Exception {
         Question q1 = new Question("1",
-            "666",
-            "Petr",
-            "First q",
-            3,
-            3,
-            true,
-            "yes");
+                "666",
+                "Petr",
+                "First q",
+                3,
+                3,
+                true,
+                "yes");
         Question q2 = new Question("1",
-            "666",
-            "Athan",
-            "First q",
-            3,
-            3,
-            true,
-            "yes");
+                "666",
+                "Athan",
+                "First q",
+                3,
+                3,
+                true,
+                "yes");
 
         questionService.addQuestion(q1);
         questionService.addQuestion(q2);
 
         mockMvc.perform(MockMvcRequestBuilders
-            .delete("/question/deleteAllByRoomId/" + "666")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string("All Question from room with id: 666 were deleted " +
-                "Successfully"));
+                .delete("/question/deleteAllByRoomId/" + "666")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("All Question from room with id: 666 were deleted " +
+                        "Successfully"));
 
         assertEquals(questionService.getAllQuestionByRoomId("666").size(), 0);
     }
@@ -220,9 +220,9 @@ class QuestionControllerTest {
     @Order(9)
     void deleteQuestionById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .delete("/question/delete/" + id)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string("Question with id: " + id + " deleted Successfully"));
+                .delete("/question/delete/" + id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Question with id: " + id + " deleted Successfully"));
     }
 }

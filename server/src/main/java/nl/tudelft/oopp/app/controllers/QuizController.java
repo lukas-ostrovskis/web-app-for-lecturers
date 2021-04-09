@@ -1,21 +1,29 @@
 package nl.tudelft.oopp.app.controllers;
 
-import nl.tudelft.oopp.app.entities.Quiz;
-import nl.tudelft.oopp.app.services.QuizService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.async.DeferredResult;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import nl.tudelft.oopp.app.entities.Quiz;
+import nl.tudelft.oopp.app.services.QuizService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
+
+
 
 @RestController
 @RequestMapping("/quiz")
 public class QuizController {
 
-    private QuizService quizService;
+    private final QuizService quizService;
 
     /**
      * Instantiates a new Quiz controller.
@@ -56,25 +64,27 @@ public class QuizController {
 
     /**
      * Get an open quiz by room id (if one exists).
-     * Method based on DeferredResult, which allows long polling by waiting for a response that can be sent as an answer
+     * Method based on DeferredResult, which allows long polling by waiting
+     * for a response that can be sent as an answer
      * to a request to be formed on a separate thread.
      *
-     * Source: https://stackoverflow.com/questions/53697785/how-to-implement-long-polling-rest-endpoint-in-spring-boot-app/53699241
+     * <p>Source: https://stackoverflow.com/questions/53697785/how-to-implement-long-polling-rest-endpoint-in-spring-boot-app/53699241
      *
      * @param roomId the room id.
      * @return the open quiz.
      */
     @GetMapping("getOpen/{roomId}")
-    DeferredResult<Quiz> getOpenQuizByRoomId(@PathVariable String roomId){
+    DeferredResult<Quiz> getOpenQuizByRoomId(@PathVariable String roomId) {
         Long timeOutInMilliSec = 50000L;
         String timeOutResp = "Time Out.";
-        DeferredResult<Quiz> deferredResult = new DeferredResult<>(timeOutInMilliSec,timeOutResp);
-        CompletableFuture.runAsync(()->{
+        DeferredResult<Quiz> deferredResult = new DeferredResult<>(timeOutInMilliSec, timeOutResp);
+        CompletableFuture.runAsync(() -> {
             try {
                 TimeUnit.SECONDS.sleep(15);
                 Quiz quiz = quizService.getOpenQuizByRoomId(roomId);
                 deferredResult.setResult(quiz);
-            }catch (Exception ex){
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
         return deferredResult;
@@ -82,7 +92,8 @@ public class QuizController {
 
     /**
      * Submits an answer to a Quiz from a client.
-     * Method based on DeferredResult, which allows long polling by waiting for a response that can be sent as an answer
+     * Method based on DeferredResult, which allows long polling by waiting for
+     * a response that can be sent as an answer
      * to a request to be formed on a separate thread.
      *
      * @param roomId the room id (room to which the quiz belongs).
@@ -117,7 +128,7 @@ public class QuizController {
     /**
      * Deletes a Quiz from server memory by its roomId.
      *
-     * SHOULD BE CALLED WHEN THE ROOM IS GETTING CLOSED.
+     * <p>SHOULD BE CALLED WHEN THE ROOM IS GETTING CLOSED.
      *
      * @param roomId the room id.
      * @return the Quiz that will be deleted.
@@ -134,16 +145,21 @@ public class QuizController {
      * @return answerDistribution if there's one ready, null otherwise.
      */
     @GetMapping("answerDistribution/{roomId}")
-    public DeferredResult<Map<Character, Integer>> getQuizAnswerDistribution(@PathVariable String roomId) {
+    public DeferredResult<Map<Character, Integer>>
+        getQuizAnswerDistribution(@PathVariable String roomId) {
+
         Long timeOutInMilliSec = 50000L;
         String timeOutResp = "Time Out.";
-        DeferredResult<Map<Character, Integer>> deferredResult = new DeferredResult<>(timeOutInMilliSec,timeOutResp);
-        CompletableFuture.runAsync(()->{
+        DeferredResult<Map<Character, Integer>> deferredResult =
+                new DeferredResult<>(timeOutInMilliSec, timeOutResp);
+        CompletableFuture.runAsync(() -> {
             try {
                 TimeUnit.SECONDS.sleep(15);
-                Map<Character, Integer> answerDistribution = quizService.getQuizAnswerDistribution(roomId);
+                Map<Character, Integer> answerDistribution =
+                        quizService.getQuizAnswerDistribution(roomId);
                 deferredResult.setResult(answerDistribution);
-            }catch (Exception ex){
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
         return deferredResult;

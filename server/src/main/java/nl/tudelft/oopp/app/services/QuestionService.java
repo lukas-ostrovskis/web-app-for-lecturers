@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.app.services;
 
 import java.util.List;
+
 import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
@@ -20,7 +21,7 @@ public class QuestionService {
      * Instantiates a new Question service.
      *
      * @param questionRepository - question repository
-     * @param userRepository - user repository
+     * @param userRepository     - user repository
      */
     @Autowired
     public QuestionService(QuestionRepository questionRepository, UserRepository userRepository) {

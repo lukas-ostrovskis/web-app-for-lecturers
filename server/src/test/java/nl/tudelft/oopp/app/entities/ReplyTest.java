@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.app;
+package nl.tudelft.oopp.app.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,7 +21,7 @@ public class ReplyTest {
     private static String content;
     private static int numberOfUpvotes;
     private static int numberOfDownvotes;
-    private static Instant creationTimestamp = Instant.now();
+    private static final Instant creationTimestamp = Instant.now();
 
     @BeforeAll
     static void setUp() {

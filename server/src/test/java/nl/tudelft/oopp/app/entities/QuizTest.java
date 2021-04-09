@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.app;
+package nl.tudelft.oopp.app.entities;
 
 import nl.tudelft.oopp.app.entities.Quiz;
 import org.junit.jupiter.api.BeforeEach;

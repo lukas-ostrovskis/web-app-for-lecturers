@@ -1,11 +1,11 @@
 package nl.tudelft.oopp.app.repositories;
 
+import java.util.List;
 import javax.transaction.Transactional;
 import nl.tudelft.oopp.app.entities.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
 
 /**
  * The interface Question repository.
@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public interface QuestionRepository extends JpaRepository<Question, String> {
     /**
-     * Find all questions by room ID
+     * Find all questions by room ID.
      *
      * @param roomId the room id
      * @return the list
