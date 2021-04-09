@@ -1,15 +1,11 @@
 package nl.tudelft.oopp.app.controllers;
 
-import java.util.*;
 import java.util.List;
 
 import nl.tudelft.oopp.app.DatabaseLoader;
-import nl.tudelft.oopp.app.entities.IpBlacklist;
-import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.IpBlacklistRepository;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
-import nl.tudelft.oopp.app.repositories.UserRepository;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +89,9 @@ public class UserController {
 
 
     @PostMapping ("/add")
-    public User addUser(@RequestBody User user, @RequestParam String password) {
-        return userService.save(user, password);
+    public String addUser(@RequestBody User user, @RequestParam String password) {
+        userService.save(user, password);
+        return "User Added Successfully";
     }
 
     @PostMapping("/ban")
