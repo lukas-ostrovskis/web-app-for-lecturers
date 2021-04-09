@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.app.entities;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import nl.tudelft.oopp.app.entities.IpBlacklist;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class IpBlacklistTest {
     @Test

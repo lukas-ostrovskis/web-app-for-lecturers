@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
 import nl.tudelft.oopp.app.services.QuestionService;
@@ -59,21 +58,21 @@ class QuestionControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/question/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ " +
-                        "\"ownerId\": \"testOwnerId\"," +
-                        "\"ownerName\": \"testOwnerName\"," +
-                        "\"roomId\": \"testRoomId\"," +
-                        "\"content\": \"Second q\"," +
-                        "\"numberOfUpvotes\": 5, \"numberOfDownvotes\": 5," +
-                        "\"status\": false," +
-                        "\"answer\": \"yes smth\" }")
+                .content("{ "
+                        + "\"ownerId\": \"testOwnerId\","
+                        + "\"ownerName\": \"testOwnerName\","
+                        + "\"roomId\": \"testRoomId\","
+                        + "\"content\": \"Second q\","
+                        + "\"numberOfUpvotes\": 5, \"numberOfDownvotes\": 5,"
+                        + "\"status\": false,"
+                        + "\"answer\": \"yes smth\" }")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Question Added Successfully"));
     }
 
     /**
-     * Checks if endpoint returns status code 200, when input is valid
+     * Checks if endpoint returns status code 200, when input is valid.
      *
      * @throws Exception the exception
      */
@@ -127,13 +126,13 @@ class QuestionControllerTest {
 
         assertTrue(questionService.getOneQuestionById("1").isStatus());
 
-//            .andExpect(jsonPath("$.ownerId", is("testOwnerId")))
-//            .andExpect(jsonPath("$.content", is("Second q")))
-//            .andExpect(jsonPath("$.roomId", is("testRoomId")))
-//            .andExpect(jsonPath("$.numberOfUpvotes", is(5)))
-//            .andExpect(jsonPath("$.numberOfDownvotes", is(5)))
-//            .andExpect(jsonPath("$.status", is(true)))
-//            .andExpect(jsonPath("$.answer", is("yes smth")));
+        //.andExpect(jsonPath("$.ownerId", is("testOwnerId")))
+        //.andExpect(jsonPath("$.content", is("Second q")))
+        //.andExpect(jsonPath("$.roomId", is("testRoomId")))
+        //.andExpect(jsonPath("$.numberOfUpvotes", is(5)))
+        //.andExpect(jsonPath("$.numberOfDownvotes", is(5)))
+        //.andExpect(jsonPath("$.status", is(true)))
+        //.andExpect(jsonPath("$.answer", is("yes smth")));
     }
 
     /**
@@ -207,8 +206,8 @@ class QuestionControllerTest {
                 .delete("/question/deleteAllByRoomId/" + "666")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("All Question from room with id: 666 were deleted " +
-                        "Successfully"));
+                .andExpect(content().string("All Question from room with id: 666 were deleted "
+                        + "Successfully"));
 
         assertEquals(questionService.getAllQuestionByRoomId("666").size(), 0);
     }

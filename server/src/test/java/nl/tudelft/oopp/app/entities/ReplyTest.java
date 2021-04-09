@@ -4,11 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Instant;
 import nl.tudelft.oopp.app.entities.Reply;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+
 
 
 public class ReplyTest {
@@ -31,8 +32,10 @@ public class ReplyTest {
         content = "Lorem ipsum dolor sit amet";
         numberOfUpvotes = 69;
         numberOfDownvotes = 42;
-        reply1 = new Reply(id, ownerId, questionId, content, numberOfUpvotes, numberOfDownvotes, creationTimestamp);
-        reply2 = new Reply(id, ownerId, questionId, content, numberOfUpvotes, numberOfDownvotes, creationTimestamp);
+        reply1 = new Reply(id, ownerId, questionId, content,
+                numberOfUpvotes, numberOfDownvotes, creationTimestamp);
+        reply2 = new Reply(id, ownerId, questionId, content,
+                numberOfUpvotes, numberOfDownvotes, creationTimestamp);
     }
 
     @Test
