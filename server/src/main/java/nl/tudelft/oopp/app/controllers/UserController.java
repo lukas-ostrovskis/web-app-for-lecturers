@@ -1,14 +1,11 @@
 package nl.tudelft.oopp.app.controllers;
 
-import java.util.*;
 import java.util.List;
 
 import nl.tudelft.oopp.app.DatabaseLoader;
-import nl.tudelft.oopp.app.entities.Question;
 import nl.tudelft.oopp.app.entities.User;
 import nl.tudelft.oopp.app.repositories.IpBlacklistRepository;
 import nl.tudelft.oopp.app.repositories.QuestionRepository;
-import nl.tudelft.oopp.app.repositories.UserRepository;
 import nl.tudelft.oopp.app.services.RoomService;
 import nl.tudelft.oopp.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,7 @@ public class UserController {
     private final RoomService roomService;
 
     private final DatabaseLoader dataLoader;
-    public List<String> passwords = List.of("12345");
+    public List<String> passwords = List.of("12345","0000");
 
     private QuestionRepository questionRepository;
     private IpBlacklistRepository ipBlacklistRepository;
@@ -52,6 +49,7 @@ public class UserController {
             User user = userService.findByEmail(email);
             return user;
         }
+
         if(role == 2) {
 
             if(userService.findAllByEmailContains(email).size() != 0){
@@ -61,15 +59,16 @@ public class UserController {
                     User user = userService.findByEmail(email);
                     return user;
                 }
-                return empty;
+                else return empty;
             }
             User user = new User(null, email, "moderator", null);
             if(passwords.contains(password)){
-                userService.save(user, null);
+                userService.save(user, password);
                 return user;
             }
-            return empty;
+            else return empty;
         }
+
         if(role == 3) {
             if(userService.findAllByEmailContains(email).size() != 0){
                 if(passwords.contains(password)){
@@ -83,9 +82,16 @@ public class UserController {
         return empty;
     }
 
+    @GetMapping("/isbanned")
+    public boolean isBanned(@RequestParam String ipAddress) {
+        return userService.isBanned(ipAddress);
+    }
+
+
     @PostMapping ("/add")
     public User addUser(@RequestBody User user, @RequestParam String password) {
         return userService.save(user, password);
+        //return "User Added Successfully";
     }
 
     @PostMapping("/ban")

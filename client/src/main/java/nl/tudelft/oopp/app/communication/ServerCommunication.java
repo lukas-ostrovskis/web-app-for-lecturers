@@ -31,6 +31,8 @@ public class ServerCommunication {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private static String checkNullResponse;
+
     /**
      * Creates a new room on the server.
      *
@@ -59,30 +61,37 @@ public class ServerCommunication {
      * @param user the user that is trying to enter
      * @return the response of the body to communicate between the server and the client
      */
-    public static String joinRoom(String id, User user) {
+    public static String joinRoom(String id, User user) throws UserNotAddedException {
+
         HttpRequest request = HttpRequest.newBuilder()
             .PUT(HttpRequest.BodyPublishers.ofString(""))
             .uri(URI.create(
                 "http://localhost:8080/room/join?roomId=" + id + "&userId=" + user.getId()))
             .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
+
+        String response = sendRequest(request);
+
+        if (response == null) {
+            throw new UserNotAddedException(
+                "Room ID invalid. Please try again. Or incorrect login details");
         }
 
-        return response.body().equals("") ? null : response.body();
+        return response;
+    }
+
+    /**
+     * Gets the response.body()
+     *
+     * @return checkNullResponse as response.body()
+     */
+    public static String getCheckNullResponse() {
+        return checkNullResponse;
     }
 
     /**
      * Fetches all questions with the roomId provided.
      *
-     * @param roomId - id of the room
+     * @param roomId - room id
      * @return a list of questions with a certain roomId
      * @throws IOException if communication with the server fails
      */
@@ -111,7 +120,7 @@ public class ServerCommunication {
      * Exports the current list of questions to a CSV file.
      *
      * @param roomId the room id.
-     * @throws IOException - exception
+     * @throws IOException - io exception
      */
     public static void exportQuestionsToCsv(String roomId, String filepath) throws IOException {
         List<Question> questions = fetchQuestionsByRoomId(roomId);
@@ -126,6 +135,7 @@ public class ServerCommunication {
 
 
         for (Question q : questions) {
+
             String[] serializedQuestion = {
                 dateTimeFormatter.format(q.getCreationTimestamp()),
                 q.getOwnerId(),
@@ -147,14 +157,14 @@ public class ServerCommunication {
     /**
      * Upvotes the question with the questionId.
      *
-     * @param questionId - id of the question
+     * @param questionId question id
      */
 
     public static void upvoteQuestionById(String questionId, String userId) {
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.ofString(""))
             .uri(URI.create(
-                "http://localhost:8080/question/upvote?questionId="
-                    + questionId + "&userId=" + userId)).build();
+                "http://localhost:8080/question/upvote?questionId=" + questionId
+                    + "&userId=" + userId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -169,14 +179,14 @@ public class ServerCommunication {
     /**
      * Downvotes the question with the questionId.
      *
-     * @param questionId - id of the question
+     * @param questionId question id
      */
 
     public static void downvoteQuestionById(String questionId, String userId) {
         HttpRequest request = HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.ofString(""))
             .uri(URI.create(
-                "http://localhost:8080/question/downvote?questionId="
-                    + questionId + "&userId=" + userId)).build();
+                "http://localhost:8080/question/downvote?questionId=" + questionId
+                    + "&userId=" + userId)).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -191,7 +201,7 @@ public class ServerCommunication {
     /**
      * Sends a question to the server.
      *
-     * @param question - instance of the question to ask
+     * @param question question
      */
 
     public static void askQuestion(Question question) {
@@ -223,7 +233,7 @@ public class ServerCommunication {
     /**
      * Sends a request to the server to delete the question with the questionId provided.
      *
-     * @param questionId - id of the question
+     * @param questionId question id
      */
 
     public static void deleteQuestion(String questionId) {
@@ -245,7 +255,7 @@ public class ServerCommunication {
     /**
      * Toggles the status of the question.
      *
-     * @param questionId - id of the question
+     * @param questionId question id
      */
 
     public static void toggleStatus(String questionId) {
@@ -263,7 +273,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Authentication of the user by email, password, role and room id.
+     * Checks if user with such params exists.
      *
      * @param email    the E-Mail of the lecturer inputed in the textField
      * @param password the password of the lecturer inputed in the textField
@@ -297,7 +307,8 @@ public class ServerCommunication {
      * @param user to be added
      * @return the response of the body to communicate between the server and the client
      */
-    public static User addUser(User user, String password) throws UserNotAddedException {
+    public static User addUser(User user, String password)
+        throws UserNotAddedException, UserBannedByIpExtension {
 
         HttpRequest request = HttpRequest.newBuilder()
             .header("Content-type", "application/json")
@@ -306,9 +317,21 @@ public class ServerCommunication {
             .build();
 
         String response = sendRequest(request);
+
+
         if (response == null) {
-            throw new UserNotAddedException(
-                "User not added, lecturer password may be wrong or student ip may be banned");
+            if (user.getRole().equals("student")) {
+                // basically, the only reason a student could find problems with joining a room
+                // is if he has been banned by Ip,
+                // since there are no requirements for his name or email.
+                // That is why we assume that if the response is null,
+                // an exception has been thrown and that it was for the IP
+                throw new UserBannedByIpExtension("You have been banned from the app.");
+            } else {
+                throw new UserNotAddedException(
+                    "User not added: "
+                        + "Please verify that you have used the correct email and password.");
+            }
         }
 
         return gson.fromJson(response, User.class);
@@ -321,6 +344,7 @@ public class ServerCommunication {
      * @return "User banned"
      */
     public static String banUser(String questionId) {
+
         HttpRequest request = HttpRequest.newBuilder()
             .header("Content-type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(questionId))
@@ -331,13 +355,11 @@ public class ServerCommunication {
         return response;
     }
 
-
     /**
-     * Delete room.
-     *
-     * @throws RoomNotDeletedException the room not deleted exception
+     * The method deletes a room from the database.
      */
     public static void deleteRoom() throws RoomNotDeletedException {
+
         HttpRequest request = HttpRequest.newBuilder()
             .GET().uri(URI.create(
                 String.format("http://localhost:8080/room/delete?userId=%s",
@@ -364,10 +386,40 @@ public class ServerCommunication {
             e.printStackTrace();
         }
         if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
+            System.out.println("Status: " + response.statusCode() + " - " + response.body());
+            return null;
         }
         System.out.println(" < Server response: " + response.body());
         return response.body().equals("") ? null : response.body();
+    }
+
+    /**
+     * The method checks whether the given user has been banned.
+     *
+     * @param currentUser current user
+     * @return true if the user has been banned, false otherwise
+     */
+    public static boolean isUserBanned(User currentUser) {
+        // tuk si pisha requesta
+        HttpRequest request = HttpRequest
+            .newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:8080/user/isbanned?ipAddress=" + currentUser.getIp()))
+            .build();
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode() + " from isUserBanned method.");
+        }
+
+        //System.out.println(response.body());
+
+        return Boolean.parseBoolean(response.body());
     }
 
     /**
@@ -605,6 +657,42 @@ public class ServerCommunication {
      */
     public static class RoomNotDeletedException extends Exception {
         public RoomNotDeletedException(String message) {
+            super(message);
+        }
+    }
+
+    /**
+     * Exception indicating inexistence of a room.
+     */
+    public static class RoomDoesNotExistException extends Exception {
+        public RoomDoesNotExistException(String message) {
+            super(message);
+        }
+    }
+
+    /**
+     * Exception indicating that the user's ip is in the blacklist of the app.
+     */
+    public static class UserBannedByIpExtension extends Exception {
+        public UserBannedByIpExtension(String message) {
+            super(message);
+        }
+    }
+
+    /**
+     * Exception indicating that the Email Field in the Main View is empty.
+     */
+    public static class EmptyEmailFieldException extends Exception {
+        public EmptyEmailFieldException(String message) {
+            super(message);
+        }
+    }
+
+    /**
+     * Exception indicating that the Password Fiels in the Main View is empty.
+     */
+    public static class EmptyPasswordFieldException extends Exception {
+        public EmptyPasswordFieldException(String message) {
             super(message);
         }
     }

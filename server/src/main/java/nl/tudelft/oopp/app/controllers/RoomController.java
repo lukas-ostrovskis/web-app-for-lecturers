@@ -46,9 +46,9 @@ public class RoomController {
     @PutMapping("/join")
     public String joinRoom(@RequestParam String roomId, @RequestParam String userId) {
 
-        System.out.println("vlizame v room controller-a ?");
-        System.out.println("test we: room id: " + roomId);
-        System.out.println("test we: user id: " + userId);
+        //System.out.println("vlizame v room controller-a ?");
+        //System.out.println("test we: room id: " + roomId);
+        //System.out.println("test we: user id: " + userId);
 
         // Check whether the room is expired
         // if it is, return empty string.

@@ -3,8 +3,8 @@ package nl.tudelft.oopp.app.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -33,6 +33,9 @@ import nl.tudelft.oopp.app.views.MainView;
 import nl.tudelft.oopp.app.views.QuestionCell;
 
 
+/**
+ * The type Room view controller.
+ */
 public class RoomViewController implements Initializable {
 
     private static Quiz openedQuiz;
@@ -52,12 +55,17 @@ public class RoomViewController implements Initializable {
     @FXML
     private Button quizzesButton;
 
+    /**
+     * Instantiates a new Room view controller.
+     */
     public RoomViewController() {
         questions = FXCollections.observableArrayList();
     }
 
     /**
-     * Getter for the current user.
+     * Getter for current user.
+     *
+     * @return the current user
      * @returns the current user
      */
     public static User getCurrentUser() {
@@ -65,7 +73,9 @@ public class RoomViewController implements Initializable {
     }
 
     /**
-     * Returns the open quiz.
+     * Getter for open quiz.
+     *
+     * @return the opened quiz
      * @returns the opened quiz.
      */
     public static Quiz getOpenedQuiz() {
@@ -73,11 +83,11 @@ public class RoomViewController implements Initializable {
     }
 
     /**
-     * Initializes the roomview  with the questions.
-     * Sets a timeline to fetch questions and order them every 2 seconds
+     * Initializes the roomview  with the questions
+     * Sets a timeline to fetch questions and order them every 2 seconds.
      *
-     * @param location - URL
-     * @param resources - ResourceBundle
+     * @param location URL
+     * @param resources ResourceBundle
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -102,17 +112,29 @@ public class RoomViewController implements Initializable {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), ev -> {
             try {
                 fetchQuestions();
+                isBanned();         // checks whether the user has been banned
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ServerCommunication.UserBannedByIpExtension e) {
+                /*
+                 *
+                 *  If the user has been banned
+                 *  First an error message is being displayed.
+                 *  After that the application will close itself and the user
+                 *  will not be able to enter a room because his IP is in the
+                 *  server's blacklist.
+                 *
+                 */
+                System.exit(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            questionsListView.getItems().sort(new java.util.Comparator<Question>() {
-                @Override
-                public int compare(Question q1, Question q2) {
+            java.util.Collections
+                .sort(questionsListView.getItems(), (q1, q2) -> {
                     int rating1 = q1.getNumberOfUpvotes() - q1.getNumberOfDownvotes();
                     int rating2 = q2.getNumberOfUpvotes() - q2.getNumberOfDownvotes();
                     return (rating2 - rating1);
-                }
-            });
+                });
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -183,9 +205,7 @@ public class RoomViewController implements Initializable {
     @FXML
     public void quizzesButtonPressed() throws IOException {
         System.out.println("bbb");
-        Parent root = FXMLLoader.load(
-            Objects.requireNonNull(getClass().getResource("/fxml/QuizMenuView.fxml"))
-        );
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/QuizMenuView.fxml"));
 
         Stage stage = new Stage();
         stage.setTitle("Quizzes Menu");
@@ -211,13 +231,39 @@ public class RoomViewController implements Initializable {
     /**
      * Fetches all questions from the server and displays them.
      *
-     * @throws IOException - the io exception
+     * @throws IOException the io exception
      */
     @FXML
     public void fetchQuestions() throws IOException {
         questions.removeAll();
         questionsListView.getItems().clear();
         questions.addAll(ServerCommunication.fetchQuestionsByRoomId(MainView.getRoomId()));
+    }
+
+    /**
+     * Checks whether a student has been recently banned
+     * If he has, an error message will be displayed.
+     * It is going to disappear after 3 seconds and the
+     * application will close itself.
+     *
+     * @throws ServerCommunication.UserBannedByIpExtension the user banned by ip extension
+     * @throws InterruptedException    the interrupted exception
+     */
+    @FXML
+    public void isBanned()
+        throws ServerCommunication.UserBannedByIpExtension, InterruptedException {
+
+        if (ServerCommunication.isUserBanned(currentUser)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("You have been banned.");
+            alert.show();
+            TimeUnit.SECONDS.sleep(3);
+            alert.close();
+            System.exit(0);
+        }
+
     }
 
     /**
@@ -283,8 +329,7 @@ public class RoomViewController implements Initializable {
      * @throws IOException the io exception
      */
     public void loadQuizView() throws IOException {
-        Parent root = FXMLLoader.load(
-            Objects.requireNonNull(getClass().getResource("/fxml/QuizView.fxml")));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/QuizView.fxml"));
 
         Stage stage = new Stage();
         stage.setTitle("Quiz");

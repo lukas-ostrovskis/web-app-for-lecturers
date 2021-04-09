@@ -61,4 +61,11 @@ public class UserTest {
         assertTrue(user.equals(user1));
     }
 
+    @Test
+    public void setRoleTest() {
+        User newuser = new User("5", "Martin", "martin@tudelft.nl", "student", "192.133.331.777");
+        newuser.setRole("moderator");
+        assertEquals(newuser.getRole(), "moderator");
+    }
+
 }
