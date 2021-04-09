@@ -35,6 +35,8 @@ public class ServerCommunication {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private static String checkNullResponse;
+
     /**
      * Creates a new room on the server.
      * @return ID of the created room.
@@ -61,26 +63,29 @@ public class ServerCommunication {
      * @param user the user that is trying to enter
      * @return the response of the body to communicate between the server and the client
      */
-    public static String joinRoom(String id, User user) throws RoomDoesNotExistException{
+    public static String joinRoom(String id, User user) throws UserNotAddedException {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/room/join?roomId=" + id + "&userId=" + user.getId()))
                 .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RoomDoesNotExistException("");
-            //return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
-            throw new RoomDoesNotExistException("The room does not exist");
-        }
 
-        return response.body().equals("") ? null : response.body();
+        String response = sendRequest(request);
+
+        if (response == null) throw new UserNotAddedException("Room ID invalid. Please try again. Or incorrect login details");
+
+        return response;
     }
+
+    /**
+     *
+     * Gets the response.body()
+     * @return checkNullResponse as response.body()
+     */
+    public static String getCheckNullResponse() {
+        return checkNullResponse;
+    }
+
     /**
      * Fetches all questions with the roomId provided
      * @param roomId
@@ -345,7 +350,8 @@ public class ServerCommunication {
             e.printStackTrace();
         }
         if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
+            System.out.println("Status: " + response.statusCode() + " - " + response.body());
+            return null;
         }
         System.out.println(" < Server response: " + response.body());
         return response.body().equals("") ? null : response.body();

@@ -313,6 +313,7 @@ public class MainViewController {
     public void joinRoomButtonPressed() throws Exception {
 
         try {
+
             // Try creating the user
             user = createUser();
 
@@ -322,15 +323,13 @@ public class MainViewController {
 
             loadRoomView();
 
+
         } catch (ServerCommunication.UserNotAddedException e) {
 
             // if user could not be created server-side
            presentError("Error!", e.getMessage());
+
         }
-         catch (ServerCommunication.RoomDoesNotExistException e){
-            // if the room does not exist
-             presentError("Error!","Room does not exist.");
-         }
     }
 
 
