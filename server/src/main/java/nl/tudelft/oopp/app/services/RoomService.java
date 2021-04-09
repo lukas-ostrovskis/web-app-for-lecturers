@@ -15,7 +15,7 @@ public class RoomService {
     private RoomRepository roomRepository;
     private UserRepository userRepository;
 
-    public List<String> passwords = List.of("12345");
+    public List<String> passwords = List.of("12345", "qwert");
 
     @Autowired
     public RoomService(RoomRepository roomRepository, UserRepository userRepository) {
@@ -66,10 +66,20 @@ public class RoomService {
         //System.out.println(userById.isPresent()+".");
         //System.out.println(roomById.isPresent()+".");
         if(roomById.isPresent() && userById.isPresent()) {
+
             System.out.println(roomById + "is present");
-            roomById.get().addUser(userRepository.getOne(userId));
+            if (roomById.get().getRoomUsers().contains(userId)) {
+                roomById.get().addUser(userRepository.getOne(userId));
+            }
+            if (roomById.get().getId().contains(userId)) {
+
+                return roomById.get().getId();
+
+            }
+
             roomRepository.save(roomById.get());
             roomRepository.flush();
+
             return roomById.get().getId();
         }
         else throw new IllegalStateException("Room doesn't exist");

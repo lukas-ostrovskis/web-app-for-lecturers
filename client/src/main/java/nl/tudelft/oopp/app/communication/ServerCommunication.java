@@ -68,7 +68,7 @@ public class ServerCommunication {
 
         String response = sendRequest(request);
 
-        if (response == null) throw new UserNotAddedException("Room ID invalid. Please try again.");
+        if (response == null) throw new UserNotAddedException("Room ID invalid. Please try again. Or incorrect login details");
 
         return response;
     }
