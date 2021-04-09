@@ -299,27 +299,23 @@ public class MainViewController {
     public void joinRoomButtonPressed() throws Exception {
 
         try {
+
             // Try creating the user
-            user=createUser();
+            user = createUser();
 
             MainView.setRoomId(roomIdTextField.getText());
 
-            //Checks if the response.body() is not null
-            if ( ServerCommunication.getCheckNullResponse() != null ) {
-
-                ServerCommunication.joinRoom(MainView.getRoomId(), user);
-                // System.out.println("RoomID: " + MainView.getRoomId());
-                // System.out.println("UserID: " + user.getId());
-                loadRoomView();
-            } else {
-                presentError(" ", "Invalid Room ID Please try again.");
-            }
+            ServerCommunication.joinRoom(MainView.getRoomId(), user);
+            // System.out.println("RoomID: " + MainView.getRoomId());
+            // System.out.println("UserID: " + user.getId());
+            loadRoomView();
 
 
         } catch (ServerCommunication.UserNotAddedException e) {
 
             // if user could not be created server-side
            presentError("Error!", e.getMessage());
+
         }
     }
 

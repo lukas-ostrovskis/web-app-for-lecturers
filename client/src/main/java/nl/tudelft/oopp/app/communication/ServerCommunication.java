@@ -59,26 +59,18 @@ public class ServerCommunication {
      * @param user the user that is trying to enter
      * @return the response of the body to communicate between the server and the client
      */
-    public static String joinRoom(String id, User user) {
+    public static String joinRoom(String id, User user) throws UserNotAddedException {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/room/join?roomId=" + id + "&userId=" + user.getId()))
                 .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode() + " from joinRoom method.");
-        }
 
-        //Stores the response to check it in the future
-        checkNullResponse = response.body();
+        String response = sendRequest(request);
 
-        return response.body().equals("") ? null : response.body();
+        if (response == null) throw new UserNotAddedException("Room ID invalid. Please try again.");
+
+        return response;
     }
 
     /**
@@ -311,7 +303,8 @@ public class ServerCommunication {
             e.printStackTrace();
         }
         if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
+            System.out.println("Status: " + response.statusCode() + " - " + response.body());
+            return null;
         }
         System.out.println(" < Server response: " + response.body());
         return response.body().equals("") ? null : response.body();
