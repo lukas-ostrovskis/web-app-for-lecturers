@@ -41,16 +41,6 @@ class RoomTest {
     }
 
     @Test
-    public void isStatusTest() {
-        assertTrue(room.isStatus());
-    }
-
-    @Test
-    public void getTimeTest() {
-        assertEquals(360, room.getTime());
-    }
-
-    @Test
     void equalsTest() {
         assertEquals(room, room);
     }
