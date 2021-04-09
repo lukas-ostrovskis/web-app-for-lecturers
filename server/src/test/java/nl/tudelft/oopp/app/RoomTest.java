@@ -23,35 +23,14 @@ class RoomTest {
 
     @BeforeAll
     static void setUp() {
-        String roomId = "ABC123";
-        room = new Room(roomId, ownerId, status, time);
+        String id = "ABC123";
+        room = new Room(id, ownerId, status, time);
     }
 
     @Test
     void constructorTest() {
         assertNotNull(room);
     }
-
-    @Test
-    void getRoomIdTest() {
-        assertEquals("ABC123", room.getId());
-    }
-
-    @Test
-    void getOwnerIdTest() {
-        assertEquals("XYZ789", room.getOwnerId());
-    }
-
-    @Test
-    void getStatusTest() {
-       assert(true, room.isStatus());
-    }
-
-    @Test
-    void getTimeTest() {
-        assertEquals(360, room.getTime());
-    }
-
 
     @Test
     void equalsTest() {
